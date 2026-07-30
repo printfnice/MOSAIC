@@ -30,7 +30,7 @@ The smoke test validates package structure and a small synthetic fixture. It doe
 Optional lightweight tests:
 
 ```bash
-python -m pytest code/experiments/reproducibility/test_v33_release_smoke_test.py -q
+python -m pytest code/experiments -q
 ```
 
 ## Main Evidence
