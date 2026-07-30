@@ -27,6 +27,12 @@ OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 python code/experiments/reproducibility/v33_
 
 The smoke test validates package structure and a small synthetic fixture. It does not reproduce the scientific experiments.
 
+Optional lightweight tests:
+
+```bash
+python -m pytest code/experiments/reproducibility/test_v33_release_smoke_test.py -q
+```
+
 ## Main Evidence
 
 The primary PBMC 3P experiment uses nested leave-one-donor-out evaluation across eight donors and 58 fine-level labels. Compact evidence tables include donor-level MOSAIC/MLP summaries, checkpoint ablations, missing-panel stress tests, leave-class-out rejection, PDC101 comparison, attribution stability, CellTypist baseline results and MOSAIC-versus-XGBoost donor-paired statistics.
