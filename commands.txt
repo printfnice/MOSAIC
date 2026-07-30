@@ -1,13 +1,18 @@
-OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 conda run -n TOSICA python experiments/reproducibility/v33_release_smoke_test.py --release-dir output/release/mosaic_n_v33
-conda run -n TOSICA python experiments/exp_generalization/mosaic_n_v33/audit_v33_preflight.py
-conda run -n TOSICA python experiments/exp_generalization/mosaic_n_v33/build_pbmc_nested_donor_cache.py --all
-conda run -n TOSICA python experiments/exp_generalization/mosaic_n_v33/run_v33_donor_matrix.py --all
-conda run -n TOSICA python experiments/exp_generalization/mosaic_n_v33/evaluate_v33_checkpoint_ablations.py --require-complete
-conda run -n TOSICA python experiments/exp_generalization/mosaic_n_v33/build_v33_donor_summary.py --require-complete
-conda run -n TOSICA python experiments/exp_missing_modality/mosaic_n_v33/evaluate_v33_panel_robustness.py --require-complete
-conda run -n TOSICA python experiments/exp_unknown_celltype/mosaic_n_v33/build_v33_unknown_protocol.py --all
-conda run -n TOSICA python experiments/exp_unknown_celltype/mosaic_n_v33/run_v33_unknown_matrix.py --all
-conda run -n TOSICA python experiments/exp_unknown_celltype/mosaic_n_v33/evaluate_v33_unknown_reject.py --require-complete
-conda run -n MMoCHi python experiments/exp_generalization/mosaic_n_v33/run_v33_pdc101_mosaic_n.py
-conda run -n TOSICA python experiments/exp_generalization/mosaic_n_v33/build_v33_pdc101_comparison.py
-conda run -n TOSICA python experiments/exp_explainability/mosaic_n_v33/analyze_v33_donor_attribution.py --require-complete
+# Commands are listed relative to the public repository root.
+# The first command is a packaged smoke test and should run without raw data.
+# Scientific reruns require the public datasets/checkpoints described in the manuscript.
+
+OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 python code/experiments/reproducibility/v33_release_smoke_test.py --release-dir .
+
+python code/experiments/exp_generalization/mosaic_n_v33/audit_v33_preflight.py
+python code/experiments/exp_generalization/mosaic_n_v33/build_pbmc_nested_donor_cache.py --all
+python code/experiments/exp_generalization/mosaic_n_v33/run_v33_donor_matrix.py --all
+python code/experiments/exp_generalization/mosaic_n_v33/evaluate_v33_checkpoint_ablations.py --require-complete
+python code/experiments/exp_generalization/mosaic_n_v33/build_v33_donor_summary.py --require-complete
+python code/experiments/exp_missing_modality/mosaic_n_v33/evaluate_v33_panel_robustness.py --require-complete
+python code/experiments/exp_unknown_celltype/mosaic_n_v33/build_v33_unknown_protocol.py --all
+python code/experiments/exp_unknown_celltype/mosaic_n_v33/run_v33_unknown_matrix.py --all
+python code/experiments/exp_unknown_celltype/mosaic_n_v33/evaluate_v33_unknown_reject.py --require-complete
+python code/experiments/exp_generalization/mosaic_n_v33/run_v33_pdc101_mosaic_n.py
+python code/experiments/exp_generalization/mosaic_n_v33/build_v33_pdc101_comparison.py
+python code/experiments/exp_explainability/mosaic_n_v33/analyze_v33_donor_attribution.py --require-complete

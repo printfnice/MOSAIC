@@ -21,6 +21,7 @@ This repository accompanies the MOSAIC manuscript. It contains lightweight sourc
 From the repository root:
 
 ```bash
+python -m pip install -r requirements.txt
 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 python code/experiments/reproducibility/v33_release_smoke_test.py --release-dir .
 ```
 
