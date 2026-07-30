@@ -1,0 +1,59 @@
+l3_label,l2_label,l1_label,train_support,l2_conflict_count,l1_conflict_count,mapping_status
+ASDC_mDC,ASDC,DC,4,0,0,train_majority
+ASDC_pDC,ASDC,DC,7,0,0,train_majority
+B intermediate kappa,B intermediate,B,173,0,0,train_majority
+B intermediate lambda,B intermediate,B,200,0,0,train_majority
+B memory kappa,B memory,B,330,0,0,train_majority
+B memory lambda,B memory,B,189,0,0,train_majority
+B naive kappa,B naive,B,818,0,0,train_majority
+B naive lambda,B naive,B,465,0,0,train_majority
+CD14 Mono,CD14 Mono,Mono,9645,0,0,train_majority
+CD16 Mono,CD16 Mono,Mono,1399,0,0,train_majority
+CD4 CTL,CD4 CTL,CD4 T,315,0,0,train_majority
+CD4 Naive,CD4 Naive,CD4 T,3858,0,0,train_majority
+CD4 Proliferating,CD4 Proliferating,CD4 T,15,0,0,train_majority
+CD4 TCM_1,CD4 TCM,CD4 T,1324,0,0,train_majority
+CD4 TCM_2,CD4 TCM,CD4 T,88,0,0,train_majority
+CD4 TCM_3,CD4 TCM,CD4 T,1015,0,0,train_majority
+CD4 TEM_1,CD4 TEM,CD4 T,304,0,0,train_majority
+CD4 TEM_2,CD4 TEM,CD4 T,60,0,0,train_majority
+CD4 TEM_3,CD4 TEM,CD4 T,305,0,0,train_majority
+CD4 TEM_4,CD4 TEM,CD4 T,14,0,0,train_majority
+CD8 Naive,CD8 Naive,CD8 T,1725,0,0,train_majority
+CD8 Naive_2,CD8 Naive,CD8 T,46,0,0,train_majority
+CD8 Proliferating,CD8 Proliferating,CD8 T,17,0,0,train_majority
+CD8 TCM_1,CD8 TCM,CD8 T,153,0,0,train_majority
+CD8 TCM_2,CD8 TCM,CD8 T,224,0,0,train_majority
+CD8 TCM_3,CD8 TCM,CD8 T,97,0,0,train_majority
+CD8 TEM_1,CD8 TEM,CD8 T,478,0,0,train_majority
+CD8 TEM_2,CD8 TEM,CD8 T,416,0,0,train_majority
+CD8 TEM_3,CD8 TEM,CD8 T,58,0,0,train_majority
+CD8 TEM_4,CD8 TEM,CD8 T,578,0,0,train_majority
+CD8 TEM_5,CD8 TEM,CD8 T,318,0,0,train_majority
+CD8 TEM_6,CD8 TEM,CD8 T,102,0,0,train_majority
+Doublet,Doublet,other,106,0,0,train_majority
+Eryth,Eryth,other,11,0,0,train_majority
+HSPC,HSPC,other,58,0,0,train_majority
+ILC,ILC,other,21,0,0,train_majority
+MAIT,MAIT,other T,617,0,0,train_majority
+NK Proliferating,NK Proliferating,NK,92,0,0,train_majority
+NK_1,NK,NK,647,0,0,train_majority
+NK_2,NK,NK,1573,0,0,train_majority
+NK_3,NK,NK,360,0,0,train_majority
+NK_4,NK,NK,261,0,0,train_majority
+NK_CD56bright,NK_CD56bright,NK,196,0,0,train_majority
+Plasma,Plasmablast,B,57,0,0,train_majority
+Plasmablast,Plasmablast,B,3,0,0,train_majority
+Platelet,Platelet,other,483,0,0,train_majority
+Treg Memory,Treg,CD4 T,213,0,0,train_majority
+Treg Naive,Treg,CD4 T,220,0,0,train_majority
+cDC1,cDC1,DC,25,0,0,train_majority
+cDC2_1,cDC2,DC,113,0,0,train_majority
+cDC2_2,cDC2,DC,280,0,0,train_majority
+dnT_1,dnT,other T,34,0,0,train_majority
+dnT_2,dnT,other T,29,0,0,train_majority
+gdT_1,gdT,other T,281,0,0,train_majority
+gdT_2,gdT,other T,127,0,0,train_majority
+gdT_3,gdT,other T,121,0,0,train_majority
+gdT_4,gdT,other T,98,0,0,train_majority
+pDC,pDC,DC,154,0,0,train_majority

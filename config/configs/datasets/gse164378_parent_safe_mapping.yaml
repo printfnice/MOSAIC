@@ -1,0 +1,122 @@
+l2_to_l1:
+  ASDC_mDC: DC
+  ASDC_pDC: DC
+  B intermediate kappa: B
+  B intermediate lambda: B
+  B memory kappa: B
+  B memory lambda: B
+  B naive kappa: B
+  B naive lambda: B
+  CD14 Mono: Mono
+  CD16 Mono: Mono
+  CD4 CTL: CD4 T
+  CD4 Naive: CD4 T
+  CD4 Proliferating: CD4 T
+  CD4 TCM_1: CD4 T
+  CD4 TCM_2: CD4 T
+  CD4 TCM_3: CD4 T
+  CD4 TEM_1: CD4 T
+  CD4 TEM_2: CD4 T
+  CD4 TEM_3: CD4 T
+  CD4 TEM_4: CD4 T
+  CD8 Naive: CD8 T
+  CD8 Naive_2: CD8 T
+  CD8 Proliferating: CD8 T
+  CD8 TCM_1: CD8 T
+  CD8 TCM_2: CD8 T
+  CD8 TCM_3: CD8 T
+  CD8 TEM_1: CD8 T
+  CD8 TEM_2: CD8 T
+  CD8 TEM_3: CD8 T
+  CD8 TEM_4: CD8 T
+  CD8 TEM_5: CD8 T
+  CD8 TEM_6: CD8 T
+  Doublet: other
+  Eryth: other
+  HSPC: other
+  ILC: other
+  MAIT: other T
+  NK Proliferating: NK
+  NK_1: NK
+  NK_2: NK
+  NK_3: NK
+  NK_4: NK
+  NK_CD56bright: NK
+  Plasma: B
+  Plasmablast: B
+  Platelet: other
+  Treg Memory: CD4 T
+  Treg Naive: CD4 T
+  cDC1: DC
+  cDC2_1: DC
+  cDC2_2: DC
+  dnT_1: other T
+  dnT_2: other T
+  gdT_1: other T
+  gdT_2: other T
+  gdT_3: other T
+  gdT_4: other T
+  pDC: DC
+l3_to_l2:
+  ASDC_mDC: ASDC
+  ASDC_pDC: ASDC
+  B intermediate kappa: B intermediate
+  B intermediate lambda: B intermediate
+  B memory kappa: B memory
+  B memory lambda: B memory
+  B naive kappa: B naive
+  B naive lambda: B naive
+  CD14 Mono: CD14 Mono
+  CD16 Mono: CD16 Mono
+  CD4 CTL: CD4 CTL
+  CD4 Naive: CD4 Naive
+  CD4 Proliferating: CD4 Proliferating
+  CD4 TCM_1: CD4 TCM
+  CD4 TCM_2: CD4 TCM
+  CD4 TCM_3: CD4 TCM
+  CD4 TEM_1: CD4 TEM
+  CD4 TEM_2: CD4 TEM
+  CD4 TEM_3: CD4 TEM
+  CD4 TEM_4: CD4 TEM
+  CD8 Naive: CD8 Naive
+  CD8 Naive_2: CD8 Naive
+  CD8 Proliferating: CD8 Proliferating
+  CD8 TCM_1: CD8 TCM
+  CD8 TCM_2: CD8 TCM
+  CD8 TCM_3: CD8 TCM
+  CD8 TEM_1: CD8 TEM
+  CD8 TEM_2: CD8 TEM
+  CD8 TEM_3: CD8 TEM
+  CD8 TEM_4: CD8 TEM
+  CD8 TEM_5: CD8 TEM
+  CD8 TEM_6: CD8 TEM
+  Doublet: Doublet
+  Eryth: Eryth
+  HSPC: HSPC
+  ILC: ILC
+  MAIT: MAIT
+  NK Proliferating: NK Proliferating
+  NK_1: NK
+  NK_2: NK
+  NK_3: NK
+  NK_4: NK
+  NK_CD56bright: NK_CD56bright
+  Plasma: Plasmablast
+  Plasmablast: Plasmablast
+  Platelet: Platelet
+  Treg Memory: Treg
+  Treg Naive: Treg
+  cDC1: cDC1
+  cDC2_1: cDC2
+  cDC2_2: cDC2
+  dnT_1: dnT
+  dnT_2: dnT
+  gdT_1: gdT
+  gdT_2: gdT
+  gdT_3: gdT
+  gdT_4: gdT
+  pDC: pDC
+leakage_control: Mapping is ontology/label-hierarchy based and is not selected by
+  GSE164378 outcomes.
+name: gse164378_parent_safe_mapping
+source: PBMC strict hierarchy maps from MOSAIC-RD

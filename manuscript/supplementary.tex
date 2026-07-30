@@ -1,0 +1,313 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=0.72in]{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\setlength{\emergencystretch}{2em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+
+\title{Supplementary Material for\\
+MOSAIC: branch-supervised CITE-seq annotation with auditable modality evidence under donor shift and incomplete protein panels}
+\author{Hai Yang, Linhao Wu, Dan Zhou, Tianyi Zhou, Qin Zhou,\\
+Ting Xiao, Qian Zhang, Jing Zhang, and Zhe Wang}
+\date{23 July 2026}
+
+\begin{document}
+\maketitle
+
+\section{Evidence policy}
+
+The primary statistical protocol is nested leave-one-donor-out evaluation. Test donor, validation donor and six training donors are disjoint. Gene selection and RNA/ADT transformations are fitted using training donors only. Three model seeds are averaged within each held-out donor, and the eight donors are the biological replicates. Cell counts and seeds are not treated as independent biological observations.
+
+The supplement distinguishes four evidence types: retrained method comparisons, same-checkpoint inference ablations, deterministic missing-panel stress tests and constructed leave-class-out stress tests. PDC101 uses a separate label space and protocol, so it is reported as a compatible direct hierarchy comparison rather than pooled with PBMC. Older random-cell, COVID-19, 5P and COMBAT results are retained as secondary breadth evidence and do not replace the donor-disjoint inference.
+
+\section{Dataset lineage and nested splits}
+
+The GSE164378 3P and 5P cohorts contain the same eight donors and are not independent-donor datasets. The primary 3P source contains 161,764 cells, 58 L3 labels and 224 proteins. For each fold, 3,000 genes are selected using the six training donors. Every training fold contains all 58 labels, so natural held-out-donor evaluation is closed set.
+
+\begin{table}[H]
+\centering
+\caption{Nested donor split sizes. Validation donors follow a fixed cycle; no donor occurs in more than one partition within a fold.}
+\label{tab:splits}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Test donor & Validation donor & Training cells & Validation cells & Test cells \\
+\midrule
+P1 & P2 & 126,424 & 17,205 & 18,135 \\
+P2 & P3 & 129,899 & 14,660 & 17,205 \\
+P3 & P4 & 130,014 & 17,090 & 14,660 \\
+P4 & P5 & 122,863 & 21,811 & 17,090 \\
+P5 & P6 & 119,211 & 20,742 & 21,811 \\
+P6 & P7 & 115,151 & 25,871 & 20,742 \\
+P7 & P8 & 109,643 & 26,250 & 25,871 \\
+P8 & P1 & 117,379 & 18,135 & 26,250 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Split manifests are stored under
+\texttt{configs/splits/pbmc\_cite\_seq/nested\_lodo/}. The aggregate cache audit is
+\texttt{results/tables/mosaic\_n\_v33\_nested\_lodo\_cache\_summary\_2026-07-23.csv}.
+Each cache records label support and confirms that feature selection and scalers were fitted on training donors only.
+
+\section{Complete nested-donor performance matrix}
+
+Table~\ref{tab:donor-full} reports retrained methods and same-checkpoint inference variants. The point estimate for each donor is the mean of seeds 41, 42 and 43. The 95\% interval is then calculated across eight donor means. ``Worst donor'' is the minimum score for performance metrics.
+
+\begin{table}[H]
+\centering
+\caption{Complete nested donor-disjoint performance matrix.}
+\label{tab:donor-full}
+\scriptsize
+\setlength{\tabcolsep}{2.8pt}
+\resizebox{\textwidth}{!}{%
+\input{tables/v33/supplement_donor_performance.tex}
+}
+\end{table}
+
+MOSAIC full versus MLP produced paired differences of $+0.0029$ ACC (95\% CI $-0.0001$ to 0.0059; paired $P=0.0588$), $+0.0040$ W-F1 (0.0013--0.0066; $P=0.0101$) and $+0.0148$ M-F1 (0.0091--0.0206; $P=0.0005$). Wilcoxon sensitivity $P$ values were 0.0547, 0.0156 and 0.0078, respectively. These unadjusted tests describe three prespecified aggregate metrics and are not generalized to every exploratory per-class comparison.
+
+The direct architecture ablations were unfavorable to the full configuration. Full minus no-HSR was $-0.0016$ ACC, $-0.0013$ W-F1 and $-0.0025$ M-F1. Full minus no-KD was $-0.0015$, $-0.0014$ and $-0.0038$. Same-checkpoint learned margin gate plus HSR minus uniform fusion was $-0.0011$ ACC, $-0.0011$ W-F1 and $-0.0042$ M-F1, with all eight donor differences negative. The full paired table is
+\texttt{results/tables/mosaic\_n\_v33\_paired\_donor\_statistics\_2026-07-23.csv}.
+
+Per-class results exclude donor--class combinations with zero true support rather than assigning F1 zero. The support-aware table is
+\texttt{results/tables/mosaic\_n\_v33\_donor\_per\_class\_summary\_2026-07-23.csv}.
+Predictions into a class absent from a donor's truth set remain penalized in donor-level aggregate metrics.
+
+\section{Branch and auditability closure}
+
+The branch-supervision sensitivity matrix used the same nested leave-one-donor-out protocol as the primary table. It reused the same train-only caches, validation-donor mapping, seed set and teacher-probability protocol. The tested configurations were $\lambda_b=0$, $\lambda_b=0.15$, $\lambda_b=0.70$ and a late-fusion-only setting with $\lambda_b=0,\lambda_f=1$. The primary full configuration corresponds to $\lambda_b=0.35,\lambda_f=0.5$ and is reported in Table~\ref{tab:donor-full}.
+
+\begin{table}[H]
+\centering
+\caption{Branch-supervision sensitivity under the primary nested donor protocol. Values are donor means with 95\% confidence intervals after averaging three seeds within each donor.}
+\label{tab:branch-supervision}
+\scriptsize
+\setlength{\tabcolsep}{2.8pt}
+\resizebox{\textwidth}{!}{%
+\input{tables/v34/supplement_branch_supervision.tex}
+}
+\end{table}
+
+The sensitivity curve does not support a monotonic ``more branch supervision is always better'' claim. $\lambda_b=0.70$ produced the highest ACC and W-F1, while late-fusion-only training produced the highest M-F1 and balanced accuracy. We therefore interpret branch supervision as an architecture and auditability choice with measurable metric trade-offs, not as a single universally positive module.
+
+\begin{table}[H]
+\centering
+\caption{Quantitative auditability closure. Branch-disagreement and uncertainty scores use final prediction error as the target. HSR action rates are averaged over full checkpoints. Attribution faithfulness reports top-feature deletion lift over matched random deletion.}
+\label{tab:auditability-closure}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\textwidth}{!}{%
+\input{tables/v34/supplement_auditability_closure.tex}
+}
+\end{table}
+
+Branch disagreement improved error-detection AUROC over final uncertainty but did not dominate uncertainty in AUPRC or risk at 90\% coverage. This makes it useful as a complementary diagnostic for modality conflict. HSR changed only 0.0015 of predictions on average; wrong-to-correct and correct-to-wrong changes were balanced. Same-checkpoint TOST equivalence within $\delta=0.005$ was supported for HSR across ACC, W-F1, M-F1 and balanced accuracy. Retrained KD and HSR comparisons were metric-dependent and should not be summarized as uniformly equivalent.
+
+\begin{table}[H]
+\centering
+\caption{Branch margin-correctness audit. Top-two logit margins were computed separately for RNA, ADT and fusion branches in each donor--seed checkpoint. Spearman correlations and quintile summaries use held-out donor as the statistical unit after averaging seeds.}
+\label{tab:margin-correctness}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\textwidth}{!}{%
+\input{tables/v36/supplement_margin_correctness.tex}
+}
+\end{table}
+
+The branch margin audit supports the use of branch margins as a confidence-like diagnostic. All three branches had positive donor-level Spearman correlations between top-two logit margin and branch correctness. The effect was strongest for ADT and RNA and weaker for fusion, consistent with the fusion branch already operating at higher baseline accuracy. This result validates margin as an ordering signal; it does not imply that margin gating alone improves every aggregate metric.
+
+\section{Missing-protein and panel-mismatch stress tests}
+
+Twenty-four full checkpoints were evaluated under eight deterministic conditions without retraining or test-label policy selection. Random masks remove the same fixed feature subset for all cells within a fold/seed condition. Marker masks remove six memory-associated or 15 T-cell-associated ADTs after alias normalization.
+
+\begin{table}[H]
+\centering
+\caption{Frozen-checkpoint performance and calibration under protein-panel masks. Intervals use held-out donor after averaging seeds. For ECE, the worst donor is the maximum value.}
+\label{tab:panel}
+\scriptsize
+\setlength{\tabcolsep}{2.8pt}
+\resizebox{\textwidth}{!}{%
+\input{tables/v33/supplement_panel_robustness.tex}
+}
+\end{table}
+
+The donor-level W-F1 degradation slope over 0/10/30/50/70\% random masking was $-0.0263\pm0.0071$ per fully missing protein fraction. The M-F1 slope was $-0.0624\pm0.0108$. Brier score increased by $0.0411\pm0.0097$ per full missing fraction. ECE slope was less stable ($+0.0081\pm0.0072$), whereas the RNA-only ECE increase was clear. These are post hoc robustness measurements of a full-input model, not evidence that the model was trained for arbitrary missing modalities.
+
+\section{Leave-class-out rejection and hierarchy fallback}
+
+The five target labels were removed from all training and validation labels before each 57-class model was fitted. Unknown test cells retained the removed label only for evaluation. Thresholds were selected from known validation scores at target known coverage 0.95 or 0.80. No unknown validation or test label informed the threshold.
+
+\begin{table}[H]
+\centering
+\caption{Aggregate validation-selected rejection results. Values first average three seeds within each target and then average five leave-class-out targets.}
+\label{tab:unknown-aggregate}
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\resizebox{\textwidth}{!}{%
+\input{tables/v33/supplement_unknown_reject.tex}
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Per-target margin-score results at target known coverage 0.80. Support and target difficulty vary substantially.}
+\label{tab:unknown-target}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\textwidth}{!}{%
+\input{tables/v33/supplement_unknown_targets.tex}
+}
+\end{table}
+
+B naive lambda is the smallest unknown set ($n=83$) and produced below-chance AUROC and low recall. CD4 TCM\_1 and gdT\_2 were easier to rank as unknown, but gdT\_2 had low parent-safe fallback. The mean unknown parent-safe rate at the chosen margin operating point was only 0.2259. These results preclude a broad open-set or safe-hierarchy claim.
+
+\begin{table}[H]
+\centering
+\caption{Light-chain feature availability for interpreting the B naive lambda leave-class-out failure. RNA markers are checked after each train-only 3,000-gene selection. ADT reports whether a kappa/lambda-like surface marker is present in the 224-protein panel.}
+\label{tab:light-chain}
+\small
+\input{tables/v34/supplement_light_chain_feature_audit.tex}
+\end{table}
+
+IGKC, IGLC2 and IGLC3 were retained in every donor fold, whereas IGLC1 and IGLC4--7 were not retained. The ADT panel did not contain a kappa/lambda surface marker. This supports a concrete interpretation for the B naive lambda pseudo-unknown failure: the class boundary is light-chain specific, and the multimodal input lacks a directly matched protein marker.
+
+\section{PDC101 comparison with official MMoCHi}
+
+PDC101 preprocessing was audited before the final comparison. The h5ad RNA matrix was already log-transformed and the protein matrix was already processed; an initial runner that repeated log and quantile transformations was invalidated and archived separately. The valid runner uses the processed matrices, fits only StandardScaler on training cells, excludes HTO/isotype/control proteins and validates every official external-holdout identifier and truth label.
+
+\begin{table}[H]
+\centering
+\caption{PDC101 same-holdout aggregate comparison. Uncertainty modes are not interchangeable.}
+\label{tab:pdc-aggregate}
+\small
+\resizebox{\textwidth}{!}{%
+\input{tables/v33/supplement_pdc101.tex}
+}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{PDC101 per-class F1 point estimates on the 2,098-cell sorted holdout.}
+\label{tab:pdc-class}
+\small
+\input{tables/v33/supplement_pdc101_per_class.tex}
+\end{table}
+
+MMoCHi exceeded MOSAIC for every aggregate metric and most classes. The largest gaps occurred at CD8 central-memory/effector-memory boundaries. Monocyte F1 was identical. MMoCHi intervals are cell bootstrap intervals conditional on one official workflow fit; MOSAIC intervals are Student-$t$ margins over three model seeds.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{Fig/FigS_case_study_marker_limits.pdf}
+\caption{Case-study evidence for marker-limited behavior. (a) B naive lambda was the hardest leave-class-out target, with low unknown recall, below-chance AUROC and low parent-safe rate; the ADT panel contained no kappa/lambda-like marker in any donor fold. (b) On PDC101, the largest MMoCHi--MOSAIC F1 gaps were concentrated in CD8 memory/effector-memory-related classes, whereas monocyte F1 was identical.}
+\label{fig:case-study}
+\end{figure}
+
+These two cases show different limits of the current model. B naive lambda illustrates absent marker evidence for unknown detection, whereas the PDC101 CD8 boundary illustrates a setting where an official curated hierarchy better matches the label structure than a learned high-dimensional reference classifier.
+
+\section{Computational cost}
+
+Runtime summaries were rebuilt from the primary nested-donor \texttt{results\_summary.csv} artifacts. Each run corresponds to one held-out donor and one seed. Parameter counts use the primary configuration dimensions: 3,000 RNA genes, 224 ADTs, 58 classes, MLP hidden dimensions 512/128, and MOSAIC hidden dimension 256 with branch encoders, fusion encoder and linear L3 heads. Runtime does not include raw-data download or public release packaging.
+
+\begin{table}[H]
+\centering
+\caption{Computational cost in the primary nested donor matrix. Runtime is wall-clock training time per fold--seed unit recorded in the run summaries.}
+\label{tab:computational-cost}
+\small
+\resizebox{\textwidth}{!}{%
+\input{tables/v35/supplement_computational_cost.tex}
+}
+\end{table}
+
+\section{Full-training published and strong ML donor baselines}
+
+To expand baseline coverage without an asymmetric training-cap caveat, we reran one published single-cell annotation package baseline and 12 classical or tree-based baselines on the primary nested donor protocol using all cells from the six training donors in each fold. Each method was evaluated on the complete held-out donor, and no validation or test label was used for model selection. CellTypist was run as an RNA-only published-method baseline on the train-only standardized RNA tensors. XGBoost, nearest-centroid and Gaussian naive Bayes variants were run separately for RNA-only, ADT-only and early-fusion RNA+ADT inputs; ridge baselines were rerun with the same uncapped training protocol. The displayed ranking table excludes Gaussian naive Bayes because the high-dimensional likelihood model produced clearly unstable rows; those diagnostic runs remain in the raw artifacts but are not used as ranking comparators.
+
+R/Bioconductor scmap and scPred reproductions remain available as additional tool-coverage artifacts, but are not included in Table~\ref{tab:strong-ml-baselines} because their local runs used method-specific caps for tractability. Thus, Table~\ref{tab:strong-ml-baselines} is the uncapped strong-baseline matrix used for the main comparator caveat closure.
+
+\begin{table}[H]
+\centering
+\caption{Full-training published and strong ML baselines under the primary PBMC donor-disjoint L3 protocol. Values are donor means with 95\% confidence intervals across eight held-out donors. All listed baselines use the full six training donors in each fold and the complete held-out donor test set. Diagnostic Gaussian naive Bayes runs are excluded from this ranking table.}
+\label{tab:strong-ml-baselines}
+\scriptsize
+\setlength{\tabcolsep}{2.6pt}
+\resizebox{\textwidth}{!}{%
+\input{tables/v37/supplement_strong_ml_expanded_baselines.tex}
+}
+\end{table}
+
+The published RNA-only CellTypist baseline reached ACC 0.8624, W-F1 0.8525 and M-F1 0.6357. The strongest added comparator was early-fusion XGBoost, which reached ACC 0.9097, W-F1 0.9078 and M-F1 0.8017. It outperformed ridge, centroid and CellTypist baselines but remained below MOSAIC full in point estimate. This removes the previous training-cap asymmetry for the main strong-baseline matrix; scmap and scPred are treated separately as capped tool-coverage evidence rather than as uncapped ranking comparators.
+
+\begin{table}[H]
+\centering
+\caption{Paired donor comparison between MOSAIC full and the strongest full-training baseline, early-fusion XGBoost. Differences are MOSAIC minus XGBoost after averaging MOSAIC seeds within each held-out donor.}
+\label{tab:xgb-paired}
+\small
+\resizebox{\textwidth}{!}{%
+\input{tables/v43/supplement_mosaic_vs_xgboost_paired.tex}
+}
+\end{table}
+
+MOSAIC full had positive point estimates relative to early-fusion XGBoost for ACC, W-F1 and M-F1, but all three paired 95\% intervals crossed zero. The XGBoost comparison is therefore reported as a strong point-estimate comparison rather than a statistically significant donor-level win.
+
+\section{Cross-donor feature attribution}
+
+Gradient-times-input was aggregated separately for RNA and ADT in six prespecified sibling labels. Donor-pair values first average three seeds. Because the 28 donor pairs overlap, Spearman and Jaccard summaries are descriptive and are not used as 28 independent replicates.
+
+\begin{table}[H]
+\centering
+\caption{Cross-donor attribution stability and canonical-marker enrichment. Marker overlap is the fraction of available canonical markers appearing in the aggregate top 20.}
+\label{tab:attribution}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\resizebox{\textwidth}{!}{%
+\input{tables/v33/supplement_attribution.tex}
+}
+\end{table}
+
+RNA rank stability was highest for CD8 Naive (mean Spearman 0.796) and lowest for CD4 TEM\_4 (0.529). ADT stability ranged from 0.295 for CD4 TEM\_4 to 0.612 for CD4 TCM\_3. Ten of 12 unadjusted marker-permutation tests had $P<0.05$; CD4 TEM\_4 ADT and CD8 Naive RNA did not. Because donor-pair summaries overlap and multiple marker sets were inspected, these values are descriptive marker-concordance checks rather than family-wise confirmatory discoveries.
+
+Seed-pair mean Spearman values were 0.644--0.843 for RNA and 0.519--0.758 for ADT, generally higher than donor-pair stability. Integrated gradients used seed 42, up to eight correct cells per donor/class and 16 integration steps. Gradient-times-input versus integrated-gradient Spearman was usually above 0.70, but CD4 TEM\_4 sometimes had only one or two correct samples. The sanity analysis is therefore directional, not an independent interpretation benchmark.
+
+\section{Secondary breadth evidence}
+
+Earlier random-cell analyses are retained for completeness but are not part of the primary nested-donor statistical claim. The fixed 100,000-cell PBMC random split placed every donor in training, validation and test. Ten learned-HSR seeds reached 0.9209 ACC, 0.9200 W-F1 and 0.8437 M-F1, but paired HSR effects crossed zero. This protocol measures within-cohort architecture performance and must not be called unseen-donor generalization.
+
+The E-MTAB-10026 patient-disjoint split assigned 90/20/20 nonoverlapping patients and 453,073/81,318/112,975 cells to training/validation/test. MOSAIC versus matched MLP reached 0.8590/0.8550/0.6471 versus 0.8553/0.8514/0.6411 for ACC/W-F1/M-F1. ACC and W-F1 paired intervals were positive; the three-seed M-F1 interval crossed zero. The single-patient B\_malignant label was train-only.
+
+GSE164378 5P used the same eight donors as the primary 3P source and a smaller 54-protein panel. A fixed three-seed MOSAIC ensemble reached 0.8646/0.8617/0.6916. It is assay-cohort and ensemble evidence, not independent-donor or single-model superiority.
+
+COMBAT/COVID parent-safe experiments compared an attributable MOSAIC variant, scNym and scANVI on aligned seeds 44/45/46. The separate cross-method consensus reached 0.9788 ACC, 0.9790 W-F1 and 0.8372 M-F1, but it consumes predictions from all three methods and is not a MOSAIC single-model result. COMBAT source provenance is recorded in
+\texttt{docs/datasets/combat\_citeseq/README.md}.
+
+\section{Reproducibility and artifact contract}
+
+The formal matrices contain 96 primary PBMC retraining units, 96 branch-sensitivity retraining units, 24 full-checkpoint ablation units, 192 panel conditions, 15 leave-class-out training units, 90 reject operating conditions, 96 full-training strong-baseline runs, eight full-training CellTypist donor folds and one donor-paired MOSAIC-versus-XGBoost audit. PDC101 contains three MOSAIC seeds and one official MMoCHi workflow artifact. Each serious training run saves configuration, log, checkpoint, prediction, per-class metrics and artifact index.
+
+Primary table and figure scripts read only complete declared sources:
+\begin{itemize}
+\item \texttt{experiments/exp\_baseline\_matrix/build\_v33\_manuscript\_tables.py};
+\item \texttt{experiments/exp\_baseline\_matrix/plot\_v33\_evidence\_figure.py};
+\item \texttt{results/tables/mosaic\_n\_v33\_manuscript\_evidence\_manifest\_2026-07-23.json};
+\item \texttt{results/tables/mosaic\_n\_v33\_evidence\_figure\_sources\_2026-07-23.json}.
+\end{itemize}
+
+The local release builder copies code, configuration, split manifests, small evidence tables, commands and environment metadata and verifies SHA-256 hashes. It excludes raw data, caches and checkpoints. Repository access is recorded in the main manuscript; archived-release and license metadata are tracked in the release checklist rather than inferred from the analysis scripts.
+
+\section{Claim boundaries}
+
+The evidence supports donor-disjoint W-F1 and M-F1 improvement over matched MLP, graceful but nontrivial degradation under missing proteins, limited validation-selected rejection, a negative compatible comparison with MMoCHi and moderate cross-donor feature-attribution stability. It does not support significant ACC superiority over MLP, aggregate benefit from HSR/KD/learned gating, robustness to arbitrary missing modalities, unrestricted open-set recognition, universal marker recovery, causal feature interpretation or one model dominating all datasets.
+
+\end{document}

@@ -1,0 +1,11 @@
+check,status,value,criterion,action
+pbmc_gene,pass,external PBMC RNA h5ad used during experiment execution,required artifact exists,
+pbmc_protein,pass,external PBMC ADT h5ad used during experiment execution,required artifact exists,
+pbmc_lodo_manifest,pass,manifest/configs/splits/pbmc_cite_seq/leave_one_donor_out_manifest.csv,required artifact exists,
+pbmc_hierarchy_map,pass,config/configs/datasets/pbmc_cite_seq/strict_l3_to_l2_l1_map_seed42.csv,required artifact exists,
+pdc101,pass,external GSE229791 PDC101 sorted h5ad used during experiment execution,required artifact exists,
+mmochi_result,pass,external MMoCHi PDC101 reproduction summary used during experiment execution,required artifact exists,
+gpu_memory,pass,NVIDIA GeForce RTX 4090; free=24081 MiB,CUDA GPU with at least 12000 MiB free,
+data_disk,pass,free=36.84 GiB,at least 20.0 GiB free,
+env_TOSICA,pass,TOSICA,named conda environment is installed,
+env_MMoCHi,pass,MMoCHi,named conda environment is installed,

@@ -1,0 +1,42 @@
+name: pbmc_cite_seq
+status: primary_existing
+description: PBMC CITE-seq paired RNA and ADT dataset used by the existing MOSAIC experiments.
+paths:
+  gene_h5ad: data/pbmc/pbmc_gene.h5ad
+  protein_h5ad: data/pbmc/pbmc_protein.h5ad
+modality_layout:
+  type: paired_h5ad
+  rna_features: 20729
+  protein_features: 224
+shape:
+  cells: 161764
+metadata:
+  label_columns:
+    l1: celltype.l1
+    l2: celltype.l2
+    l3: celltype.l3
+  label_counts:
+    l1: 8
+    l2: 31
+    l3: 58
+  donor_column: donor
+  sample_column: orig.ident
+  batch_columns:
+    - lane
+    - orig.ident
+  extra_columns:
+    - time
+    - Phase
+supported_splits:
+  - random_stratified
+  - leave_one_donor_out
+  - leave_one_sample_out
+  - leave_l3_subtype_out
+resubmission_role:
+  - benchmark_anchor
+  - hierarchy_unknown_celltype
+  - protein_missingness
+  - panel_mismatch_simulation
+notes:
+  - Gene and protein objects have matching cell counts and mirrored metadata.
+  - Use L3 leave-out for the first unknown-cell experiment, with L2/L1 fallback.

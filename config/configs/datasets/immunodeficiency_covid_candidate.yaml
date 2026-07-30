@@ -1,0 +1,39 @@
+name: immunodeficiency_covid_candidate
+status: candidate_needs_validation
+description: Large PBMC/COVID-related AnnData object with immunodeficiency and clinical metadata.
+paths:
+  combined_h5ad: data/immunodeficiency_covid_PMBCs.h5ad
+modality_layout:
+  type: combined_h5ad_unknown_feature_partition
+  total_features: 33759
+shape:
+  cells: 240627
+metadata:
+  label_columns:
+    cell_type: CellType
+  label_counts:
+    cell_type: 29
+  donor_column: Donor Id
+  donor_count: 11
+  condition_columns:
+    - Disease_classification
+    - PreCondition
+    - Hospitalized
+    - SARS-CoV-2 PCR
+    - SARS-CoV-2 Ab
+    - Symptomatic
+  clinical_columns:
+    - Age
+    - Sex
+    - Race
+    - Ethnicity
+    - BMI
+supported_splits:
+  - leave_one_donor_out
+  - disease_shift
+resubmission_role:
+  - candidate_external_validation
+  - disease_shift
+blocking_questions:
+  - Confirm RNA/protein feature partition.
+  - Confirm whether labels are compatible with PBMC/COVID label hierarchy.

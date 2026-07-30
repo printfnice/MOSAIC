@@ -1,0 +1,4 @@
+reference,comparator,metric,n_donors,mean_difference,difference_ci95_low,difference_ci95_high,difference_ci95_margin,paired_t_pvalue,wilcoxon_pvalue,positive_donor_count,negative_donor_count,zero_donor_count
+MOSAIC full,Early-fusion XGBoost,accuracy,8,0.0022769656024222706,-0.008516861066525784,0.013070792271370325,0.010793826668948054,0.633197514948515,0.84375,3,5,0
+MOSAIC full,Early-fusion XGBoost,weighted_f1,8,0.0029174656890275374,-0.006953441330920953,0.012788372708976028,0.00987090701994849,0.5071679539790901,0.9453125,4,4,0
+MOSAIC full,Early-fusion XGBoost,macro_f1,8,0.005537714788356962,-0.0071561511953204485,0.01823158077203437,0.01269386598367741,0.3365917288510826,0.3828125,5,3,0

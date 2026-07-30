@@ -1,0 +1,30 @@
+name: triana_abseq_bmc
+status: candidate_prepared
+description: Triana et al. healthy bone marrow donor Ab-seq dataset converted from Seurat RDS to paired h5ad.
+paths:
+  gene_h5ad: data/triana_abseq_bmc/triana_gene.h5ad
+  protein_h5ad: data/triana_abseq_bmc/triana_protein.h5ad
+  source_rds: data/external_raw/triana_abseq_bmc/WTA_projected.rds
+modality_layout:
+  type: paired_h5ad
+  rna_features: 30781
+  protein_features: 97
+shape:
+  cells: 13165
+metadata:
+  label_columns:
+    cell_type: ct
+  donor_column: Batch
+  sample_column: orig.ident
+  batch_columns:
+    - Batch
+    - orig.ident
+supported_splits:
+  - random_stratified
+  - leave_one_sample_out
+resubmission_role:
+  - external_validation
+  - panel_mismatch_simulation
+notes:
+  - Original object assays: RNA, AB, BOTH.
+  - Available obs labels include ct, cDC, B.cells, Myelocytes, Erythroid, Megakaryocte.

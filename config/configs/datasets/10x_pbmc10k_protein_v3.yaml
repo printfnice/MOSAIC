@@ -1,0 +1,28 @@
+name: 10x_pbmc10k_protein_v3
+status: data_ingested_label_blocked
+description: Public 10x Genomics PBMC 10k 5' gene expression + cell surface protein dataset.
+source:
+  url: https://cf.10xgenomics.com/samples/cell-exp/3.0.0/pbmc_10k_protein_v3/pbmc_10k_protein_v3_filtered_feature_bc_matrix.h5
+  downloaded_file: data/external_raw/10x_pbmc10k_protein_v3/pbmc_10k_protein_v3_filtered_feature_bc_matrix.h5
+paths:
+  gene_h5ad: data/10x_pbmc10k_protein_v3/pbmc10k_gene.h5ad
+  protein_h5ad: data/10x_pbmc10k_protein_v3/pbmc10k_protein.h5ad
+  feature_audit_csv: results/tables/mosaic_n_v10_r18_10x_pbmc10k_feature_audit_2026-05-20.csv
+modality_layout:
+  type: paired_h5ad
+  rna_feature_type: Gene Expression
+  protein_feature_type: Antibody Capture
+metadata:
+  label_columns: []
+  donor_column: null
+  sample_column: null
+resubmission_role:
+  - candidate_second_external
+  - panel_mismatch_benchmark_candidate
+  - unlabeled_panel_audit
+leakage_controls:
+  - No MOSAIC predictions are used as labels.
+  - No marker-gating labels are generated in R18.
+  - External test labels must not be used for threshold or policy selection.
+notes:
+  - Supervised benchmark readiness remains blocked until independent labels or a pre-registered marker-gating protocol are available.

@@ -1,0 +1,9 @@
+split_column,test_group,n_train,n_test,test_fraction,label_column,n_test_labels,status,labels_absent_from_test,labels_absent_from_test_count
+donor,P8,135514,26250,0.16227343537499073,celltype.l3,58,candidate,,0
+donor,P7,135893,25871,0.1599305160604337,celltype.l3,58,candidate,,0
+donor,P5,139953,21811,0.13483222472243514,celltype.l3,58,candidate,,0
+donor,P6,141022,20742,0.1282238322494498,celltype.l3,58,candidate,,0
+donor,P1,143629,18135,0.11210776192477931,celltype.l3,57,candidate,CD4 TEM_4,1
+donor,P2,144559,17205,0.10635864592863678,celltype.l3,58,candidate,,0
+donor,P4,144674,17090,0.1056477337355654,celltype.l3,58,candidate,,0
+donor,P3,147104,14660,0.09062585000370911,celltype.l3,57,candidate,Plasmablast,1
