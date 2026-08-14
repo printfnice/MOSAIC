@@ -22,5 +22,5 @@ Excluded by design:
 - Local conda environments, machine paths and private credentials.
 
 The GitHub repository is intended as a lightweight source and evidence package.
-The tagged snapshot contains the declared checkpoint and CPU audit demo; no
-Zenodo DOI or raw-data archive is claimed for this release.
+The `v7.0.1-submission` snapshot contains the declared checkpoint and CPU audit
+demo; no Zenodo DOI or raw-data archive is claimed for this release.
