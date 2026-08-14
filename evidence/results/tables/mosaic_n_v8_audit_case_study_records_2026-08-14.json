@@ -1,0 +1,11 @@
+{
+  "source": "results/exp_explainability/mosaic_n_v34/attribution_faithfulness/audit_case_studies.csv",
+  "source_sha256": "9298f202f3fb828550c05cc6e8953a4456ac19284eac2e9a9c9fed9fefa36b1c",
+  "n_records": 3,
+  "roles": {
+    "agreement_correct": "positive agreement record",
+    "modality_conflict": "modality-conflict review record",
+    "hsr_high_delta_or_changed": "bounded HSR action record"
+  },
+  "public_artifact": false
+}

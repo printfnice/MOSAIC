@@ -1,0 +1,148 @@
+% Auto-generated from complete V33 artifacts; do not edit values manually.
+\begin{table*}[t]
+\centering\small
+\caption{Nested donor-disjoint performance. Intervals use held-out donor as the statistical unit.}
+\label{tab:v33-donor-performance}
+\begin{tabular}{llccc}
+\toprule
+Method & Metric & Mean [95\% CI] & Worst donor & $n$ donors \\
+\midrule
+ADT branch & accuracy & 0.8360 [0.8245, 0.8474] & 0.8149 & 8 \\
+ADT branch & weighted\_f1 & 0.8364 [0.8270, 0.8457] & 0.8159 & 8 \\
+ADT branch & macro\_f1 & 0.6661 [0.6515, 0.6808] & 0.6360 & 8 \\
+Fusion branch & accuracy & 0.9100 [0.9070, 0.9130] & 0.9042 & 8 \\
+Fusion branch & weighted\_f1 & 0.9092 [0.9052, 0.9133] & 0.9005 & 8 \\
+Fusion branch & macro\_f1 & 0.8059 [0.7919, 0.8198] & 0.7771 & 8 \\
+Learned margin gate & accuracy & 0.9119 [0.9086, 0.9153] & 0.9055 & 8 \\
+Learned margin gate & weighted\_f1 & 0.9107 [0.9062, 0.9153] & 0.9010 & 8 \\
+Learned margin gate & macro\_f1 & 0.8077 [0.7925, 0.8228] & 0.7794 & 8 \\
+Learned margin gate + HSR & accuracy & 0.9119 [0.9086, 0.9153] & 0.9057 & 8 \\
+Learned margin gate + HSR & weighted\_f1 & 0.9108 [0.9062, 0.9153] & 0.9012 & 8 \\
+Learned margin gate + HSR & macro\_f1 & 0.8072 [0.7917, 0.8227] & 0.7792 & 8 \\
+RNA branch & accuracy & 0.8894 [0.8846, 0.8942] & 0.8827 & 8 \\
+RNA branch & weighted\_f1 & 0.8882 [0.8825, 0.8940] & 0.8805 & 8 \\
+RNA branch & macro\_f1 & 0.7564 [0.7402, 0.7726] & 0.7293 & 8 \\
+Uniform fusion & accuracy & 0.9130 [0.9096, 0.9164] & 0.9068 & 8 \\
+Uniform fusion & weighted\_f1 & 0.9118 [0.9072, 0.9165] & 0.9021 & 8 \\
+Uniform fusion & macro\_f1 & 0.8114 [0.7961, 0.8266] & 0.7803 & 8 \\
+MLP early fusion & accuracy & 0.9091 [0.9048, 0.9133] & 0.9023 & 8 \\
+MLP early fusion & weighted\_f1 & 0.9068 [0.9020, 0.9116] & 0.8987 & 8 \\
+MLP early fusion & macro\_f1 & 0.7923 [0.7758, 0.8089] & 0.7626 & 8 \\
+MOSAIC full & accuracy & 0.9119 [0.9086, 0.9153] & 0.9057 & 8 \\
+MOSAIC full & weighted\_f1 & 0.9108 [0.9062, 0.9153] & 0.9012 & 8 \\
+MOSAIC full & macro\_f1 & 0.8072 [0.7917, 0.8227] & 0.7792 & 8 \\
+MOSAIC without HSR & accuracy & 0.9135 [0.9102, 0.9168] & 0.9081 & 8 \\
+MOSAIC without HSR & weighted\_f1 & 0.9121 [0.9079, 0.9162] & 0.9057 & 8 \\
+MOSAIC without HSR & macro\_f1 & 0.8097 [0.7950, 0.8243] & 0.7847 & 8 \\
+MOSAIC without KD & accuracy & 0.9134 [0.9102, 0.9167] & 0.9092 & 8 \\
+MOSAIC without KD & weighted\_f1 & 0.9121 [0.9078, 0.9164] & 0.9049 & 8 \\
+MOSAIC without KD & macro\_f1 & 0.8110 [0.7956, 0.8265] & 0.7813 & 8 \\
+\bottomrule
+\end{tabular}
+\par\footnotesize Caveat: eight held-out donors are the biological replicates; seeds are averaged within donor.
+\par\footnotesize source artifacts: \texttt{results/tables/mosaic\_n\_v33\_donor\_method\_summary\_2026-07-23.csv}; \texttt{results/tables/mosaic\_n\_v33\_paired\_donor\_statistics\_2026-07-23.csv}.
+\end{table*}
+
+\begin{table*}[t]
+\centering\small
+\caption{Missing-protein and panel-mismatch robustness under locked feature-level masks.}
+\label{tab:v33-panel-robustness}
+\begin{tabular}{llccc}
+\toprule
+Scenario & Metric & Mean [95\% CI] & Worst donor & $n$ donors \\
+\midrule
+full & weighted\_f1 & 0.9108 [0.9062, 0.9153] & 0.9012 & 8 \\
+full & macro\_f1 & 0.8072 [0.7917, 0.8227] & 0.7792 & 8 \\
+full & ece & 0.0713 [0.0645, 0.0781] & 0.0874 & 8 \\
+marker\_memory & weighted\_f1 & 0.9082 [0.9038, 0.9126] & 0.8991 & 8 \\
+marker\_memory & macro\_f1 & 0.8006 [0.7833, 0.8180] & 0.7678 & 8 \\
+marker\_memory & ece & 0.0738 [0.0670, 0.0806] & 0.0899 & 8 \\
+marker\_tcell & weighted\_f1 & 0.9021 [0.8969, 0.9072] & 0.8950 & 8 \\
+marker\_tcell & macro\_f1 & 0.7859 [0.7709, 0.8008] & 0.7647 & 8 \\
+marker\_tcell & ece & 0.0748 [0.0664, 0.0832] & 0.0934 & 8 \\
+random\_10 & weighted\_f1 & 0.9074 [0.9015, 0.9132] & 0.8957 & 8 \\
+random\_10 & macro\_f1 & 0.8003 [0.7824, 0.8182] & 0.7702 & 8 \\
+random\_10 & ece & 0.0728 [0.0662, 0.0795] & 0.0892 & 8 \\
+random\_30 & weighted\_f1 & 0.9020 [0.8963, 0.9076] & 0.8920 & 8 \\
+random\_30 & macro\_f1 & 0.7904 [0.7742, 0.8066] & 0.7634 & 8 \\
+random\_30 & ece & 0.0755 [0.0682, 0.0827] & 0.0924 & 8 \\
+random\_50 & weighted\_f1 & 0.8971 [0.8903, 0.9039] & 0.8830 & 8 \\
+random\_50 & macro\_f1 & 0.7742 [0.7557, 0.7927] & 0.7424 & 8 \\
+random\_50 & ece & 0.0764 [0.0669, 0.0859] & 0.0985 & 8 \\
+random\_70 & weighted\_f1 & 0.8921 [0.8855, 0.8988] & 0.8813 & 8 \\
+random\_70 & macro\_f1 & 0.7641 [0.7453, 0.7829] & 0.7337 & 8 \\
+random\_70 & ece & 0.0770 [0.0680, 0.0859] & 0.0965 & 8 \\
+rna\_only & weighted\_f1 & 0.8882 [0.8826, 0.8938] & 0.8810 & 8 \\
+rna\_only & macro\_f1 & 0.7558 [0.7390, 0.7726] & 0.7306 & 8 \\
+rna\_only & ece & 0.1063 [0.0914, 0.1212] & 0.1330 & 8 \\
+\bottomrule
+\end{tabular}
+\par\footnotesize Caveat: masks were fixed without test-label selection; marker-group scenarios have no scalar random-mask fraction.
+\par\footnotesize source artifacts: \texttt{results/tables/mosaic\_n\_v33\_panel\_robustness\_metrics\_2026-07-23.csv}; \texttt{results/exp\_missing\_modality/mosaic\_n\_v33/config.json}.
+\end{table*}
+
+\begin{table*}[t]
+\centering\small
+\caption{Leave-class-out unknown/reject stress test using validation-only thresholds.}
+\label{tab:v33-unknown-reject}
+\begin{tabular}{lcccccc}
+\toprule
+Score & Target coverage & Observed coverage & Unknown recall & AUROC & Parent-safe rate & Hierarchical accuracy \\
+\midrule
+energy & 0.80 & 0.7961 & 0.4024 & 0.6066 & 0.2076 & 0.9073 \\
+energy & 0.95 & 0.9426 & 0.2881 & 0.6066 & 0.1369 & 0.8967 \\
+one\_minus\_margin & 0.80 & 0.7878 & 0.4032 & 0.5948 & 0.2259 & 0.9146 \\
+one\_minus\_margin & 0.95 & 0.9409 & 0.2139 & 0.5948 & 0.1140 & 0.8994 \\
+one\_minus\_max\_probability & 0.80 & 0.7887 & 0.3643 & 0.5848 & 0.1981 & 0.9101 \\
+one\_minus\_max\_probability & 0.95 & 0.9414 & 0.2372 & 0.5848 & 0.1231 & 0.8990 \\
+\bottomrule
+\end{tabular}
+\par\footnotesize Caveat: validation-only thresholds; pseudo-unknown leave-class-out evidence does not prove unrestricted open-world recognition.
+\par\footnotesize source artifacts: \texttt{results/tables/mosaic\_n\_v33\_unknown\_reject\_metrics\_2026-07-23.csv}; \texttt{results/exp\_unknown\_celltype/mosaic\_n\_v33/evaluation/config.json}.
+\end{table*}
+
+\begin{table}[t]
+\centering\small
+\caption{PDC101 same-holdout comparison.}
+\label{tab:v33-pdc101}
+\begin{tabular}{llcc}
+\toprule
+Method & Metric & Mean $\pm$ uncertainty & Mode \\
+\midrule
+MOSAIC & accuracy & 0.9077 $\pm$ 0.0180 & seed Student-t \\
+MOSAIC & weighted\_f1 & 0.9068 $\pm$ 0.0187 & seed Student-t \\
+MOSAIC & macro\_f1 & 0.9007 $\pm$ 0.0209 & seed Student-t \\
+MMoCHi & accuracy & 0.9347 $\pm$ 0.0110 & cell bootstrap; conditional on one workflow \\
+MMoCHi & weighted\_f1 & 0.9335 $\pm$ 0.0114 & cell bootstrap; conditional on one workflow \\
+MMoCHi & macro\_f1 & 0.9298 $\pm$ 0.0118 & cell bootstrap; conditional on one workflow \\
+\bottomrule
+\end{tabular}
+\par\footnotesize Caveat: MMoCHi uses the official hierarchy with external\_holdout=True and one workflow fit; uncertainty modes differ.
+\par\footnotesize source artifacts: \texttt{results/tables/mosaic\_n\_v33\_pdc101\_mmochi\_comparison\_2026-07-23.csv}; \texttt{results/exp\_generalization/mosaic\_n\_v33/pdc101/config.json}.
+\end{table}
+
+\begin{table*}[t]
+\centering\small
+\caption{Cross-donor attribution stability and canonical-marker enrichment.}
+\label{tab:v33-attribution}
+\begin{tabular}{llcccc}
+\toprule
+Class & Modality & Mean Spearman & Top-20 Jaccard & Marker overlap & Permutation $p$ \\
+\midrule
+CD4 TCM\_3 & ADT & 0.6123 & 0.5103 & 1.0000 & 0.0002 \\
+CD4 TCM\_3 & RNA & 0.7510 & 0.4355 & 0.4000 & 0.0012 \\
+CD4 TEM\_3 & ADT & 0.5535 & 0.4722 & 0.5000 & 0.04759 \\
+CD4 TEM\_3 & RNA & 0.7400 & 0.4182 & 0.5000 & 0.0002 \\
+CD4 TEM\_4 & ADT & 0.2945 & 0.2915 & 0.2500 & 0.3181 \\
+CD4 TEM\_4 & RNA & 0.5292 & 0.1127 & 0.5000 & 0.0003999 \\
+CD8 Naive & ADT & 0.5545 & 0.4684 & 0.8000 & 0.0002 \\
+CD8 Naive & RNA & 0.7956 & 0.2895 & 0.0000 & 1 \\
+CD8 Naive\_2 & ADT & 0.4850 & 0.4740 & 0.8000 & 0.0002 \\
+CD8 Naive\_2 & RNA & 0.6829 & 0.2993 & 0.2000 & 0.02999 \\
+CD8 TCM\_1 & ADT & 0.5816 & 0.4810 & 0.6000 & 0.006399 \\
+CD8 TCM\_1 & RNA & 0.7529 & 0.4548 & 0.2000 & 0.03059 \\
+\bottomrule
+\end{tabular}
+\par\footnotesize Caveat: overlapping donor pairs are descriptive; marker enrichment does not establish causality.
+\par\footnotesize source artifacts: \texttt{results/tables/mosaic\_n\_v33\_donor\_attribution\_stability\_2026-07-23.csv}; \texttt{results/tables/mosaic\_n\_v33\_marker\_enrichment\_2026-07-23.csv}.
+\end{table*}

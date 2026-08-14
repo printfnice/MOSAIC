@@ -1,0 +1,26 @@
+test_donor,seed,n_heldout_cells,n_declared_label_cells,declared_label_fraction,n_hsr_changed,hsr_changed_fraction,hsr_changed_fraction_among_declared,source_artifact
+test_P1,41,18135,2257,0.12445547284256962,23,0.0012682657843948167,0.004430660168365086,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P1/mosaic_full_seed41/hsr_gate_summary.csv
+test_P1,42,18135,2257,0.12445547284256962,45,0.0024813895781637717,0.0101905183872397,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P1/mosaic_full_seed42/hsr_gate_summary.csv
+test_P1,43,18135,2257,0.12445547284256962,19,0.0010476978218913703,0.004873726185201595,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P1/mosaic_full_seed43/hsr_gate_summary.csv
+test_P2,41,17205,2844,0.16530078465562337,40,0.0023249055507120024,0.007032348804500703,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P2/mosaic_full_seed41/hsr_gate_summary.csv
+test_P2,42,17205,2844,0.16530078465562337,20,0.0011624527753560012,0.003867791842475387,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P2/mosaic_full_seed42/hsr_gate_summary.csv
+test_P2,43,17205,2844,0.16530078465562337,21,0.0012205754141238012,0.0031645569620253164,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P2/mosaic_full_seed43/hsr_gate_summary.csv
+test_P3,41,14660,1910,0.13028649386084584,37,0.0025238744884038197,0.011518324607329843,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P3/mosaic_full_seed41/hsr_gate_summary.csv
+test_P3,42,14660,1910,0.13028649386084584,18,0.0012278308321964529,0.006806282722513089,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P3/mosaic_full_seed42/hsr_gate_summary.csv
+test_P3,43,14660,1910,0.13028649386084584,25,0.0017053206002728514,0.006806282722513089,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P3/mosaic_full_seed43/hsr_gate_summary.csv
+test_P4,41,17090,3060,0.17905207723815098,32,0.0018724400234055004,0.00392156862745098,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P4/mosaic_full_seed41/hsr_gate_summary.csv
+test_P4,42,17090,3060,0.17905207723815098,28,0.0016383850204798127,0.004901960784313725,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P4/mosaic_full_seed42/hsr_gate_summary.csv
+test_P4,43,17090,3060,0.17905207723815098,72,0.004212990052662376,0.011111111111111112,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P4/mosaic_full_seed43/hsr_gate_summary.csv
+test_P5,41,21811,2253,0.10329650176516436,36,0.0016505433038375133,0.009320905459387484,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P5/mosaic_full_seed41/hsr_gate_summary.csv
+test_P5,42,21811,2253,0.10329650176516436,20,0.0009169685021319518,0.004438526409232135,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P5/mosaic_full_seed42/hsr_gate_summary.csv
+test_P5,43,21811,2253,0.10329650176516436,31,0.0014213011783045253,0.007101642254771416,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P5/mosaic_full_seed43/hsr_gate_summary.csv
+test_P6,41,20742,2717,0.1309902613055636,24,0.0011570726063060456,0.004784688995215311,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P6/mosaic_full_seed41/hsr_gate_summary.csv
+test_P6,42,20742,2717,0.1309902613055636,26,0.0012534953234982161,0.00368052999631947,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P6/mosaic_full_seed42/hsr_gate_summary.csv
+test_P6,43,20742,2717,0.1309902613055636,14,0.0006749590203451933,0.002576370997423629,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P6/mosaic_full_seed43/hsr_gate_summary.csv
+test_P7,41,25871,2225,0.08600363341192842,40,0.0015461327354953423,0.006741573033707865,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P7/mosaic_full_seed41/hsr_gate_summary.csv
+test_P7,42,25871,2225,0.08600363341192842,16,0.000618453094198137,0.005842696629213483,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P7/mosaic_full_seed42/hsr_gate_summary.csv
+test_P7,43,25871,2225,0.08600363341192842,40,0.0015461327354953423,0.010786516853932584,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P7/mosaic_full_seed43/hsr_gate_summary.csv
+test_P8,41,26250,2710,0.10323809523809524,19,0.0007238095238095238,0.002214022140221402,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P8/mosaic_full_seed41/hsr_gate_summary.csv
+test_P8,42,26250,2710,0.10323809523809524,20,0.0007619047619047619,0.004059040590405904,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P8/mosaic_full_seed42/hsr_gate_summary.csv
+test_P8,43,26250,2710,0.10323809523809524,22,0.000838095238095238,0.004797047970479705,results/exp_generalization/mosaic_n_v33/donor_matrix/test_P8/mosaic_full_seed43/hsr_gate_summary.csv
+pooled,all,485292,59928,0.12348853885907866,688,0.0014177031560380143,0.011480443198504872,pooled from 24 hsr_gate_summary.csv files

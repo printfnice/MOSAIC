@@ -1,0 +1,46 @@
+\begin{tabular}{llcccc}
+\toprule
+Method & Metric & Mean [95\% CI] & Worst donor & Best donor & $n$ donors \\
+\midrule
+ADT branch & ACC & 0.8360 [0.8245, 0.8474] & 0.8149 & 0.8550 & 8 \\
+ADT branch & W-F1 & 0.8364 [0.8270, 0.8457] & 0.8159 & 0.8507 & 8 \\
+ADT branch & M-F1 & 0.6661 [0.6515, 0.6808] & 0.6360 & 0.6962 & 8 \\
+ADT branch & Balanced accuracy & 0.6876 [0.6780, 0.6971] & 0.6670 & 0.6996 & 8 \\
+Fusion branch & ACC & 0.9100 [0.9070, 0.9130] & 0.9042 & 0.9163 & 8 \\
+Fusion branch & W-F1 & 0.9092 [0.9052, 0.9133] & 0.9005 & 0.9157 & 8 \\
+Fusion branch & M-F1 & 0.8059 [0.7919, 0.8198] & 0.7771 & 0.8242 & 8 \\
+Fusion branch & Balanced accuracy & 0.8118 [0.7932, 0.8305] & 0.7755 & 0.8419 & 8 \\
+Learned margin gate & ACC & 0.9119 [0.9086, 0.9153] & 0.9055 & 0.9182 & 8 \\
+Learned margin gate & W-F1 & 0.9107 [0.9062, 0.9153] & 0.9010 & 0.9173 & 8 \\
+Learned margin gate & M-F1 & 0.8077 [0.7925, 0.8228] & 0.7794 & 0.8314 & 8 \\
+Learned margin gate & Balanced accuracy & 0.8096 [0.7906, 0.8286] & 0.7756 & 0.8420 & 8 \\
+MOSAIC full (locked) & ACC & 0.9119 [0.9086, 0.9153] & 0.9057 & 0.9183 & 8 \\
+MOSAIC full (locked) & W-F1 & 0.9108 [0.9062, 0.9153] & 0.9012 & 0.9174 & 8 \\
+MOSAIC full (locked) & M-F1 & 0.8072 [0.7917, 0.8227] & 0.7792 & 0.8307 & 8 \\
+MOSAIC full (locked) & Balanced accuracy & 0.8085 [0.7890, 0.8280] & 0.7745 & 0.8402 & 8 \\
+RNA branch & ACC & 0.8894 [0.8846, 0.8942] & 0.8827 & 0.8975 & 8 \\
+RNA branch & W-F1 & 0.8882 [0.8825, 0.8940] & 0.8805 & 0.8973 & 8 \\
+RNA branch & M-F1 & 0.7564 [0.7402, 0.7726] & 0.7293 & 0.7782 & 8 \\
+RNA branch & Balanced accuracy & 0.7652 [0.7436, 0.7868] & 0.7262 & 0.8062 & 8 \\
+Uniform fusion & ACC & 0.9130 [0.9096, 0.9164] & 0.9068 & 0.9196 & 8 \\
+Uniform fusion & W-F1 & 0.9118 [0.9072, 0.9165] & 0.9021 & 0.9187 & 8 \\
+Uniform fusion & M-F1 & 0.8114 [0.7961, 0.8266] & 0.7803 & 0.8331 & 8 \\
+Uniform fusion & Balanced accuracy & 0.8129 [0.7933, 0.8325] & 0.7759 & 0.8444 & 8 \\
+MLP matched protocol & ACC & 0.9103 [0.9065, 0.9141] & 0.9036 & 0.9153 & 8 \\
+MLP matched protocol & W-F1 & 0.9092 [0.9046, 0.9137] & 0.9018 & 0.9150 & 8 \\
+MLP matched protocol & M-F1 & 0.7961 [0.7786, 0.8136] & 0.7662 & 0.8240 & 8 \\
+MLP matched protocol & Balanced accuracy & 0.8011 [0.7821, 0.8201] & 0.7677 & 0.8297 & 8 \\
+MLP parameter-matched capacity & ACC & 0.9111 [0.9081, 0.9142] & 0.9059 & 0.9166 & 8 \\
+MLP parameter-matched capacity & W-F1 & 0.9096 [0.9051, 0.9142] & 0.8999 & 0.9163 & 8 \\
+MLP parameter-matched capacity & M-F1 & 0.8001 [0.7846, 0.8156] & 0.7721 & 0.8262 & 8 \\
+MLP parameter-matched capacity & Balanced accuracy & 0.8024 [0.7852, 0.8196] & 0.7730 & 0.8321 & 8 \\
+MOSAIC without HSR & ACC & 0.9135 [0.9102, 0.9168] & 0.9081 & 0.9200 & 8 \\
+MOSAIC without HSR & W-F1 & 0.9121 [0.9079, 0.9162] & 0.9057 & 0.9192 & 8 \\
+MOSAIC without HSR & M-F1 & 0.8097 [0.7950, 0.8243] & 0.7847 & 0.8356 & 8 \\
+MOSAIC without HSR & Balanced accuracy & 0.8067 [0.7895, 0.8238] & 0.7742 & 0.8382 & 8 \\
+MOSAIC without KD & ACC & 0.9134 [0.9102, 0.9167] & 0.9092 & 0.9200 & 8 \\
+MOSAIC without KD & W-F1 & 0.9121 [0.9078, 0.9164] & 0.9049 & 0.9194 & 8 \\
+MOSAIC without KD & M-F1 & 0.8110 [0.7956, 0.8265] & 0.7813 & 0.8360 & 8 \\
+MOSAIC without KD & Balanced accuracy & 0.8079 [0.7913, 0.8244] & 0.7773 & 0.8385 & 8 \\
+\bottomrule
+\end{tabular}

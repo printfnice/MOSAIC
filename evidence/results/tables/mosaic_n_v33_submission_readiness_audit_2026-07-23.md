@@ -1,0 +1,20 @@
+# MOSAIC V33 submission readiness audit
+
+Date: 2026-07-23
+
+| Check | Category | Responsibility | Status | Evidence | Consequence |
+|---|---|---|---|---|---|
+| experiment_evidence_complete | experiments | machine_closed | blocker | Structural issues: nested LODO cache summary does not cover P1-P8; donor per-class summary lacks 58 classes for MLP/full | Missing experimental evidence prevents final claims and table regeneration. |
+| manuscript_tables_complete | tables_figures | machine_closed | pass | Found 8 non-empty V33 LaTeX tables; at least 4 are required. | The V33 donor, robustness, reject and attribution evidence must be represented. |
+| manuscript_figures_complete | tables_figures | machine_closed | pass | Evidence figure(s): output/figures/mosaic_n_v33_evidence_figure_2026-07-23.pdf, output/figures/mosaic_n_v33_evidence_figure_2026-07-23.png, output/figures/mosaic_n_v33_evidence_figure_2026-07-23.svg | At least one regenerated V33 evidence figure is required. |
+| latex_sources_and_build | latex | machine_closed | pass | Both LaTeX sources and PDFs exist; logs contain no fatal, citation or reference errors. | A non-compiling or unresolved manuscript package cannot be submitted. |
+| release_candidate_integrity | reproducibility | machine_closed | pass | 82 packaged files passed SHA-256 verification | The compact code/config/manifest package must be checksummed and reproducible. |
+| author_metadata_finalized | placeholder_information | author_action | pass | No author-action placeholder pattern remains. | Names, affiliations, funding and CRediT roles require author confirmation. |
+| human_authorship_review | placeholder_information | author_action | blocker | A named human review confirmation has not been recorded in the external release package. | Final scientific claims and journal-policy compliance require accountable human review. |
+| public_repository_release | placeholder_information | external_release | blocker | A real public repository URL, release license and removal of release placeholders are required. | Creating and publishing the repository requires an external account. |
+| archival_doi_release | placeholder_information | external_release | pass | Archive DOI found: 10.5281/zenodo.6120249. | Minting an archival DOI requires an external repository release. |
+
+## Decision
+
+Machine-closed evidence remains blocked.
+Submission is ready only when every row is pass.

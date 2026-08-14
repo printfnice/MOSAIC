@@ -1,0 +1,4 @@
+case_type,test_donor,seed,cell_id,label,prediction,error,rna_prediction,adt_prediction,fusion_prediction,final_confidence,final_uncertainty,branch_disagreement,vote_entropy,top_probability_variance,margin_variance,all_branches_agree,base_prediction,hsr_gate,hsr_delta_norm,prediction_changed_by_hsr,base_correct,final_correct
+agreement_correct,P8,42,E2L6_GTCACGGTCCTTGAAG,Eryth,Eryth,False,Eryth,Eryth,Eryth,0.9999701976776124,2.9802322387695312e-05,0.0,-0.0,6.493517958006123e-06,1.4863680007692892e-05,True,,,,,,
+modality_conflict,P4,41,L4_TTGTGGACACGCGTCA,Treg Naive,CD4 Naive,True,CD4 TCM_1,Treg Naive,CD4 Naive,0.3602772057056427,0.6397227942943573,0.6666666666666667,1.0,0.0121175525709986,0.0001881723146652,False,,,,,,
+hsr_high_delta_or_changed,P1,41,L1_CAATGACAGTCTCTGA,CD4 TCM_1,CD4 TCM_3,,,,,,,,,,,,CD4 TCM_1,0.0204046852886676,12.939963340759276,True,True,False

@@ -1,0 +1,69 @@
+{
+  "date": "2026-08-03",
+  "rows": [
+    {
+      "baseline": "scANVI",
+      "environment": "/root/autodl-tmp/conda_envs/v8_scvi",
+      "environment_check": "scvi=1.3.3 cuda=True",
+      "artifact_dir": "results/exp_generalization/original_mosaic_strict/v11_r42_scanvi_full_strict_g1000_e20_seed42",
+      "artifact_complete": true,
+      "missing_artifacts": "",
+      "protocol": "fixed strict split seed42, 85000 reference + 15000 test, 1000 genes, RNA-only latent annotation; not nested donor LODO",
+      "test_accuracy": 0.8906666667,
+      "test_weighted_f1": 0.8882184212,
+      "test_macro_f1": 0.7729341908,
+      "test_balanced_accuracy": 0.7502151927,
+      "status": "available_with_protocol_caveat",
+      "paper_role": "supplementary fixed-split published baseline; not primary donor-level inference",
+      "claim_boundary": "Do not compare this row as nested LODO SOTA evidence."
+    },
+    {
+      "baseline": "totalVI",
+      "environment": "/root/autodl-tmp/conda_envs/v8_scvi",
+      "environment_check": "scvi=1.3.3 cuda=True",
+      "artifact_dir": "results/exp_generalization/original_mosaic_strict/v11_r44_totalvi_full_strict_g1000_e20_seed42",
+      "artifact_complete": true,
+      "missing_artifacts": "",
+      "protocol": "fixed strict split seed42, 69999 train + 15001 validation + 15000 test, 1000 genes + 224 proteins, totalVI latent logistic readout; not nested donor LODO",
+      "test_accuracy": 0.81,
+      "test_weighted_f1": 0.8251259771,
+      "test_macro_f1": 0.6915685466,
+      "test_balanced_accuracy": 0.7698707935,
+      "status": "available_with_protocol_caveat",
+      "paper_role": "supplementary fixed-split multimodal published baseline; not primary donor-level inference",
+      "claim_boundary": "Do not compare this row as nested LODO SOTA evidence."
+    },
+    {
+      "baseline": "MMoCHi official hierarchy on PBMC L3",
+      "environment": "MMoCHi",
+      "environment_check": "scanpy=1.11.5 anndata=0.11.4",
+      "artifact_dir": "results/tables/mmochi_pbmc_strict_adaptation_audit_2026-05-18.csv",
+      "artifact_complete": true,
+      "missing_artifacts": "",
+      "protocol": "official marker hierarchy; official outputs are broad subsets and do not resolve the 58 PBMC L3 labels",
+      "test_accuracy": "NA",
+      "test_weighted_f1": "NA",
+      "test_macro_f1": "NA",
+      "test_balanced_accuracy": "NA",
+      "status": "blocked_by_label_space",
+      "paper_role": "related/blocker evidence only; no PBMC L3 number",
+      "claim_boundary": "A PBMC-specific adapted hierarchy would be a new supervised protocol and is not called official MMoCHi."
+    },
+    {
+      "baseline": "CellTypist native RNA",
+      "environment": "TOSICA",
+      "environment_check": "celltypist=1.7.1",
+      "artifact_dir": "results/exp_baseline_matrix/v49_pbmc_donor_celltypist_native_full",
+      "artifact_complete": true,
+      "missing_artifacts": "",
+      "protocol": "native raw-count -> train-only gene subset -> CP10K/log1p RNA convention; RNA-only published comparator",
+      "test_accuracy": "from artifact",
+      "test_weighted_f1": "from artifact",
+      "test_macro_f1": "from artifact",
+      "test_balanced_accuracy": "from artifact",
+      "status": "available_with_native_protocol_caveat",
+      "paper_role": "primary supplementary published RNA-only comparator",
+      "claim_boundary": "Not a multimodal comparator and not a claim of all-baseline dominance."
+    }
+  ]
+}

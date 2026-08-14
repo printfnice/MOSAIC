@@ -1,0 +1,6 @@
+target,representative_panel_marker,available_in_224_adt,interpretation,evidence_path
+B naive lambda,kappa/lambda surface marker,no,No direct light-chain surface marker is present in the PBMC ADT panel.,data/pbmc/pbmc_protein.h5ad
+CD4 TCM_1,CD4/CD45RO/CD27,yes,Representative memory/helper markers are present; this is not a complete state definition.,data/pbmc/pbmc_protein.h5ad
+CD8 TEM_4,CD8/CD45RO/CD27,yes,Representative cytotoxic/memory markers are present; this is not a complete state definition.,data/pbmc/pbmc_protein.h5ad
+NK_3,CD56/CD335,yes,Representative NK markers are present; this is not a complete state definition.,data/pbmc/pbmc_protein.h5ad
+gdT_2,TCR-V,yes,Representative TCR-V markers are present; this is not a complete state definition.,data/pbmc/pbmc_protein.h5ad

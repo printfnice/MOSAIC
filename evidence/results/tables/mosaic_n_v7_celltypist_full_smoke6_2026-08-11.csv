@@ -1,0 +1,5 @@
+method,metric,n_donors,mean,sd_across_donors,ci95_low,ci95_high,ci95_margin,worst_donor_value,best_donor_value
+CellTypist native log1p-CP10K (full-transcriptome denominator),accuracy,1,0.4,0.0,0.4,0.4,0.0,0.4,0.4
+CellTypist native log1p-CP10K (full-transcriptome denominator),weighted_f1,1,0.32,0.0,0.32,0.32,0.0,0.32,0.32
+CellTypist native log1p-CP10K (full-transcriptome denominator),macro_f1,1,0.013793103448275864,0.0,0.013793103448275864,0.013793103448275864,0.0,0.013793103448275864,0.013793103448275864
+CellTypist native log1p-CP10K (full-transcriptome denominator),balanced_accuracy,1,0.25,0.0,0.25,0.25,0.0,0.25,0.25

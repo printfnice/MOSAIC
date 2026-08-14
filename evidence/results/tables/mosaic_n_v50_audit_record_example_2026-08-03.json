@@ -1,0 +1,7 @@
+{
+  "checkpoint": "results/exp_generalization/mosaic_n_v33/donor_matrix/test_P1/mosaic_full_seed42/model.pt",
+  "cache": "cache/mosaic_n_v33/test_P1_val_P2_g3000.npz",
+  "n_rows": 6,
+  "device": "cpu",
+  "attribution": "absolute gradient-times-input on final predicted logit; top five per modality"
+}

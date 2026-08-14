@@ -1,0 +1,28 @@
+{
+  "version": "V33",
+  "date": "2026-07-23",
+  "figure": "mosaic_n_v33_evidence_figure_2026-07-23",
+  "panels": {
+    "a": [
+      "results/tables/mosaic_n_v33_paired_donor_statistics_2026-07-23.csv"
+    ],
+    "b": [
+      "results/tables/mosaic_n_v33_paired_donor_statistics_2026-07-23.csv"
+    ],
+    "c": [
+      "results/tables/mosaic_n_v33_panel_robustness_metrics_2026-07-23.csv"
+    ],
+    "d": [
+      "results/tables/mosaic_n_v33_unknown_reject_metrics_2026-07-23.csv"
+    ],
+    "e": [
+      "results/tables/mosaic_n_v33_pdc101_mmochi_comparison_2026-07-23.csv",
+      "results/tables/mosaic_n_v33_pdc101_mmochi_per_class_2026-07-23.csv"
+    ],
+    "f": [
+      "results/tables/mosaic_n_v33_donor_attribution_stability_2026-07-23.csv;results/tables/mosaic_n_v33_marker_enrichment_2026-07-23.csv"
+    ]
+  },
+  "protocol_and_caveat_embedded_in_csv": true,
+  "legacy_performance_fallback": false
+}

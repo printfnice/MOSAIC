@@ -1,0 +1,14 @@
+{
+  "date": "2026-08-14",
+  "protocol": "current MOSAIC full checkpoints; eight held-out donors x three seeds",
+  "attribution": "gradient-times-input on correctly predicted held-out cells",
+  "max_correct_cells_per_class_per_run": 8,
+  "marker_map": "representative panel tokens; no complete marker ontology",
+  "forbidden_interpretations": [
+    "causal biomarker",
+    "complete class definition",
+    "universal rejection mechanism"
+  ],
+  "summary_artifact": "results/tables/mosaic_n_v8_marker_mechanism_audit_2026-08-14.csv",
+  "target_artifact": "results/tables/mosaic_n_v8_marker_target_association_2026-08-14.csv"
+}

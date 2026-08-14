@@ -11,16 +11,16 @@ Release scope:
 - Compact manuscript-facing evidence tables.
 - Synthetic smoke-test data for package validation only.
 - Manuscript PDFs, LaTeX sources and selected figure/table assets.
+- One P1/seed-42 checkpoint and a ten-cell CPU audit demo for smoke-level inference.
 - File manifest and SHA-256 checksum records.
 
 Excluded by design:
 
 - Raw participant-level single-cell matrices.
 - Large cached feature arrays or prediction dumps.
-- Model checkpoints.
+- Raw participant-level single-cell matrices, large cached feature arrays, full prediction dumps and training-only artifacts. The included checkpoint is a deliberately small, tagged release artifact rather than a complete training archive.
 - Local conda environments, machine paths and private credentials.
 
 The GitHub repository is intended as a lightweight source and evidence package.
-Large reproducibility artifacts such as checkpoints should be archived through a
-stable external service, for example Zenodo or GitHub Releases, if they are
-needed for a formal journal submission.
+The tagged snapshot contains the declared checkpoint and CPU audit demo; no
+Zenodo DOI or raw-data archive is claimed for this release.

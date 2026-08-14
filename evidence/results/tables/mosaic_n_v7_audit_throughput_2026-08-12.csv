@@ -1,0 +1,2 @@
+checkpoint,cache,device,n_cells_per_batch,repeats,warmups,inference_seconds_per_batch,audit_seconds_per_batch,inference_cells_per_second,audit_cells_per_second,audit_overhead_fraction
+results/exp_generalization/mosaic_n_v33/donor_matrix/test_P1/mosaic_full_seed42/model.pt,cache/mosaic_n_v33/test_P1_val_P2_g3000.npz,cuda,4096,10,2,0.0012260528281331062,0.001380012370646,3340802.2117912513,2968089.335375026,0.12557333499839954

@@ -1,0 +1,16 @@
+score,score_label,metric,n_donors,mean_delta_vs_final_uncertainty,ci95_low,ci95_high,paired_t_pvalue,comparison_unit
+branch_disagreement,Top-label conflict,auprc,8,-0.07060249128691587,-0.09621037312042241,-0.04499460945340933,0.00032809519010476324,held-out donor after averaging seeds
+branch_disagreement,Top-label conflict,auroc,8,0.06384077618642937,0.019190145163679173,0.10849140720917957,0.0117442195187528,held-out donor after averaging seeds
+branch_disagreement,Top-label conflict,risk_at_coverage_0_90,8,0.00697150788180255,0.004050605267170755,0.009892410496434346,0.0007794911932633604,held-out donor after averaging seeds
+vote_entropy,Vote entropy,auprc,8,-0.07060249128691587,-0.09621037312042241,-0.04499460945340933,0.00032809519010476324,held-out donor after averaging seeds
+vote_entropy,Vote entropy,auroc,8,0.06384077618642937,0.019190145163679173,0.10849140720917957,0.0117442195187528,held-out donor after averaging seeds
+vote_entropy,Vote entropy,risk_at_coverage_0_90,8,0.00697150788180255,0.004050605267170755,0.009892410496434346,0.0007794911932633604,held-out donor after averaging seeds
+top_probability_variance,Top-probability variance,auprc,8,-0.1634172460190157,-0.1924528155482323,-0.1343816764897991,3.1657414099529656e-06,held-out donor after averaging seeds
+top_probability_variance,Top-probability variance,auroc,8,0.006515273759435405,-0.046936534748919144,0.059967082267789955,0.7815215335096007,held-out donor after averaging seeds
+top_probability_variance,Top-probability variance,risk_at_coverage_0_90,8,0.024795112047238426,0.021464894341523818,0.028125329752953034,4.6990013824813064e-07,held-out donor after averaging seeds
+margin_variance,Margin variance,auprc,8,-0.17561125368771918,-0.20254661141722516,-0.1486758959582132,1.165742315834766e-06,held-out donor after averaging seeds
+margin_variance,Margin variance,auroc,8,-0.00113907584104532,-0.05443829121931062,0.05216013953721998,0.9611076798481288,held-out donor after averaging seeds
+margin_variance,Margin variance,risk_at_coverage_0_90,8,0.028760779804915912,0.02557444234537795,0.03194711726445387,1.2481631709000496e-07,held-out donor after averaging seeds
+combined_logistic_lodo,Combined logistic score,auprc,8,0.04869370981603979,0.029476714839566685,0.0679107047925129,0.0005467714834840694,held-out donor after averaging seeds
+combined_logistic_lodo,Combined logistic score,auroc,8,0.1487706685039571,0.11616666816810288,0.1813746688398113,1.2935261367288842e-05,held-out donor after averaging seeds
+combined_logistic_lodo,Combined logistic score,risk_at_coverage_0_90,8,0.00016547450966321927,-0.0021556073523463773,0.002486556371672816,0.8708956396908614,held-out donor after averaging seeds

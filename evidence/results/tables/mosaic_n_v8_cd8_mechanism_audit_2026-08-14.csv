@@ -1,0 +1,4 @@
+pbmc_label,pdc101_class,adt_available_representative,adt_top20_marker_hits,mean_fusion_weight,mosaic_f1,mmochi_f1,mmochi_minus_mosaic_f1,interpretation
+CD8 Naive,cd8_n,5/5,5,0.7139997008333333,0.9259603406247794,0.9734151329243356,0.04745479229955618,label-space and preprocessing aligned only at the holdout level; descriptive boundary comparison
+CD8 TCM_1,cd8_cm,5/5,3,0.7170666445833334,0.8245683861889884,0.8850855745721272,0.0605171883831388,label-space and preprocessing aligned only at the holdout level; descriptive boundary comparison
+CD8 TEM_4,cd8_em,5/5,3,0.7458379162499998,0.8825088834312836,0.9122340425531916,0.029725159121907985,label-space and preprocessing aligned only at the holdout level; descriptive boundary comparison

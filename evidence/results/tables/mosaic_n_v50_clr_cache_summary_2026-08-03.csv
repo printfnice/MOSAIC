@@ -1,0 +1,9 @@
+cache,test_donor,validation_donor,protein_transform,n_train,n_val,n_test,n_proteins
+cache/mosaic_n_v50_clr/test_P1_val_P2_g3000.npz,P1,P2,clr_standard,126424,17205,18135,224
+cache/mosaic_n_v50_clr/test_P2_val_P3_g3000.npz,P2,P3,clr_standard,129899,14660,17205,224
+cache/mosaic_n_v50_clr/test_P3_val_P4_g3000.npz,P3,P4,clr_standard,130014,17090,14660,224
+cache/mosaic_n_v50_clr/test_P4_val_P5_g3000.npz,P4,P5,clr_standard,122863,21811,17090,224
+cache/mosaic_n_v50_clr/test_P5_val_P6_g3000.npz,P5,P6,clr_standard,119211,20742,21811,224
+cache/mosaic_n_v50_clr/test_P6_val_P7_g3000.npz,P6,P7,clr_standard,115151,25871,20742,224
+cache/mosaic_n_v50_clr/test_P7_val_P8_g3000.npz,P7,P8,clr_standard,109643,26250,25871,224
+cache/mosaic_n_v50_clr/test_P8_val_P1_g3000.npz,P8,P1,clr_standard,117379,18135,26250,224

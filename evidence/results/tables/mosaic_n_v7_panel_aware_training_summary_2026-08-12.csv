@@ -1,0 +1,2 @@
+train_mode,evaluation_scenario,training_adt_feature_dropout,n_units,accuracy_mean,accuracy_sd,accuracy_ci_low,accuracy_ci_high,weighted_f1_mean,weighted_f1_sd,weighted_f1_ci_low,weighted_f1_ci_high,macro_f1_mean,macro_f1_sd,macro_f1_ci_low,macro_f1_ci_high
+adt_feature_dropout,full,0.3,8,0.9098159263291081,0.004748012888676303,0.9058464882189851,0.9137853644392312,0.9083762301691207,0.006190040965644586,0.9032012264173717,0.9135512339208698,0.8016403240685198,0.016976915535257993,0.7874472674997999,0.8158333806372398

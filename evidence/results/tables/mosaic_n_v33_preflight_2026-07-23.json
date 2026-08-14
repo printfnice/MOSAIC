@@ -1,0 +1,77 @@
+{
+  "date": "2026-07-23",
+  "pass_count": 10,
+  "blocker_count": 0,
+  "checks": [
+    {
+      "check": "pbmc_gene",
+      "status": "pass",
+      "value": "/root/autodl-tmp/MOSAIC/data/pbmc/pbmc_gene.h5ad",
+      "criterion": "required artifact exists",
+      "action": ""
+    },
+    {
+      "check": "pbmc_protein",
+      "status": "pass",
+      "value": "/root/autodl-tmp/MOSAIC/data/pbmc/pbmc_protein.h5ad",
+      "criterion": "required artifact exists",
+      "action": ""
+    },
+    {
+      "check": "pbmc_lodo_manifest",
+      "status": "pass",
+      "value": "/root/autodl-tmp/MOSAIC/configs/splits/pbmc_cite_seq/leave_one_donor_out_manifest.csv",
+      "criterion": "required artifact exists",
+      "action": ""
+    },
+    {
+      "check": "pbmc_hierarchy_map",
+      "status": "pass",
+      "value": "/root/autodl-tmp/MOSAIC/configs/datasets/pbmc_cite_seq/strict_l3_to_l2_l1_map_seed42.csv",
+      "criterion": "required artifact exists",
+      "action": ""
+    },
+    {
+      "check": "pdc101",
+      "status": "pass",
+      "value": "/root/autodl-tmp/MOSAIC/data/gse229791_mmochi/pdc101_sorted_tnk.h5ad",
+      "criterion": "required artifact exists",
+      "action": ""
+    },
+    {
+      "check": "mmochi_result",
+      "status": "pass",
+      "value": "/root/autodl-tmp/MOSAIC/results/exp_generalization/mmochi_pdc101_sorted_ext_holdout_thresholds/results_summary.csv",
+      "criterion": "required artifact exists",
+      "action": ""
+    },
+    {
+      "check": "gpu_memory",
+      "status": "pass",
+      "value": "NVIDIA GeForce RTX 4090; free=24081 MiB",
+      "criterion": "CUDA GPU with at least 12000 MiB free",
+      "action": ""
+    },
+    {
+      "check": "data_disk",
+      "status": "pass",
+      "value": "free=36.84 GiB",
+      "criterion": "at least 20.0 GiB free",
+      "action": ""
+    },
+    {
+      "check": "env_TOSICA",
+      "status": "pass",
+      "value": "TOSICA",
+      "criterion": "named conda environment is installed",
+      "action": ""
+    },
+    {
+      "check": "env_MMoCHi",
+      "status": "pass",
+      "value": "MMoCHi",
+      "criterion": "named conda environment is installed",
+      "action": ""
+    }
+  ]
+}

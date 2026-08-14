@@ -1,0 +1,6 @@
+target_label,unknown_recall,unknown_auroc,available_in_224_adt,panel_marker_available,mean_f1,interpretation
+B naive lambda,0.12851405622489956,0.42575193741326167,no,False,0.8507633438951787,five-target descriptive stress-test association; not a powered inferential test
+CD4 TCM_1,0.5722070844686648,0.7284462254941729,yes,True,0.830293514611503,five-target descriptive stress-test association; not a powered inferential test
+CD8 TEM_4,0.4056287115930803,0.5696465550243185,yes,True,0.7827270904580896,five-target descriptive stress-test association; not a powered inferential test
+NK_3,0.3458197611292073,0.5473638134887664,yes,True,0.6059144196853974,five-target descriptive stress-test association; not a powered inferential test
+gdT_2,0.5637507146941109,0.7026081562433553,yes,True,0.4082507853427157,five-target descriptive stress-test association; not a powered inferential test

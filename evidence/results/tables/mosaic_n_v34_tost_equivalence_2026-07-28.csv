@@ -1,0 +1,17 @@
+comparison,reference,comparator,metric,n_donors,mean_difference,delta,tost_pvalue,equivalent
+HSR inference,inference::margin_gate_hsr,inference::margin_gate,accuracy,8,2.3260717200324077e-05,0.005,3.585515367560566e-12,True
+HSR inference,inference::margin_gate_hsr,inference::margin_gate,weighted_f1,8,3.0026881590150545e-05,0.005,2.4825302832970413e-12,True
+HSR inference,inference::margin_gate_hsr,inference::margin_gate,macro_f1,8,-0.00048043323014235195,0.005,7.318136242001265e-05,True
+HSR inference,inference::margin_gate_hsr,inference::margin_gate,balanced_accuracy,8,-0.0011440279086097488,0.005,0.00028771173029764415,True
+margin gate inference,inference::margin_gate,inference::uniform_fusion,accuracy,8,-0.0010847298169625735,0.005,9.61164095697029e-09,True
+margin gate inference,inference::margin_gate,inference::uniform_fusion,weighted_f1,8,-0.0011053482046829571,0.005,7.981554214163696e-09,True
+margin gate inference,inference::margin_gate,inference::uniform_fusion,macro_f1,8,-0.0036941781479136737,0.005,0.07184653872423831,False
+margin gate inference,inference::margin_gate,inference::uniform_fusion,balanced_accuracy,8,-0.0032730317428722178,0.005,0.0310978476942645,True
+KD retraining,mosaic_full,mosaic_no_kd,accuracy,8,-0.0014848937188565864,0.005,8.557258367012363e-05,True
+KD retraining,mosaic_full,mosaic_no_kd,weighted_f1,8,-0.0013769488195827378,0.005,0.00010553354317260022,True
+KD retraining,mosaic_full,mosaic_no_kd,macro_f1,8,-0.0038432281488693792,0.005,0.3092806823679233,False
+KD retraining,mosaic_full,mosaic_no_kd,balanced_accuracy,8,0.0006059144900150415,0.005,0.10356322039612338,False
+HSR retraining,mosaic_full,mosaic_no_hsr,accuracy,8,-0.0015924302229234633,0.005,0.0005506257586312247,True
+HSR retraining,mosaic_full,mosaic_no_hsr,weighted_f1,8,-0.0013323298951475049,0.005,0.0002736138162028807,True
+HSR retraining,mosaic_full,mosaic_no_hsr,macro_f1,8,-0.0025024562567931286,0.005,0.022623513329567455,True
+HSR retraining,mosaic_full,mosaic_no_hsr,balanced_accuracy,8,0.0018003350119439043,0.005,0.07423948715242693,False

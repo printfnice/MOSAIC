@@ -1,0 +1,17 @@
+{
+  "date": "2026-07-23",
+  "machine_ready": false,
+  "responsibility_status_counts": {
+    "author_action:blocker": 1,
+    "author_action:pass": 1,
+    "external_release:blocker": 1,
+    "external_release:pass": 1,
+    "machine_closed:blocker": 1,
+    "machine_closed:pass": 4
+  },
+  "status_counts": {
+    "blocker": 3,
+    "pass": 6
+  },
+  "submission_ready": false
+}

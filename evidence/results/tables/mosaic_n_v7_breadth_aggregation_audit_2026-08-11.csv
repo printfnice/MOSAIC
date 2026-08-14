@@ -1,0 +1,37 @@
+dataset,method,metric,mosaic_variant
+PBMC strict L3,MOSAIC-N,ACC,"single model, learned HSR R4; 10 model seeds"
+PBMC strict L3,MOSAIC-N,W-F1,"single model, learned HSR R4; 10 model seeds"
+PBMC strict L3,MOSAIC-N,M-F1,"single model, learned HSR R4; 10 model seeds"
+COVID-19 full,MOSAIC-N,ACC,single-model RDV2 base; 3 model seeds
+COVID-19 full,MOSAIC-N,W-F1,single-model RDV2 base; 3 model seeds
+COVID-19 full,MOSAIC-N,M-F1,single-model RDV2 base; 3 model seeds
+GSE164378 exact-L3,MOSAIC-N,ACC,fixed majority ensemble of 3 RDV2 base seeds
+GSE164378 exact-L3,MOSAIC-N,W-F1,fixed majority ensemble of 3 RDV2 base seeds
+GSE164378 exact-L3,MOSAIC-N,M-F1,fixed majority ensemble of 3 RDV2 base seeds
+COMBAT/COVID shift,MOSAIC-N,ACC,fixed MOSAIC-N-led consensus; holdout seeds 44/45/46
+COMBAT/COVID shift,MOSAIC-N,W-F1,fixed MOSAIC-N-led consensus; holdout seeds 44/45/46
+COMBAT/COVID shift,MOSAIC-N,M-F1,fixed MOSAIC-N-led consensus; holdout seeds 44/45/46
+PBMC strict L3,MLP / early fusion,ACC,
+PBMC strict L3,MLP / early fusion,W-F1,
+PBMC strict L3,MLP / early fusion,M-F1,
+COVID-19 full,MLP / early fusion,ACC,
+COVID-19 full,MLP / early fusion,W-F1,
+COVID-19 full,MLP / early fusion,M-F1,
+GSE164378 exact-L3,MLP / early fusion,ACC,
+GSE164378 exact-L3,MLP / early fusion,W-F1,
+GSE164378 exact-L3,MLP / early fusion,M-F1,
+COMBAT/COVID shift,MLP / early fusion,ACC,
+COMBAT/COVID shift,MLP / early fusion,W-F1,
+COMBAT/COVID shift,MLP / early fusion,M-F1,
+PBMC strict L3,totalVI,ACC,
+PBMC strict L3,totalVI,W-F1,
+PBMC strict L3,totalVI,M-F1,
+COVID-19 full,totalVI,ACC,
+COVID-19 full,totalVI,W-F1,
+COVID-19 full,totalVI,M-F1,
+GSE164378 exact-L3,totalVI,ACC,
+GSE164378 exact-L3,totalVI,W-F1,
+GSE164378 exact-L3,totalVI,M-F1,
+COMBAT/COVID shift,totalVI,ACC,
+COMBAT/COVID shift,totalVI,W-F1,
+COMBAT/COVID shift,totalVI,M-F1,
