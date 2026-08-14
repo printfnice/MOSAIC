@@ -191,7 +191,7 @@ The 48-unit full-transcriptome CP10K sensitivity gave MOSAIC 0.9122/0.9107/0.808
 
 \subsection{Branch evidence carries information beyond final confidence}
 
-Top-label conflict achieved error-detection AUROC 0.7552 [0.7445,0.7659] versus 0.6914 [0.6507,0.7320] for final uncertainty (Fig.~\ref{fig:evidence}c). A donor-held-out logistic score combining uncertainty and branch evidence reached AUROC 0.8401 [0.8267,0.8536] and AUPRC 0.3587 [0.3478,0.3696], gains of +0.1488 ($P=1.29\times10^{-5}$) and +0.0487 ($P=5.47\times10^{-4}$). At 50\% coverage, risk fell 0.0565 to 0.0169; at 90\%, the change was +0.0002 [-0.0022,0.0025] ($P=0.871$). Thus branch evidence supports high-precision triage, not near-full-coverage selection. HSR changed 0.14\% of pooled predictions, and its aggregate effects stayed within 0.005 (Supplementary Tables S5--S7); branch margins ordered branch correctness (Fig.~\ref{fig:evidence}d).
+Top-label conflict achieved error-detection AUROC 0.7552 [0.7445,0.7659] versus 0.6914 [0.6507,0.7320] for final uncertainty (Fig.~\ref{fig:evidence}c). A donor-held-out logistic score combining uncertainty and branch evidence reached AUROC 0.8401 [0.8267,0.8536] and AUPRC 0.3587 [0.3478,0.3696], gains of +0.1488 ($P=1.29\times10^{-5}$) and +0.0487 ($P=5.47\times10^{-4}$). At 50\% coverage, risk fell 0.0565 to 0.0169; at 90\%, the change was +0.0002 [-0.0022,0.0025] ($P=0.871$) (Fig.~\ref{fig:risk-coverage}). Thus branch evidence supports high-precision triage, not near-full-coverage selection. HSR changed 0.14\% of pooled predictions, and its aggregate effects stayed within 0.005 (Supplementary Tables S5--S7); branch margins ordered branch correctness (Fig.~\ref{fig:evidence}d).
 
 \begin{table*}[b]
 \centering
@@ -222,9 +222,9 @@ A train-fold margin-standardization sensitivity did not change this interpretati
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=\columnwidth]{Fig/Fig3_MOSAIC_audit_cases_singlecol.pdf}
-\caption{\textbf{Cell-level audit records.} Three checksum-linked records illustrate (a) correct branch agreement, (b) a modality conflict that flags a wrong final label and (c) a sparse HSR action that changes a correct base label to a wrong local label. The records support structured review; they do not guarantee correctness or uniformly beneficial HSR actions.}
-\label{fig:audit-cases}
+\includegraphics[width=\columnwidth]{Fig/FigS_error_audit_risk_coverage.pdf}
+\caption{\textbf{Risk--coverage audit.} Donor-held-out error risk among accepted cells is shown for final uncertainty, top-label conflict and the combined uncertainty--branch score. Dashed lines mark the prespecified 50\% and 90\% coverage operating points. The combined score lowers risk at 50\% coverage but converges with final uncertainty near 90\%, supporting selective high-precision review rather than near-full-coverage deployment.}
+\label{fig:risk-coverage}
 \end{figure}
 
 \subsection{Where proteins are missing matters more than how many}
@@ -275,6 +275,7 @@ The authors declare no competing interests.
 
 AI-assisted tools were used for code assistance, artifact auditing, table generation and language editing. All analyses, figures, citations and conclusions were designed, verified and are the responsibility of the human authors.
 
+\clearpage
 {\footnotesize
 \def\bibfont{\fontsize{6.6bp}{7.6bp}\selectfont}
 \setlength{\bibsep}{0pt}
