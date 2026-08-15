@@ -65,7 +65,7 @@
 \\
 \textbf{Results:} We present MOSAIC, an evidence-emitting RNA--ADT classifier with modality branches, bounded sibling refinement and audits. In leave-one-donor-out PBMC evaluation (161,764 cells; 58 L3 labels), MOSAIC achieved M-F1 0.8072, W-F1 0.9108 and ACC 0.9119. Versus a matched MLP, gains were +0.0111 M-F1 and +0.0074 balanced accuracy; ACC and W-F1 intervals crossed zero. Branch evidence improved error-detection AUROC from 0.6914 to 0.8401, and risk at 50\% coverage from 0.0565 to 0.0169. Stress tests localized panel- and label-dependent failures.
 \\
-\textbf{Availability and Implementation:} A tagged MIT-licensed snapshot containing code, configurations, evidence, tests and a ten-cell CPU audit demo has been prepared at \url{https://github.com/printfnice/MOSAIC/tree/v8.1.1-submission}; raw data, caches, predictions and checkpoints are excluded.
+\textbf{Availability and Implementation:} An MIT snapshot with code, configurations, evidence, tests and CPU audit demo is prepared at \url{https://github.com/printfnice/MOSAIC/tree/v8.1.2-submission}; raw data, caches, predictions and checkpoints are excluded.
 \\
 \textbf{Contact:} Linhao Wu, \url{2544814855@qq.com}.
 \\
@@ -82,7 +82,7 @@ Single-cell RNA sequencing and CITE-seq jointly measure transcriptomic programs 
 
 Accuracy on a convenient held-out cell set is insufficient when donor composition, antibody panels or cell-state support change. A useful annotator should expose modality evidence and confidence, and indicate when a fine-label decision merits review.
 
-Existing annotation, reference-mapping and multimodal systems include SingleR, CellTypist, scmap, scPred, scClassify, TOSICA, scNym, scVI, scANVI, totalVI, scArches, Symphony and Azimuth \citep{aran2019,dominguezconde2022,kiselev2018scmap,alquicira2020scpred,lin2020scclassify,chen2023tosica,kimmel2021scnym,lopez2018,xu2021scvi,gayoso2021totalvi,lotfollahi2022,kang2021symphony,hao2021}. Curated hierarchies and programs can be strong when label space and panel match the task \citep{caron2025mmochi,kotliar2025starcat}; benchmark rankings therefore depend on modality, preprocessing and split design \citep{abdelaal2019,liu2025multitaskbenchmark}.
+Existing annotation, reference-mapping and multimodal systems include SingleR, CellTypist, scmap, scPred, scClassify, TOSICA, scNym, scVI, scANVI, totalVI, scArches, Symphony and Azimuth \citep{aran2019,dominguezconde2022,kiselev2018scmap,alquicira2020scpred,lin2020scclassify,chen2023tosica,kimmel2021scnym,lopez2018,xu2021scvi,gayoso2021totalvi,gayoso2022scvi,lotfollahi2022,kang2021symphony,hao2021}. Curated hierarchies and programs can be strong when label space and panel match the task \citep{caron2025mmochi,kotliar2025starcat}; benchmark rankings therefore depend on modality, preprocessing and split design \citep{abdelaal2019,liu2025multitaskbenchmark,haghverdi2018,korsunsky2019,argelaguet2021}.
 
 We study whether prediction and evidence can be emitted by the same multimodal decision path. MOSAIC keeps RNA and ADT branches visible, uses their evidence for fusion, bounds local refinement to declared siblings and stores a cell-level audit record.
 
@@ -145,7 +145,7 @@ The implemented objective combines sqrt-balanced cross-entropy, branch supervisi
 \lambda_{\mathrm{HSR}}\mathcal{L}_{\mathrm{HSR}}.
 \end{aligned}
 \end{equation}
-The weights in $\mathcal{L}_{\mathrm{wCE}}$ are normalized $1/\sqrt{n_c}$ class weights \citep{buda2018imbalance}; stored teacher probabilities are clipped and row-normalized, while $\mathbf{p}^{T}=\operatorname{softmax}(\mathbf{z}^{\mathrm{final}}/T)$ intentionally uses the post-HSR final logits, so the KD gradient can pass through the local refinement path. AdamW used at most 35 epochs, batch size 1,024, learning rate $10^{-3}$, weight decay $10^{-4}$, dropout 0.2 and patience 14. We fixed $\lambda_b=0.35$, $\lambda_f=0.50$, $\lambda_{\mathrm{KD}}=0.05$, $T=2$ and $\lambda_{\mathrm{HSR}}=0.20$ before testing; checkpoint selection maximized validation M-F1 subject to ACC/W-F1 within 0.0015 of their best values.
+The weights in $\mathcal{L}_{\mathrm{wCE}}$ are normalized $1/\sqrt{n_c}$ class weights \citep{buda2018imbalance}; stored teacher probabilities are clipped and row-normalized, while $\mathbf{p}^{T}=\operatorname{softmax}(\mathbf{z}^{\mathrm{final}}/T)$ intentionally uses the post-HSR final logits, so the KD gradient can pass through the local refinement path \citep{hinton2015distilling}. AdamW used at most 35 epochs, batch size 1,024, learning rate $10^{-3}$, weight decay $10^{-4}$, dropout 0.2 and patience 14. We fixed $\lambda_b=0.35$, $\lambda_f=0.50$, $\lambda_{\mathrm{KD}}=0.05$, $T=2$ and $\lambda_{\mathrm{HSR}}=0.20$ before testing; checkpoint selection maximized validation M-F1 subject to ACC/W-F1 within 0.0015 of their best values.
 
 We report ACC, W-F1, M-F1, balanced accuracy and per-class F1, with M-F1 as the rare-label-sensitive primary endpoint. Run-level M-F1 and the support-aware supplementary macro-F1 differ only by zero-support handling. Combined hierarchical accuracy scores accepted cells by L3 correctness and rejected cells by parent correctness. Unless stated otherwise, intervals are two-sided 95\% Student-$t$ intervals across eight donors after seed averaging; donor means, paired differences and Wilcoxon sensitivity tests use donors as units. The support-aware decomposition and attribution enrichment are mechanism analyses, not additional family-wise endpoints.
 
@@ -258,11 +258,11 @@ The scope remains protocol-defined: the near-capacity control does not establish
 
 \section{Data availability}
 
-PBMC 3P/5P are from GEO GSE164378; COVID-19 is ArrayExpress E-MTAB-10026; PDC101 is GEO GSE229791; and COMBAT is available through HCA, EGA and Zenodo DOI 10.5281/zenodo.6120249 \citep{combat2022}. Split manifests and source checks are included in the Supplementary Material.
+PBMC 3P/5P are from GEO GSE164378; COVID-19 is ArrayExpress E-MTAB-10026 \citep{stephenson2021}; PDC101 is GEO GSE229791; and COMBAT is available through HCA, EGA and Zenodo DOI 10.5281/zenodo.6120249 \citep{combat2022}. Split manifests and source checks are included in the Supplementary Material.
 
 \section{Code availability}
 
-Code, configurations, split manifests, compact evidence, tests, environment metadata, checksums and a ten-cell CPU audit demo are staged under MIT in the tagged snapshot at \url{https://github.com/printfnice/MOSAIC/tree/v8.1.1-submission}. The repository visibility must be enabled for anonymous reviewer access at submission. Raw data, caches, full predictions and checkpoints are not redistributed; an immutable archive DOI is not assigned in this snapshot.
+Code, configurations, split manifests, compact evidence, tests, environment metadata, checksums and a ten-cell CPU audit demo are staged under MIT in the tagged snapshot at \url{https://github.com/printfnice/MOSAIC/tree/v8.1.2-submission}. The repository visibility must be enabled for anonymous reviewer access at submission. Raw data, caches, full predictions and checkpoints are not redistributed; an immutable archive DOI is not assigned in this snapshot.
 
 \section{Funding}
 
