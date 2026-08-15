@@ -1,0 +1,34 @@
+{
+  "date": "2026-08-12",
+  "task": "PBMC strict L3 nested leave-one-donor-out",
+  "donors": [
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5",
+    "P6",
+    "P7",
+    "P8"
+  ],
+  "seeds": [
+    41,
+    42,
+    43
+  ],
+  "aggregation": "mean across seeds within donor; donor mean and paired tests across P1-P8",
+  "expected_units": 24,
+  "observed_units": 24,
+  "parameter_count": 2467706,
+  "parameter_count_formula": "Linear weights+bias plus 2*BatchNorm parameters for hidden layers",
+  "input_dim": 3224,
+  "hidden_dims": "704,256",
+  "source_root": "results/exp_generalization/v7_mlp_large_pbmc_nested",
+  "mosaic_reference": "results/tables/mosaic_n_v50_matched_mlp_donor_means_2026-08-03.csv",
+  "artifacts": {
+    "units": "results/tables/mosaic_n_v7_mlp_large_nested_2026-08-12_units.csv",
+    "donor_means": "results/tables/mosaic_n_v7_mlp_large_nested_2026-08-12_donor_means.csv",
+    "summary": "results/tables/mosaic_n_v7_mlp_large_nested_2026-08-12_summary.csv",
+    "paired": "results/tables/mosaic_n_v7_mlp_large_nested_2026-08-12_paired_vs_mosaic.csv"
+  }
+}

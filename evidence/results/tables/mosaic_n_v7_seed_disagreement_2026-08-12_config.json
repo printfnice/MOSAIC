@@ -1,0 +1,24 @@
+{
+  "input_root": "results/exp_generalization/mosaic_n_v33/donor_matrix",
+  "donors": [
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5",
+    "P6",
+    "P7",
+    "P8"
+  ],
+  "seeds": [
+    41,
+    42,
+    43
+  ],
+  "target": "majority_vote_error",
+  "score": "1 - modal prediction count / 3",
+  "threshold_selection": "none; risk operating points are fixed at 0.50 and 0.90 coverage",
+  "aggregation": "donor mean with two-sided 95% Student-t interval",
+  "output": "results/tables/mosaic_n_v7_seed_disagreement_2026-08-12.csv",
+  "unit_output": "results/tables/mosaic_n_v7_seed_disagreement_2026-08-12_units.csv.gz"
+}

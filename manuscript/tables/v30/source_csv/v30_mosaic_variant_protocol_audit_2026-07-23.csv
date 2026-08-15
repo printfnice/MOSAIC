@@ -1,0 +1,5 @@
+dataset,reported_mosaic_variant,caveat
+PBMC strict L3,"single model, learned HSR R4; 10 model seeds",Primary architecture row; strict train-only preprocessing.
+COVID-19 full,single-model RDV2 base; 3 model seeds,"Full 647,366-cell 51-class protocol; not the HSR variant."
+GSE164378 exact-L3,fixed majority ensemble of 3 RDV2 base seeds,Fixed ensemble; singleton ASDC_pDC excluded by minimum-support rule.
+COMBAT/COVID shift,fixed MOSAIC-N-led consensus; holdout seeds 44/45/46,Parent-safe shift task; consensus is not the base single model.

@@ -1,0 +1,11 @@
+check,status,value,criterion,action
+pbmc_gene,pass,/root/autodl-tmp/MOSAIC/data/pbmc/pbmc_gene.h5ad,required artifact exists,
+pbmc_protein,pass,/root/autodl-tmp/MOSAIC/data/pbmc/pbmc_protein.h5ad,required artifact exists,
+pbmc_lodo_manifest,pass,/root/autodl-tmp/MOSAIC/configs/splits/pbmc_cite_seq/leave_one_donor_out_manifest.csv,required artifact exists,
+pbmc_hierarchy_map,pass,/root/autodl-tmp/MOSAIC/configs/datasets/pbmc_cite_seq/strict_l3_to_l2_l1_map_seed42.csv,required artifact exists,
+pdc101,pass,/root/autodl-tmp/MOSAIC/data/gse229791_mmochi/pdc101_sorted_tnk.h5ad,required artifact exists,
+mmochi_result,pass,/root/autodl-tmp/MOSAIC/results/exp_generalization/mmochi_pdc101_sorted_ext_holdout_thresholds/results_summary.csv,required artifact exists,
+gpu_memory,pass,NVIDIA GeForce RTX 4090; free=24081 MiB,CUDA GPU with at least 12000 MiB free,
+data_disk,pass,free=36.84 GiB,at least 20.0 GiB free,
+env_TOSICA,pass,TOSICA,named conda environment is installed,
+env_MMoCHi,pass,MMoCHi,named conda environment is installed,

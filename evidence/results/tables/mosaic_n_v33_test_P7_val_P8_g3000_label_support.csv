@@ -1,0 +1,59 @@
+class_label,n_train,n_val,n_test,known_to_train,natural_unknown_in_test
+ASDC_mDC,26,2,12,True,False
+ASDC_pDC,24,2,10,True,False
+B intermediate kappa,680,167,253,True,False
+B intermediate lambda,748,169,414,True,False
+B memory kappa,1137,268,632,True,False
+B memory lambda,706,165,377,True,False
+B naive kappa,3687,152,1013,True,False
+B naive lambda,2103,83,680,True,False
+CD14 Mono,27806,6597,8287,True,False
+CD16 Mono,4655,756,909,True,False
+CD4 CTL,825,397,514,True,False
+CD4 Naive,11946,3092,2441,True,False
+CD4 Proliferating,79,7,22,True,False
+CD4 TCM_1,6428,734,979,True,False
+CD4 TCM_2,419,48,126,True,False
+CD4 TCM_3,4746,792,617,True,False
+CD4 TEM_1,1006,556,144,True,False
+CD4 TEM_2,339,63,50,True,False
+CD4 TEM_3,1560,218,266,True,False
+CD4 TEM_4,39,11,30,True,False
+CD8 Naive,7802,1516,1160,True,False
+CD8 Naive_2,174,47,69,True,False
+CD8 Proliferating,53,17,21,True,False
+CD8 TCM_1,720,126,83,True,False
+CD8 TCM_2,966,261,95,True,False
+CD8 TCM_3,522,61,49,True,False
+CD8 TEM_1,1862,574,350,True,False
+CD8 TEM_2,1096,918,421,True,False
+CD8 TEM_3,198,153,42,True,False
+CD8 TEM_4,1792,1291,421,True,False
+CD8 TEM_5,1034,667,272,True,False
+CD8 TEM_6,291,96,249,True,False
+Doublet,519,42,44,True,False
+Eryth,71,8,4,True,False
+HSPC,305,14,10,True,False
+ILC,108,7,17,True,False
+MAIT,2360,143,281,True,False
+NK Proliferating,417,81,50,True,False
+NK_1,1787,1357,982,True,False
+NK_2,7148,1505,765,True,False
+NK_3,1326,614,212,True,False
+NK_4,1043,216,218,True,False
+NK_CD56bright,707,160,76,True,False
+Plasma,203,24,91,True,False
+Plasmablast,34,2,12,True,False
+Platelet,1490,302,501,True,False
+Treg Memory,988,120,104,True,False
+Treg Naive,1048,111,136,True,False
+cDC1,99,5,47,True,False
+cDC2_1,423,139,210,True,False
+cDC2_2,1189,231,309,True,False
+dnT_1,158,8,23,True,False
+dnT_2,121,29,17,True,False
+gdT_1,1440,87,106,True,False
+gdT_2,162,583,24,True,False
+gdT_3,400,44,280,True,False
+gdT_4,149,346,28,True,False
+pDC,479,66,316,True,False

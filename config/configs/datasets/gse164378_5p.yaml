@@ -1,0 +1,35 @@
+name: gse164378_5p
+status: candidate_prepared
+description: GSE164378 PBMC 5P CITE-seq subset converted from raw GEO matrices to paired h5ad.
+paths:
+  gene_h5ad: data/GSE164378/gse164378_5p_gene.h5ad
+  protein_h5ad: data/GSE164378/gse164378_5p_protein.h5ad
+  raw_tar: data/GSE164378/GSE164378_RAW.tar
+  metadata_csv: data/GSE164378/GSE164378_sc.meta.data_5P.csv.gz
+modality_layout:
+  type: paired_h5ad
+  rna_features: 33538
+  protein_features: 54
+shape:
+  cells: 49147
+metadata:
+  label_columns:
+    l1: celltype.l1
+    l2: celltype.l2
+    l3: celltype.l3
+  donor_column: donor
+  sample_column: lane
+  batch_columns:
+    - Batch
+    - lane
+supported_splits:
+  - random_stratified
+  - leave_one_donor_out
+  - leave_one_sample_out
+resubmission_role:
+  - external_validation
+  - donor_out_generalization
+  - panel_mismatch_simulation
+notes:
+  - This subset adds the 5P cohort not represented in the existing 3P-only PBMC processed dataset.
+  - ADT panel is much smaller than the 3P panel, so this dataset is useful for panel mismatch and incomplete modality robustness.

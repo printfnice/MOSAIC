@@ -1,0 +1,37 @@
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{1.45cm}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{1.75cm}>{\raggedright\arraybackslash}p{5.3cm}@{}}
+\caption{Protocol audit for the attributable closed-set matrix.}\label{tab:baseline-protocols}\\
+\toprule
+Dataset & Method & Modality & Deployment & CI mode & Protocol boundary \\
+\midrule
+\endfirsthead
+\toprule
+Dataset & Method & Modality & Deployment & CI mode & Protocol boundary \\
+\midrule
+\endhead
+PBMC strict L3 & MOSAIC & RNA + ADT & ten-seed learned-HSR single-model mean & seed t interval & primary architecture row; fixed cell split; no donor-disjoint claim \\
+COVID-19 full & MOSAIC & RNA + ADT & three-seed MOSAIC base-model mean & seed t interval & not the learned-HSR variant; cell-level and not patient-disjoint \\
+GSE164378 exact-L3 & MOSAIC & RNA + ADT & fixed three-seed MOSAIC majority ensemble & cell bootstrap & ensemble evidence; not a single learned-HSR model \\
+PBMC strict L3 & MLP / early fusion & RNA + ADT & single model or fixed majority ensemble & cell bootstrap & fixed strict cell split with train-only preprocessing \\
+COVID-19 full & MLP / early fusion & RNA + ADT & single model or fixed majority ensemble & seed t interval & full 647366-cell closed-set split; patients overlap across splits \\
+GSE164378 exact-L3 & MLP / early fusion & RNA + ADT & fixed three-seed majority ensemble & cell bootstrap & compared to MOSAIC using paired fixed-ensemble predictions \\
+PBMC strict L3 & RNA logistic & RNA & single model or seed mean & cell bootstrap & fixed strict cell split with train-only preprocessing \\
+COVID-19 full & RNA logistic & RNA & single model or seed mean & seed t interval & full 647366-cell closed-set split; patients overlap across splits \\
+GSE164378 exact-L3 & RNA logistic & RNA & single model or seed mean & seed t interval & exact-L3 split; singleton ASDC\_pDC excluded by prespecified support rule \\
+PBMC strict L3 & CellTypist & RNA & single model or seed mean & cell bootstrap & fixed strict cell split with train-only preprocessing \\
+COVID-19 full & CellTypist & RNA & single model or seed mean & cell bootstrap & full 647366-cell closed-set split; patients overlap across splits \\
+GSE164378 exact-L3 & CellTypist & RNA & single model or seed mean & cell bootstrap & exact-L3 split; singleton ASDC\_pDC excluded by prespecified support rule \\
+PBMC strict L3 & scANVI & RNA & single model or seed mean & cell bootstrap & fixed strict cell split with train-only preprocessing \\
+COVID-19 full & scANVI & RNA & single model or seed mean & cell bootstrap & full 647366-cell closed-set split; patients overlap across splits \\
+GSE164378 exact-L3 & scANVI & RNA & single model or seed mean & cell bootstrap & exact-L3 split; singleton ASDC\_pDC excluded by prespecified support rule \\
+PBMC strict L3 & totalVI & RNA + ADT & single model or seed mean & cell bootstrap & fixed strict cell split with train-only preprocessing \\
+COVID-19 full & totalVI & RNA + ADT & single model or seed mean & cell bootstrap & full 647366-cell closed-set split; patients overlap across splits \\
+GSE164378 exact-L3 & totalVI & RNA + ADT & single model or seed mean & cell bootstrap & exact-L3 split; singleton ASDC\_pDC excluded by prespecified support rule \\
+PBMC strict L3 & scNym & RNA & single model or seed mean & cell bootstrap & fixed strict cell split with train-only preprocessing \\
+COVID-19 full & scNym & RNA & single model or seed mean & cell bootstrap & full 647366-cell closed-set split; patients overlap across splits \\
+GSE164378 exact-L3 & scNym & RNA & single model or seed mean & cell bootstrap & exact-L3 split; singleton ASDC\_pDC excluded by prespecified support rule \\
+\bottomrule
+\end{longtable}
+\endgroup

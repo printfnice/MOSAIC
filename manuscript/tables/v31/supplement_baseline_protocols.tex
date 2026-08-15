@@ -1,0 +1,44 @@
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}p{0.07\textwidth}>{\raggedright\arraybackslash}p{0.08\textwidth}>{\raggedright\arraybackslash}p{0.15\textwidth}>{\raggedright\arraybackslash}p{0.16\textwidth}>{\raggedright\arraybackslash}p{0.11\textwidth}}
+\caption{Protocol audit for every method--dataset row in the main performance matrix.}\label{tab:baseline-protocols}\\
+\toprule
+Dataset & Method & Modality & Split unit & Training & Deployment & CI mode \\
+\midrule
+\endfirsthead
+\toprule
+Dataset & Method & Modality & Split unit & Training & Deployment & CI mode \\
+\midrule
+\endhead
+PBMC strict L3 & MOSAIC-N & RNA+\allowbreak{}ADT & cell & supervised multimodal neural classifier & ten-seed learned-HSR single-model mean & seed\_\allowbreak{}t\_\allowbreak{}ci \\
+COVID-19 full & MOSAIC-N & RNA+\allowbreak{}ADT & cell & supervised multimodal neural classifier & three-seed RDV2 base-model mean & seed\_\allowbreak{}t\_\allowbreak{}ci \\
+GSE164378 exact-L3 & MOSAIC-N & RNA+\allowbreak{}ADT & cell & supervised multimodal neural classifier & fixed three-seed RDV2 majority ensemble & cell\_\allowbreak{}bootstrap\_\allowbreak{}ci \\
+COMBAT/\allowbreak{}COVID shift & MOSAIC-N & RNA+\allowbreak{}ADT & holdout seed and external cell & supervised multimodal neural classifier & fixed cross-method consensus on holdout seeds 44/\allowbreak{}45/\allowbreak{}46 & seed\_\allowbreak{}t\_\allowbreak{}ci \\
+PBMC strict L3 & MLP /\allowbreak{} early fusion & RNA+\allowbreak{}ADT & cell & supervised early-fusion neural classifier & single model or fixed majority ensemble & cell\_\allowbreak{}bootstrap\_\allowbreak{}ci \\
+COVID-19 full & MLP /\allowbreak{} early fusion & RNA+\allowbreak{}ADT & cell & supervised early-fusion neural classifier & single model or fixed majority ensemble & seed\_\allowbreak{}t\_\allowbreak{}ci \\
+GSE164378 exact-L3 & MLP /\allowbreak{} early fusion & RNA+\allowbreak{}ADT & cell & supervised early-fusion neural classifier & fixed three-seed majority ensemble & cell\_\allowbreak{}bootstrap\_\allowbreak{}ci \\
+COMBAT/\allowbreak{}COVID shift & MLP /\allowbreak{} early fusion & RNA+\allowbreak{}ADT & holdout seed and external cell & supervised early-fusion neural classifier & single model or fixed majority ensemble & seed\_\allowbreak{}t\_\allowbreak{}ci \\
+PBMC strict L3 & RNA logistic & RNA & cell & supervised logistic regression & single model or seed mean & cell\_\allowbreak{}bootstrap\_\allowbreak{}ci \\
+COVID-19 full & RNA logistic & RNA & cell & supervised logistic regression & single model or seed mean & seed\_\allowbreak{}t\_\allowbreak{}ci \\
+GSE164378 exact-L3 & RNA logistic & RNA & cell & supervised logistic regression & single model or seed mean & seed\_\allowbreak{}t\_\allowbreak{}ci \\
+COMBAT/\allowbreak{}COVID shift & RNA logistic & RNA & holdout seed and external cell & supervised logistic regression & single model or seed mean & seed\_\allowbreak{}t\_\allowbreak{}ci \\
+PBMC strict L3 & CellTypist & RNA & cell & supervised CellTypist classifier & single model or seed mean & cell\_\allowbreak{}bootstrap\_\allowbreak{}ci \\
+COVID-19 full & CellTypist & RNA & cell & supervised CellTypist classifier & single model or seed mean & cell\_\allowbreak{}bootstrap\_\allowbreak{}ci \\
+GSE164378 exact-L3 & CellTypist & RNA & cell & supervised CellTypist classifier & single model or seed mean & cell\_\allowbreak{}bootstrap\_\allowbreak{}ci \\
+COMBAT/\allowbreak{}COVID shift & CellTypist & RNA & holdout seed and external cell & supervised CellTypist classifier & single model or seed mean & seed\_\allowbreak{}t\_\allowbreak{}ci \\
+PBMC strict L3 & scANVI & RNA & cell & semi-supervised variational model & single model or seed mean & cell\_\allowbreak{}bootstrap\_\allowbreak{}ci \\
+COVID-19 full & scANVI & RNA & cell & semi-supervised variational model & single model or seed mean & cell\_\allowbreak{}bootstrap\_\allowbreak{}ci \\
+GSE164378 exact-L3 & scANVI & RNA & cell & semi-supervised variational model & single model or seed mean & cell\_\allowbreak{}bootstrap\_\allowbreak{}ci \\
+COMBAT/\allowbreak{}COVID shift & scANVI & RNA & holdout seed and external cell & semi-supervised variational model & seed mean on aligned holdout seeds 44/\allowbreak{}45/\allowbreak{}46 & seed\_\allowbreak{}t\_\allowbreak{}ci \\
+PBMC strict L3 & totalVI & RNA+\allowbreak{}ADT & cell & probabilistic multimodal reference/\allowbreak{}query model & single model or seed mean & cell\_\allowbreak{}bootstrap\_\allowbreak{}ci \\
+COVID-19 full & totalVI & RNA+\allowbreak{}ADT & cell & probabilistic multimodal reference/\allowbreak{}query model & single model or seed mean & cell\_\allowbreak{}bootstrap\_\allowbreak{}ci \\
+GSE164378 exact-L3 & totalVI & RNA+\allowbreak{}ADT & cell & probabilistic multimodal reference/\allowbreak{}query model & single model or seed mean & cell\_\allowbreak{}bootstrap\_\allowbreak{}ci \\
+COMBAT/\allowbreak{}COVID shift & totalVI & RNA+\allowbreak{}ADT & holdout seed and external cell & probabilistic multimodal reference/\allowbreak{}query model & single model or seed mean & seed\_\allowbreak{}t\_\allowbreak{}ci \\
+PBMC strict L3 & scNym & RNA & cell & semi-supervised neural classifier & single model or seed mean & cell\_\allowbreak{}bootstrap\_\allowbreak{}ci \\
+COVID-19 full & scNym & RNA & cell & semi-supervised neural classifier & single model or seed mean & cell\_\allowbreak{}bootstrap\_\allowbreak{}ci \\
+GSE164378 exact-L3 & scNym & RNA & cell & semi-supervised neural classifier & single model or seed mean & cell\_\allowbreak{}bootstrap\_\allowbreak{}ci \\
+COMBAT/\allowbreak{}COVID shift & scNym & RNA & holdout seed and external cell & semi-supervised neural classifier & seed mean on aligned holdout seeds 44/\allowbreak{}45/\allowbreak{}46 & seed\_\allowbreak{}t\_\allowbreak{}ci \\
+\bottomrule
+\end{longtable}
+\endgroup

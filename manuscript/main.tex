@@ -1,0 +1,291 @@
+%%
+%% MOSAIC Bioinformatics manuscript
+%% Donor-disjoint evidence closure, 2026-08-12.
+%%
+\documentclass[unnumsec,webpdf,contemporary,large,numbered]{oup-authoring-template}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\setlength{\emergencystretch}{2em}
+% The OUP contemporary header contains a fixed-width decorative box; its known
+% 11pt header overrun is outside the manuscript content area.
+\setlength{\hfuzz}{12pt}
+\renewcommand{\dbltopfraction}{0.95}
+\renewcommand{\dblfloatpagefraction}{0.85}
+\setcounter{dbltopnumber}{2}
+
+% OUP template v1.2 resets natbib to author-year mode for plain \bibitem
+% entries, which renders numbered citations as empty brackets.
+\makeatletter
+\renewcommand\NAT@force@numbers{\global\NAT@numberstrue}
+\makeatother
+
+\begin{document}
+
+\journaltitle{Bioinformatics}
+\DOI{}
+\copyrightyear{2026}
+\pubyear{2026}
+\vol{XX}
+\issue{x}
+\access{}
+\appnotes{Original Paper}
+\firstpage{1}
+
+\title[MOSAIC]{MOSAIC: auditable RNA--ADT annotation with branch-level modality evidence under donor shift and incomplete protein panels}
+
+\author[1,2,$\dagger$]{Hai Yang}
+\author[2,$\dagger$]{Linhao Wu}
+\author[3,4]{Dan Zhou}
+\author[5]{Tianyi Zhou}
+\author[1,2]{Qin Zhou}
+\author[1,2]{Ting Xiao}
+\author[1,2]{Qian Zhang}
+\author[1,2]{Jing Zhang}
+\author[1,2,$\ast$]{Zhe Wang}
+
+\address[1]{\orgdiv{Key Laboratory of Smart Manufacturing in Energy Chemical Process, Ministry of Education}, \orgname{East China University of Science and Technology}, \orgaddress{\postcode{200237}, \state{Shanghai}, \country{China}}}
+\address[2]{\orgdiv{Department of Computer Science and Engineering}, \orgname{East China University of Science and Technology}, \orgaddress{\postcode{200237}, \state{Shanghai}, \country{China}}}
+\address[3]{\orgdiv{Department of Big Data in Health Science}, \orgname{Zhejiang University School of Medicine}, \orgaddress{\state{Hangzhou}, \country{China}}}
+\address[4]{\orgdiv{Center of Clinical Big Data and Analytics}, \orgname{The Second Affiliated Hospital, Zhejiang University School of Medicine}, \orgaddress{\state{Hangzhou}, \country{China}}}
+\address[5]{\orgdiv{Department of Electrical Engineering and Computer Science}, \orgname{University of Michigan}, \orgaddress{\postcode{48109}, \state{Michigan}, \country{USA}}}
+
+\corresp[$\ast$]{Corresponding author. \href{mailto:wangzhe@ecust.edu.cn}{wangzhe@ecust.edu.cn}}
+\corresp[$\dagger$]{These authors contributed equally to this work.}
+
+\received{Date}{0}{2026}
+\revised{Date}{0}{2026}
+\accepted{Date}{0}{2026}
+
+\abstract{
+\textbf{Motivation:} Fine-grained CITE-seq annotation under donor and protein-panel shift needs inspectable evidence.
+\\
+\textbf{Results:} We present MOSAIC, an evidence-emitting RNA--ADT classifier with modality branches, bounded sibling refinement and audits. In leave-one-donor-out PBMC evaluation (161,764 cells; 58 L3 labels), MOSAIC achieved M-F1 0.8072, W-F1 0.9108 and ACC 0.9119. Versus a matched MLP, gains were +0.0111 M-F1 and +0.0074 balanced accuracy; ACC and W-F1 intervals crossed zero. Branch evidence improved error-detection AUROC from 0.6914 to 0.8401, and risk at 50\% coverage from 0.0565 to 0.0169. Stress tests localized panel- and label-dependent failures.
+\\
+\textbf{Availability and Implementation:} Code, configurations, evidence, tests and a ten-cell CPU audit demo are available under MIT at \url{https://github.com/printfnice/MOSAIC/tree/v8.1-submission}; raw data, caches, predictions and checkpoints are excluded.
+\\
+\textbf{Contact:} Linhao Wu, \url{2544814855@qq.com}.
+\\
+\textbf{Supplementary Information:} Supplementary tables and protocols accompany the article.
+}
+
+\keywords{single-cell annotation, CITE-seq, multimodal learning, donor shift, missing modality, selective prediction, model auditing}
+
+\maketitle
+
+\section{Introduction}
+
+Single-cell RNA sequencing and CITE-seq jointly measure transcriptomic programs and surface-protein markers \citep{hao2021,luecken2019,stoeckius2017cite}. Their integration resolves fine immune populations \citep{butler2018,luecken2022,satija2015,stuart2019}, but closely related naive, memory, regulatory and activated states remain difficult to separate.
+
+Accuracy on a convenient held-out cell set is insufficient when donor composition, antibody panels or cell-state support change. A useful annotator should expose modality evidence and confidence, and indicate when a fine-label decision merits review.
+
+Existing annotation, reference-mapping and multimodal systems include SingleR, CellTypist, scmap, scPred, scClassify, TOSICA, scNym, scVI, scANVI, totalVI, scArches, Symphony and Azimuth \citep{aran2019,dominguezconde2022,kiselev2018scmap,alquicira2020scpred,lin2020scclassify,chen2023tosica,kimmel2021scnym,lopez2018,xu2021scvi,gayoso2021totalvi,lotfollahi2022,kang2021symphony,hao2021}. Curated hierarchies and programs can be strong when label space and panel match the task \citep{caron2025mmochi,kotliar2025starcat}; benchmark rankings therefore depend on modality, preprocessing and split design \citep{abdelaal2019,liu2025multitaskbenchmark}.
+
+We study whether prediction and evidence can be emitted by the same multimodal decision path. MOSAIC keeps RNA and ADT branches visible, uses their evidence for fusion, bounds local refinement to declared siblings and stores a cell-level audit record.
+
+MOSAIC is a compact dual-modal classifier whose records contain branch labels and margins, fusion weights, bounded HSR actions and ranked RNA/ADT features. Separate branch supervision, training-only distillation and top-two-margin arbitration expose the evidence interface; a local HSR head can modify only prespecified labels \citep{shazeer2017moe,vaswani2017}.
+
+Our contributions are (i) inspectable RNA, ADT and fused branches with a +0.0111 donor-level M-F1 advantage over a matched MLP; (ii) margin-based audit evidence raising error-detection AUROC from 0.6914 to 0.8401 after fitting on seven non-held-out donors, with unfit branch conflict at 0.7552; (iii) enumerable six-label refinement changing 0.14\% of pooled predictions; and (iv) protocol-stratified failure localization spanning 58 labels, panel masking, leave-class-out stress, attribution and external hierarchy comparison.
+
+\section{Materials and methods}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.96\textwidth]{Fig/fig1_user_final.png}
+\caption{\textbf{MOSAIC architecture.} (a) Paired RNA ($N\!\times\!3000$) and ADT ($N\!\times\!224$) inputs with train-only preprocessing and prespecified sibling groups. (b) The RNA encoder maps $N\!\times\!3000\!\rightarrow\!N\!\times\!512\!\rightarrow\!N\!\times\!256$ and feeds a 58-class L3 branch. (c) The ADT encoder maps $N\!\times\!224\!\rightarrow\!N\!\times\!512\!\rightarrow\!N\!\times\!256$ and feeds a 58-class L3 branch. (d) Fusion maps the concatenated $N\!\times\!512$ representation to $N\!\times\!256$, followed by branch-margin arbitration and a 58-class fused output; the gate input is $256+58=314$. (e) Bounded HSR uses a six-output delta head scattered into the six declared L3 coordinates and a $314\!\rightarrow\!256\!\rightarrow\!1$ gate. (f) A cell-level audit record contains branch labels, margins, fusion information, the HSR action and feature-attribution fields.}
+\label{fig:architecture}
+\end{figure*}
+
+\subsection{Datasets and donor-disjoint evaluation}
+
+The primary dataset is paired PBMC 3P from GSE164378 \citep{hao2021} (161,764 cells, eight donors, 224 proteins and 58 L3 labels). We used nested leave-one-donor-out evaluation: the next donor in a fixed cycle was validation and the other six were training; partitioning preceded preprocessing (Supplementary Tables S1--S2). Stored layers were audited as non-negative, integer-like sparse matrices and treated as raw-count-like. RNA used one log1p, train-only selection of 3,000 genes and standardization; the locked ADT path used log1p, train-only quantile normalization and standardization. CLR is a separate sensitivity \citep{aitchison1986}; DSB was unavailable without matched empty-droplet/isotype controls \citep{mule2022dsb}. Donors, not cells or seeds, were the primary statistical units.
+
+L3 was the primary endpoint because sibling states are hardest there; L1/L2 were retained only for interpretation and parent fallback. W-F1 measures cohort-scale quality, whereas M-F1 and per-class F1 expose rare-label behavior.
+
+For external hierarchy context, we used the 2,098-cell GSE229791 PDC101 sorted holdout with official MMoCHi and \texttt{external\_holdout=True} \citep{caron2025mmochi}. HTO, isotype and control proteins were excluded; MOSAIC used train-only scaling and MMoCHi used version 0.3.5 (commit \texttt{b0f3387}). Because its label space and uncertainty protocol differ, PDC101 is reported separately.
+
+Secondary COVID-19, 5P and COMBAT/COVID-shift artifacts were retained only as breadth evidence, not pooled with the primary donor-level inference.
+
+\subsection{MOSAIC model architecture}
+
+For cell $i$, modality encoders produce $\mathbf{h}_{r}=f_r(\mathbf{x}^{(r)})$ and $\mathbf{h}_{p}=f_p(\mathbf{x}^{(p)})$, and fusion produces $\mathbf{h}_{f}=f_f([\mathbf{h}_{r};\mathbf{h}_{p}])$. The batch-normalized MLP paths are RNA $3000\!\rightarrow\!512\!\rightarrow\!256$, ADT $224\!\rightarrow\!512\!\rightarrow\!256$ and fusion $512\!\rightarrow\!512\!\rightarrow\!256\!\rightarrow\!256$. Each branch has a linear 58-class head; HSR has a linear six-output delta head and a sigmoid $314\!\rightarrow\!256\!\rightarrow\!1$ gate. Separate cross-entropies preserve RNA-only, ADT-only and fused predictions.
+
+The arbitration signal for branch $b$ and cell $i$ is its top-two logit margin $m_{b,i}=z_{b,i}^{(1)}-z_{b,i}^{(2)}$. Learned branch bias $\beta_b$ and fixed temperature $\tau=1$ define
+\begin{equation}
+w_{b,i}=\operatorname{softmax}_b((m_{b,i}+\beta_b)/\tau),\qquad
+\mathbf{z}^{\mathrm{base}}_i=\sum_{b\in\{r,p,f\}}w_{b,i}\mathbf{z}_{b,i}.
+\end{equation}
+Only $\beta_b$ is learned; $\tau=1$ is fixed and logits, rather than probabilities, are averaged. Margins are retained as ordering evidence, not calibrated probabilities.
+
+HSR receives the fused embedding and detached base probabilities. The two prespecified sibling groups are CD4 TEM\_3/CD4 TEM\_4/CD4 TCM\_3 and CD8 Naive/CD8 Naive\_2/CD8 TCM\_1; they were selected from validation-donor confusion patterns before held-out evaluation. A fixed scatter operator $S:\mathbb{R}^{6}\rightarrow\mathbb{R}^{58}$ places corrections only at these six L3 coordinates:
+\begin{equation}
+\begin{aligned}
+g &=0.02+0.18\,\sigma(\operatorname{MLP}([\mathbf{h}_{f};
+\operatorname{stopgrad}(\operatorname{softmax}(\mathbf{z}^{\mathrm{base}}))])),\\
+\Delta\mathbf{z}_{6}&=h_{\Delta}(\mathbf{h}_{f}),\\
+\mathbf{z}^{\mathrm{final}}&=\mathbf{z}^{\mathrm{base}}+g\,S(\Delta\mathbf{z}_{6}).
+\end{aligned}
+\end{equation}
+The remaining 52 logits are unchanged before the final softmax, so modifying six logits still renormalizes all 58 class probabilities. During training, the local loss is $\mathcal{L}_{\mathrm{HSR}}=\mathrm{CE}(\Delta\mathbf{z}_{6},\tilde y)$ on the six-label mask $M$ (12.35\% of held-out cells), where $\tilde y$ remaps the six labels to a local index set; the base probabilities are detached, while the HSR head remains trainable. The fixed gate range $[0.02,0.20]$ and no-HSR control make local actions enumerable; aggregate effects are assessed separately from audit emission.
+
+\subsection{Training and statistical analysis}
+
+Each donor fold used seeds 41/42/43. The matched early-fusion MLP shared feature access, loss, optimizer, dropout and validation selection with MOSAIC but had no modality branches, arbitration or HSR (1.73M versus 2.51M parameters). A 2,467,706-parameter 704/256 capacity control used the same protocol (Table~\ref{tab:primary-performance}; Supplementary Table~S2). The retrained control, branch-loss, panel and attribution audits are detailed in Supplementary Tables S3--S8. Each MOSAIC seed used the same fold-specific seed-42 MLP training probabilities as its teacher; validation and test probabilities were excluded from distillation and checkpoint selection. We retrained the MLP, full, no-HSR and no-KD models and evaluated branch and fusion variants from full checkpoints. The locked path is reported because it emits the prespecified weights, local actions and complete audit record; controls separate metric optimization from evidence emission.
+
+The implemented objective combines sqrt-balanced cross-entropy, branch supervision, fixed-teacher probability distillation and the local HSR loss:
+\begin{equation}
+\begin{aligned}
+\mathcal{L}={}&\mathcal{L}_{\mathrm{wCE}}+
+\lambda_b(\mathcal{L}^{\mathrm{CE}}_{r}+\mathcal{L}^{\mathrm{CE}}_{p})+
+\lambda_f\mathcal{L}^{\mathrm{CE}}_{f}\\
+&+\lambda_{\mathrm{KD}}T^2D_{\mathrm{KL}}(\mathbf{q}\Vert\mathbf{p}^{T})+
+\lambda_{\mathrm{HSR}}\mathcal{L}_{\mathrm{HSR}}.
+\end{aligned}
+\end{equation}
+The weights in $\mathcal{L}_{\mathrm{wCE}}$ are normalized $1/\sqrt{n_c}$ class weights \citep{buda2018imbalance}; stored teacher probabilities are clipped and row-normalized, while $\mathbf{p}^{T}=\operatorname{softmax}(\mathbf{z}^{\mathrm{final}}/T)$ intentionally uses the post-HSR final logits, so the KD gradient can pass through the local refinement path. AdamW used at most 35 epochs, batch size 1,024, learning rate $10^{-3}$, weight decay $10^{-4}$, dropout 0.2 and patience 14. We fixed $\lambda_b=0.35$, $\lambda_f=0.50$, $\lambda_{\mathrm{KD}}=0.05$, $T=2$ and $\lambda_{\mathrm{HSR}}=0.20$ before testing; checkpoint selection maximized validation M-F1 subject to ACC/W-F1 within 0.0015 of their best values.
+
+We report ACC, W-F1, M-F1, balanced accuracy and per-class F1, with M-F1 as the rare-label-sensitive primary endpoint. Run-level M-F1 and the support-aware supplementary macro-F1 differ only by zero-support handling. Combined hierarchical accuracy scores accepted cells by L3 correctness and rejected cells by parent correctness. Unless stated otherwise, intervals are two-sided 95\% Student-$t$ intervals across eight donors after seed averaging; donor means, paired differences and Wilcoxon sensitivity tests use donors as units. The support-aware decomposition and attribution enrichment are mechanism analyses, not additional family-wise endpoints.
+
+\subsection{Robustness, rejection and interpretability analysis}
+
+Each of the 24 full checkpoints was frozen for full-input, deterministic 10--70\% protein-mask, marker-mask and RNA-only stress tests; masks were fixed before test evaluation. These are panel-mismatch tests, not mask-aware training. A separate positive temperature was fitted by validation NLL per checkpoint and applied once to untouched test probabilities without changing primary argmax predictions.
+
+Since natural folds retain all labels, rejection used five prespecified leave-class-out targets (gdT\_2, NK\_3, CD4 TCM\_1, CD8 TEM\_4 and B naive lambda). Each 57-class model used one fixed seed-42 split and three seeds; targets and seeds, not natural donors, are the units. Validation cells selected thresholds for one-minus-max-probability, one-minus-margin and energy $E(\mathbf z)=-\log\sum_c\exp(z_c)$ \citep{liu2020energy} at 0.95 or 0.80 known coverage. Unknown recall, parent-safe rate and combined hierarchical accuracy are reported with the full decomposition in Supplementary Tables S9--S11; definitions follow selective-prediction practice \citep{gal2016,geifman2017,guo2017calibration,hendrycks2017,lakshminarayanan2017}.
+
+Gradient-times-input attribution was summarized separately for RNA and ADT on correctly predicted cells. Donor-pair Spearman correlation, top-20 overlap, marker enrichment and deletion lift used prespecified sibling marker sets; integrated gradients provided a small directional check \citep{sundararajan2017,lundberg2017,montavon2019,ribeiro2016,samek2021}.
+
+All 58 labels were additionally audited on the 24 current checkpoints using representative marker-family availability and top-20 attribution hits. This is an evidence vocabulary, not a complete ontology or causal biomarker analysis; CD8/PDC101 linkage is descriptive.
+
+For audit-score fitting, target donor $k$ was evaluated on its held-out predictions and the logistic model was fitted only on the seven other donor folds $j\ne k$.
+
+\subsection{Software implementation and reproducibility}
+
+The Python 3.8.20/PyTorch 2.0.1+cu118 implementation saves configurations, split manifests, checkpoints, predictions, per-class metrics, logs and SHA-256 indices; table/figure scripts reject incomplete matrices. Reported MOSAIC runs use the registry-declared code rather than historical TOSICA prototypes \citep{chen2023tosica}. On one RTX 4090, median runtimes were 130.0 s for MOSAIC, 75.8 s for the 1.73M MLP and 80.7 s for the 2.47M capacity control.
+
+\section{Results}
+
+\subsection{Donor-disjoint annotation performance}
+
+Across eight held-out donors, MOSAIC reached ACC/W-F1/M-F1 0.9119/0.9108/0.8072 with intervals [0.9086,0.9153]/[0.9062,0.9153]/[0.7917,0.8227] (Table~\ref{tab:primary-performance}; Supplementary Table~S2; Fig.~\ref{fig:evidence}a). Versus the matched MLP, paired differences were $+0.0016$ ACC [$-0.0011,+0.0044$], $+0.0016$ W-F1 [$-0.0009,+0.0041$], $+0.0111$ M-F1 [$+0.0062,+0.0160$] and $+0.0074$ balanced accuracy [$+0.0013,+0.0135$]. All eight donors improved in M-F1 and seven in balanced accuracy; macro precision increased by $+0.0171$ [$+0.0111,+0.0230$] and macro recall by $+0.0074$ [$+0.0013,+0.0135$]. Cohen $d_z$ was 0.498, 0.544, 1.892 and 1.015 for the four endpoints; ACC/W-F1 intervals crossed zero.
+
+For balanced accuracy, paired $t$ and Wilcoxon tests gave $P=0.0239$ and 0.0547. Bonferroni adjustment across four prespecified endpoints leaves only M-F1 below 0.005 ($P=0.0011$); the other endpoints remain non-confirmatory. With eight donor units, the two-sided Wilcoxon signed-rank test has a minimum attainable $P=0.0078$, so the adjusted confirmatory statement relies on the paired parametric test and treats Wilcoxon as a distribution-free sensitivity.
+
+\begin{table*}[t]
+\centering
+\caption{Primary nested donor-disjoint PBMC L3 performance. Values are donor means with two-sided 95\% Student-$t$ intervals after seed averaging; worst/best are donor point estimates. The two MLP rows use matched loss and selection, with the second a 2,467,706-parameter capacity control. CellTypist rows distinguish full-transcriptome-denominator CP10K from subset-first sensitivity.}
+\label{tab:primary-performance}
+\scriptsize
+\setlength{\tabcolsep}{2.8pt}
+\resizebox{\textwidth}{!}{%
+\input{tables/v50/main_primary_performance.tex}
+}
+\end{table*}
+
+Using all training-donor cells, uncapped early-fusion XGBoost reached ACC/W-F1/M-F1 0.9032/0.9010/0.7885. MOSAIC had higher point estimates and worst-donor ACC (0.9057 versus 0.8750); paired differences were $+0.0087$ ACC [$-0.0029,+0.0204$], $+0.0097$ W-F1 [$-0.0010,+0.0205$], $+0.0187$ M-F1 [$+0.0053,+0.0321$] and $+0.0330$ balanced accuracy [$+0.0190,+0.0469$]. The fixed 80-tree, depth-4 CUDA histogram configuration and full protocol are in the Supplementary Material.
+
+The capacity control reached ACC/W-F1/M-F1/balanced accuracy 0.9111/0.9096/0.8001/0.8024. MOSAIC minus this control was $+0.0008$ [$-0.0017,+0.0033$], $+0.0011$ [$-0.0011,+0.0033$], $+0.0071$ [$+0.0031,+0.0111$] and $+0.0060$ [$+0.0001,+0.0120$], respectively. The near-capacity result supports a joint representation-and-audit advantage, not strict single-module causality.
+
+The full-transcriptome-denominator CellTypist-compatible row reached ACC/W-F1/M-F1/balanced accuracy 0.8534/0.8497/0.6835/0.6933; the subset-first row is only a preprocessing sensitivity. Published fixed-split context gave scANVI 0.8907/0.8882/0.7729 and totalVI 0.8100/0.8251/0.6916. On patient-disjoint E-MTAB-10026, MOSAIC reached 0.8590/0.8550/0.6471 versus 0.8553/0.8514/0.6411 for early-fusion MLP; the three-seed M-F1 interval crossed zero. These secondary results are descriptive, not pooled ranking evidence.
+
+Across 48 CLR retraining units, MOSAIC and MLP both improved under the alternative ADT transform. The CLR MOSAIC--MLP differences were $+0.0016$ ACC [$-0.0006,+0.0038$], $+0.0009$ W-F1 [$-0.0016,+0.0035$], $+0.0064$ M-F1 [$-0.0012,+0.0139$] ($P=0.0861$) and $+0.0025$ balanced accuracy [$-0.0039,+0.0089$]. The locked transform remains primary; preprocessing and architecture should be interpreted jointly.
+
+The 48-unit full-transcriptome CP10K sensitivity gave MOSAIC 0.9122/0.9107/0.8088 and MLP 0.9094/0.9083/0.7949 for ACC/W-F1/M-F1 (Supplementary Material). Paired differences were $+0.0029$ [$+0.0002,+0.0056$], $+0.0024$ [$-0.0001,+0.0050$] and $+0.0139$ [$+0.0059,+0.0220$]; the macro direction was unchanged, but the source-count log1p path remains primary.
+
+\subsection{Branch evidence carries information beyond final confidence}
+
+Top-label conflict achieved error-detection AUROC 0.7552 [0.7445,0.7659] versus 0.6914 [0.6507,0.7320] for final uncertainty (Fig.~\ref{fig:evidence}c). A donor-held-out logistic score combining uncertainty and branch evidence reached AUROC 0.8401 [0.8267,0.8536] and AUPRC 0.3587 [0.3478,0.3696], gains of +0.1488 ($P=1.29\times10^{-5}$) and +0.0487 ($P=5.47\times10^{-4}$). At 50\% coverage, risk fell 0.0565 to 0.0169; at 90\%, the change was +0.0002 [-0.0022,0.0025] ($P=0.871$) (Supplementary Fig.~S1). Thus branch evidence supports high-precision triage, not near-full-coverage selection. HSR changed 0.14\% of pooled predictions, and its aggregate effects stayed within 0.005 (Supplementary Tables S5--S7); branch margins ordered branch correctness (Fig.~\ref{fig:evidence}d). The distinct 58-label marker-support audit is shown in Fig.~\ref{fig:marker-support} and Supplementary Tables S12--S13.
+
+\begin{table*}[b]
+\centering
+\caption{Audit-record schema and three checksum-linked case records: branch agreement, binary branch conflict and a sparse HSR correct-to-wrong change. They support structured review without guaranteeing correctness.}
+\label{tab:audit-schema}
+\footnotesize
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.08}
+\input{tables/v50/main_audit_record_schema.tex}
+\end{table*}
+
+Gate-bound prediction-change rates were 0.034\%--0.149\%, with aggregate differences within the descriptive 0.005 absolute-metric band (about 0.6\% of the primary M-F1). This band is approximately one quarter of the between-donor M-F1 SD (about 0.019) and is a reporting scale, not an equivalence margin. Table~\ref{tab:audit-schema} makes the review role explicit.
+
+\subsection{Component trade-offs and auditability}
+
+Direct ablations separate metric utility from evidence utility. No-KD versus the matched MLP improved ACC/W-F1/M-F1/balanced accuracy by +0.0031/+0.0030/+0.0150/+0.0068, with positive M-F1 differences for all donors (Supplementary Table S3). No-HSR and no-KD reached M-F1 0.8097 and 0.8110 versus 0.8072 for the locked path. Among the three retrained architecture variants, the locked path retained the highest balanced accuracy, whereas uniform fusion from the same checkpoints was higher on all four aggregate metrics than learned gate+HSR by 0.0011/0.0010/0.0042/0.0044; the locked path is retained because it emits inspectable weights, local actions and the complete audit record. The branch-loss matrix favored $\lambda_b=0.70$ for ACC/W-F1 and fusion-only training for M-F1/balanced accuracy (Fig.~\ref{fig:evidence}b; Supplementary Table S4). The margin gate is therefore an evidence-emitting operating point, not an aggregate-optimality claim.
+
+The dual-path macro benefit persisted without branch supervision (+0.0123 M-F1 and +0.0086 balanced accuracy versus MLP). Across the branch-separated family, M-F1 gains over the matched MLP ranged from +0.0098 to +0.0161; the locked path is a lower-bound evidence-emitting operating point rather than a tuned metric maximum. The paired macro advantage is driven more by precision (+0.0171) than recall (+0.0074), consistent with fewer spurious rare-label assignments. Branch supervision therefore supplies per-modality labels/margins rather than the aggregate gain, at a measured cost of +0.0012 M-F1 and +0.0012 balanced accuracy relative to $\lambda_b=0$. Users prioritizing aggregate metrics can use uniform fusion from the same checkpoint, whereas users needing per-modality weights and local actions can use the locked path without retraining.
+
+A train-fold margin-standardization sensitivity did not change this interpretation: raw gating reached M-F1/B-ACC 0.8077/0.8096, train-fold standardized gating 0.8091/0.8099, and uniform fusion 0.8114/0.8129. Mean learned weights were 0.096 ADT, 0.199 RNA and 0.704 fusion; fewer than 0.1\% of ADT weights and 0.09\% of RNA weights exceeded 0.9, compared with 17.7\% for fusion. The fixed $\tau=1$ is therefore a declared logit-margin scale, not a learned calibration parameter (Supplementary Table S7).
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.90\textwidth]{Fig/Fig2_MOSAIC_evidence.pdf}
+\caption{\textbf{Donor-disjoint performance and mechanism evidence.} All donor intervals use eight held-out donors after seed averaging. (a) Absolute donor-paired scores for MOSAIC full and the matched MLP, connected within donor, with mean intervals and Cohen's $d_z$ annotations. (b) Retrained branch-loss sensitivity under the primary nested donor protocol; the boxed row is the locked configuration and the 0.005 line is descriptive only. (c) Error-detection AUROC for final uncertainty, branch-derived audit scores and the donor-held-out combined logistic score (0.8401); the pooled error prevalence is 0.0881. B-conf. denotes branch conflict, Top-var. top-probability variance and M-var. margin variance. (d) Branch accuracy across top-two logit-margin quintiles for RNA, ADT and fusion branches, with donor-level Spearman correlations and pooled margin ranges. (e) W-F1 and M-F1 use the left axis, while ECE uses the right axis under deterministic protein-panel masks; removing the 15 T-cell ADTs (6.7\% of the panel) costs more M-F1 per removed feature than removing 30\% at random. (f) Attribution deletion lift uses the left axis and canonical-marker overlap uses the separate top axis.}
+\label{fig:evidence}
+\end{figure*}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{Fig/Fig3_MOSAIC_marker_support_audit.pdf}
+\caption{\textbf{58-label marker-support audit.} Each point is one PBMC L3 label; point size is held-out test support and color indicates whether a non-empty representative ADT marker list is fully present. Panels show per-class M-F1 against ADT hits, RNA hits, total hits and mean fusion weight. The descriptive Spearman associations are near zero, so panel availability and top-20 attribution use are not interchangeable evidence types.}
+\label{fig:marker-support}
+\end{figure}
+
+\subsection{Where proteins are missing matters more than how many}
+
+At 50\% and 70\% random protein masking, W-F1 decreased to 0.8971 and 0.8921; the corresponding M-F1 losses were 0.0330 and 0.0431. RNA-only reached W-F1 0.8882, differing from the RNA branch by less than $5\times10^{-4}$, while its M-F1 was 0.7558 versus 0.7564 for the branch (Fig.~\ref{fig:evidence}e). Memory- and T-cell-marker masks gave M-F1 0.8006 and 0.7859 (Supplementary Table S8). Removing 15 T-cell ADTs cost 0.0213 M-F1 versus 0.0168 for random 30\% removal, a descriptive 5.7-fold larger loss per removed fraction; no size-matched random 6/15-ADT null or empirical $P$ value was computed. Training-only 30\% ADT dropout increased the targeted-mask point estimate from 0.7859 to 0.7884 but reduced full-input M-F1 from 0.8072 to 0.8016 (the Supplementary panel-aware training sensitivity). Temperature scaling reduced ECE 0.0713 to 0.0391, NLL 0.4255 to 0.3904 and Brier 0.1523 to 0.1462 without changing argmax predictions. These are bounded panel and calibration sensitivities, not arbitrary missing-panel coverage.
+
+\subsection{Rejection is bounded by marker availability}
+
+At known coverage 0.80, one-minus-margin rejection gave observed coverage 0.7878, unknown recall 0.4032 and combined hierarchical accuracy 0.9146 (Supplementary Tables S9--S11). Across the five target labels and three seeds, B naive lambda was hardest (AUROC 0.4258, recall 0.1285). Its RNA light-chain genes were retained in every fold, but the representative top-20 attribution audit did not retain those genes and the ADT panel lacks a matched kappa/lambda marker (Supplementary Tables S12--S13). Parent-safe rate was 0.2259, so only about 9.1\% of unknown cells were both rejected and assigned the correct parent. This supports manual review; the 58-label audit is descriptive and does not establish a general marker--rejection law.
+
+\subsection{Marker availability is necessary but not sufficient at CD8 memory boundaries}
+
+On PDC101, MOSAIC achieved 0.9077/0.9068/0.9007 ACC/W-F1/M-F1 versus 0.9347/0.9335/0.9298 for official MMoCHi (Supplementary Tables S14--S15). Gaps concentrated at CD8 memory boundaries, while monocyte F1 was tied. Representative ADT evidence is present in both tasks, so marker availability alone does not explain the PDC101 gap; hierarchy and label-space alignment remain protocol-specific alternative explanations. This is a boundary-localization comparison, not a causal claim.
+
+Runtime, comparator, preprocessing, attribution, panel-aware and breadth protocols are enumerated in Supplementary Tables S16--S25.
+
+Attribution stability ranged from 0.529--0.796 for RNA and 0.295--0.612 for ADT; 9/12 marker tests survived BH-FDR and top-feature deletion exceeded random deletion in all 12 tests (Fig.~\ref{fig:evidence}f; Supplementary Table S21). The selected sibling analyses are functional decision evidence, not causal biomarker discovery.
+
+\section{Discussion}
+
+MOSAIC couples fine-label prediction with an evidence-emitting decision path. In donor-disjoint PBMC evaluation it improved M-F1 by $+0.0111$ and balanced accuracy by $+0.0074$ over the matched MLP, while its audit score improved AUROC from 0.6914 to 0.8401 and AUPRC from 0.3100 to 0.3587; risk fell at 50\% coverage but not near 90\%. The 2.47M-parameter capacity control still left a +0.0071 M-F1 difference [0.0031, 0.0111] ($P=0.0042$), supporting a family-level representation advantage while leaving strict module attribution unresolved. CLR changed both absolute scores and the paired gap, making preprocessing part of the comparison.
+
+The contribution is the joint availability of modality labels/margins, traceable fusion weights, bounded six-label HSR and cell-level records. Branch supervision supplies the interface rather than the aggregate macro gain; the locked path is chosen to emit this evidence even when uniform fusion has higher aggregate metrics. Panel masks, leave-class-out targets, the 58-label marker-support audit and PDC101 expose concrete failure regimes, supporting the bounded proposition that evidence availability is a deployment resource distinct from metric optimality.
+
+The scope remains protocol-defined: the near-capacity control does not establish strict single-module causality; CellTypist is package-compatible, DSB lacks matched controls, the 58-label marker audit is descriptive, and the size-matched targeted-mask null remains future experimental work. The audit score has not been transferred to a secondary cohort with a leakage-safe cell-level artifact. The tagged package contains source code, configurations, compact evidence and a CPU demo, but no checkpoint, immutable archive DOI or raw-data archive. These boundaries define, rather than negate, MOSAIC's contribution: modality evidence, local action and failure localization are inspectable alongside the predicted label.
+
+\section{Data availability}
+
+PBMC 3P/5P are from GEO GSE164378; COVID-19 is ArrayExpress E-MTAB-10026; PDC101 is GEO GSE229791; and COMBAT is available through HCA, EGA and Zenodo DOI 10.5281/zenodo.6120249 \citep{combat2022}. Split manifests and source checks are included in the Supplementary Material.
+
+\section{Code availability}
+
+Code, configurations, split manifests, compact evidence, tests, environment metadata, checksums and a ten-cell CPU audit demo are available under MIT at \url{https://github.com/printfnice/MOSAIC/tree/v8.1-submission} in the tagged snapshot. Raw data, caches, full predictions and checkpoints are not redistributed; an immutable archive DOI is not assigned in this snapshot.
+
+\section{Funding}
+
+No specific funding was received for this work.
+
+\section{Author contributions}
+
+Hai Yang and Linhao Wu conceived the study. Linhao Wu led implementation, data processing, experiments, auditing, visualization and drafting. Hai Yang contributed to method design, planning, interpretation and drafting. Dan Zhou and Tianyi Zhou contributed to biological interpretation and review. Qin Zhou, Ting Xiao, Qian Zhang and Jing Zhang contributed to interpretation and review. Zhe Wang supervised and revised the manuscript.
+
+\section{Conflict of interest}
+
+The authors declare no competing interests.
+
+\section{Acknowledgements and use of AI-assisted tools}
+
+AI-assisted tools were used for code assistance, artifact auditing, table generation and language editing. All analyses, figures, citations and conclusions were designed, verified and are the responsibility of the human authors.
+
+\clearpage
+{\footnotesize
+\def\bibfont{\fontsize{6.6bp}{7.6bp}\selectfont}
+\setlength{\bibsep}{0pt}
+\bibliographystyle{oup-plain}
+\bibliography{references}
+}
+
+\end{document}

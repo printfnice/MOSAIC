@@ -1,0 +1,5 @@
+score,metric,n_donors,mean,ci95_low,ci95_high,target_prediction,source_artifact
+three_seed_majority_disagreement,auroc,8,0.6955832604414013,0.6833752627882601,0.7077912580945425,majority_vote_error,results/tables/mosaic_n_v7_seed_disagreement_2026-08-11_units.csv.gz
+three_seed_majority_disagreement,auprc,8,0.24944062602189454,0.23468887407761044,0.26419237796617867,majority_vote_error,results/tables/mosaic_n_v7_seed_disagreement_2026-08-11_units.csv.gz
+three_seed_majority_disagreement,risk_at_coverage_0_50,8,0.049998818036591584,0.046558292330968656,0.05343934374221451,majority_vote_error,results/tables/mosaic_n_v7_seed_disagreement_2026-08-11_units.csv.gz
+three_seed_majority_disagreement,risk_at_coverage_0_90,8,0.05045542404407976,0.0465773956854302,0.05433345240272932,majority_vote_error,results/tables/mosaic_n_v7_seed_disagreement_2026-08-11_units.csv.gz

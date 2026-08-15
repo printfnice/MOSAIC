@@ -1,0 +1,10 @@
+\begin{tabularx}{\textwidth}{p{0.18\textwidth}p{0.32\textwidth}X}
+\toprule
+Dataset & Reported MOSAIC-N variant & Protocol caveat \\
+\midrule
+PBMC strict L3 & single model, learned HSR R4; 10 model seeds & Primary architecture row; strict train-only preprocessing. \\
+COVID-19 full & single-model RDV2 base; 3 model seeds & Full 647,366-cell 51-class protocol; not the HSR variant. \\
+GSE164378 exact-L3 & fixed majority ensemble of 3 RDV2 base seeds & Fixed ensemble; singleton ASDC\_pDC excluded by minimum-support rule. \\
+COMBAT/COVID shift & fixed MOSAIC-N-led consensus; holdout seeds 44/45/46 & Parent-safe shift task; consensus is not the base single model. \\
+\bottomrule
+\end{tabularx}

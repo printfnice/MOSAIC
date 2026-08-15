@@ -1,0 +1,52 @@
+name: covid_e_mtab_10026
+status: primary_existing
+description: COVID-19 CITE-seq dataset with RNA and protein features in one AnnData object.
+paths:
+  combined_h5ad: data/COVID/covid_portal_210320_with_raw.h5ad
+  backup_h5ad: data/Covid_Combined_SCE_raw.h5ad
+  idf: data/COVID/E-MTAB-10026.idf.txt
+  sdrf: data/COVID/E-MTAB-10026.sdrf.txt
+modality_layout:
+  type: combined_h5ad
+  total_features: 24929
+  rna_features_known_from_legacy_code: 24737
+  protein_features_known_from_legacy_code: 192
+shape:
+  cells: 647366
+metadata:
+  label_columns:
+    coarse: initial_clustering
+    fine: full_clustering
+  label_counts:
+    coarse: 18
+    fine: 51
+  donor_column: patient_id
+  sample_column: sample_id
+  batch_columns:
+    - sample_id
+    - Site
+  condition_columns:
+    - Status
+    - Status_on_day_collection
+    - Status_on_day_collection_summary
+    - Outcome
+    - Swab_result
+  clinical_columns:
+    - Age_interval
+    - Sex
+    - Days_from_onset
+    - Worst_Clinical_Status
+supported_splits:
+  - random_stratified
+  - leave_one_patient_out
+  - leave_one_sample_out
+  - leave_one_site_out
+  - leave_fine_celltype_out
+resubmission_role:
+  - disease_shift
+  - patient_out_generalization
+  - unknown_celltype
+  - missing_modality
+notes:
+  - Treat patient_id as the strict split column, not sample_id, for leakage control.
+  - Confirm feature ordering before any new training; legacy scripts assume RNA first and ADT last.

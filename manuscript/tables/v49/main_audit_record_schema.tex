@@ -1,0 +1,13 @@
+\begin{tabular}{lll}
+\toprule
+Field group & Stored fields & Artifact source \\
+\midrule
+Cell identity and labels & cell\_id, true label, final prediction & predictions and case-study CSVs \\
+Modality evidence & RNA / ADT / fusion predictions & audit case-study CSV \\
+Arbitration evidence & RNA, ADT and fusion weights & prediction CSV \\
+Confidence evidence & final confidence, uncertainty, branch conflict & cell-score and case-study CSVs \\
+Continuous audit scores & top-probability variance, margin variance & cell-score and case-study CSVs \\
+HSR evidence & base label, gate, delta norm, changed flag & HSR gate and case-study CSVs \\
+Feature evidence & ranked RNA / ADT attributions, deletion lift & attribution CSVs \\
+\bottomrule
+\end{tabular}

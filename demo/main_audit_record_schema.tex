@@ -1,0 +1,23 @@
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.14\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.16\textwidth}>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}p{0.10\textwidth}@{}}
+\toprule
+Field group & Stored fields & Source & Example value & Released artifact \\
+\midrule
+Cell identity & cell\_id, true label, final prediction & prediction/case-study CSV & L1\_AAAGGGCGTAGTAAGT; CD8 Proliferating $\to$ CD4 Proliferating & N (local only) \\
+Modality evidence & RNA/ADT/fusion predictions and top-two margins & model audit record & CD4 Proliferating; CD4 Proliferating; CD4 Proliferating & N (local only) \\
+Arbitration evidence & branch weights and margins & model audit record & $w=(0.409, 0.112, 0.479)$ & N (local only) \\
+Confidence & final confidence, uncertainty, conflict & model audit record & 0.854; conflict=0 & N (local only) \\
+HSR evidence & base/final action, gate, delta norm, changed flag & HSR audit record & $g=0.020$; $\|\Delta\|_2=5.885$; changed=0 & N (local only) \\
+Feature evidence & top-5 RNA and ADT attribution features & gradient-times-input audit & RNA: SPC24; EXO1; SPC25; GINS2; STMN1; ADT: CD278; CD28; CD71; CD38-2; CD4-1 & N (local only) \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.35em}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.14\textwidth}>{\raggedright\arraybackslash}p{0.19\textwidth}>{\raggedright\arraybackslash}p{0.21\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}p{0.11\textwidth}@{}}
+\toprule
+Case & Donor / seed / cell & Label and branch evidence & HSR/base--final evidence & Audit interpretation & Released artifact \\
+\midrule
+Modality conflict & P4 / 41 / \texttt{L4\_TTGTGGACACGCGTCA} & Treg Naive $\rightarrow$ CD4 Naive; RNA=CD4 TCM\_1, ADT=Treg Naive, fusion=CD4 Naive; disagreement=0.667 & final uncertainty=0.640; outside declared HSR group & ADT and RNA disagree; review signal is present but the final label is wrong & N \\
+HSR changed correct $\rightarrow$ wrong & P1 / 41 / \texttt{L1\_CAATGACAGTCTCTGA} & true/base=CD4 TCM\_1; final=CD4 TCM\_3 & $g=0.0204$; $\|\Delta\|_2=12.940$; changed=1 & bounded local action is sparse but not uniformly beneficial & N \\
+Silent error & P8 / 42 / \texttt{E2L6\_GTCACGGTCCTTGAAG} & true/final=Eryth; RNA=ADT=fusion=Eryth; disagreement=0 & all branches agree; no HSR change recorded & branch consensus supports confidence but cannot guarantee correctness & N \\
+\bottomrule
+\end{tabular}

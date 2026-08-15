@@ -1,0 +1,47 @@
+{
+  "date": "2026-08-12",
+  "source": "results/exp_generalization/mosaic_n_v34/branch_disagreement_audit/cell_scores.csv.gz",
+  "donors": [
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5",
+    "P6",
+    "P7",
+    "P8"
+  ],
+  "seeds": [
+    41,
+    42,
+    43
+  ],
+  "feature_sets": {
+    "uncertainty_only_1f": [
+      "final_uncertainty"
+    ],
+    "uncertainty_conflict_2f": [
+      "final_uncertainty",
+      "branch_disagreement"
+    ],
+    "uncertainty_conflict_topvar_3f": [
+      "final_uncertainty",
+      "branch_disagreement",
+      "top_probability_variance"
+    ],
+    "all_four_audit_features": [
+      "final_uncertainty",
+      "branch_disagreement",
+      "top_probability_variance",
+      "margin_variance"
+    ]
+  },
+  "target": "held-out final prediction error",
+  "fit": "standardized class-balanced logistic regression, each target donor held out",
+  "aggregation": "mean across seeds within donor; Student-t interval across eight donors",
+  "artifacts": {
+    "units": "results/tables/mosaic_n_v7_audit_feature_ablation_2026-08-12_units.csv",
+    "summary": "results/tables/mosaic_n_v7_audit_feature_ablation_2026-08-12_summary.csv",
+    "coefficients": "results/tables/mosaic_n_v7_audit_feature_ablation_2026-08-12_coefficients.csv"
+  }
+}

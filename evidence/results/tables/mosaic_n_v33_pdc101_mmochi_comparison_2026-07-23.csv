@@ -1,0 +1,7 @@
+method,metric,n_seeds,mean,ci95_margin,uncertainty_mode,dataset,n_holdout,protocol_caveat
+MOSAIC-N,accuracy,3,0.907689863361932,0.017970020824822342,seed Student-t,PDC101 sorted external holdout,2098,train-only preprocessing; no HTO/control; three model seeds
+MOSAIC-N,weighted_f1,3,0.9068460934746506,0.018677272606821296,seed Student-t,PDC101 sorted external holdout,2098,train-only preprocessing; no HTO/control; three model seeds
+MOSAIC-N,macro_f1,3,0.9006997927695327,0.020904241725530043,seed Student-t,PDC101 sorted external holdout,2098,train-only preprocessing; no HTO/control; three model seeds
+MMoCHi,accuracy,1,0.9346997140133461,0.01096282173498575,cell bootstrap; conditional on one workflow,PDC101 sorted external holdout,2098,official hierarchy; external_holdout=True; one workflow fit
+MMoCHi,weighted_f1,1,0.9334635518503436,0.011353419436823997,cell bootstrap; conditional on one workflow,PDC101 sorted external holdout,2098,official hierarchy; external_holdout=True; one workflow fit
+MMoCHi,macro_f1,1,0.9297923945792862,0.01182355729013096,cell bootstrap; conditional on one workflow,PDC101 sorted external holdout,2098,official hierarchy; external_holdout=True; one workflow fit

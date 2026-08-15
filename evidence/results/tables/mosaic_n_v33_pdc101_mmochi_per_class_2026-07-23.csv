@@ -1,0 +1,17 @@
+method,class_label,n_seeds,mean_f1,ci95_margin,support,uncertainty_mode,dataset,n_holdout,protocol_caveat
+MOSAIC-N,cd4_cm,3,0.8185002970885323,0.04157338485469958,207,seed Student-t,PDC101 sorted external holdout,2098,train-only preprocessing; no HTO/control; three model seeds
+MOSAIC-N,cd4_em,3,0.9374317643109237,0.017679106514042628,295,seed Student-t,PDC101 sorted external holdout,2098,train-only preprocessing; no HTO/control; three model seeds
+MOSAIC-N,cd4_n,3,0.9332912255522098,0.014131875042535193,227,seed Student-t,PDC101 sorted external holdout,2098,train-only preprocessing; no HTO/control; three model seeds
+MOSAIC-N,cd8_cm,3,0.8245683861889884,0.05551144575402255,223,seed Student-t,PDC101 sorted external holdout,2098,train-only preprocessing; no HTO/control; three model seeds
+MOSAIC-N,cd8_em,3,0.8825088834312836,0.010153712379517841,365,seed Student-t,PDC101 sorted external holdout,2098,train-only preprocessing; no HTO/control; three model seeds
+MOSAIC-N,cd8_emra,3,0.8863404479625476,0.023786252127133183,206,seed Student-t,PDC101 sorted external holdout,2098,train-only preprocessing; no HTO/control; three model seeds
+MOSAIC-N,cd8_n,3,0.9259603406247794,0.02078861510017051,241,seed Student-t,PDC101 sorted external holdout,2098,train-only preprocessing; no HTO/control; three model seeds
+MOSAIC-N,monocyte,3,0.9969969969969968,3.377781301784425e-16,334,seed Student-t,PDC101 sorted external holdout,2098,train-only preprocessing; no HTO/control; three model seeds
+MMoCHi,cd4_cm,1,0.8435013262599469,0.04234899786068036,207,cell bootstrap; conditional on one workflow,PDC101 sorted external holdout,2098,official hierarchy; external_holdout=True; one workflow fit
+MMoCHi,cd4_em,1,0.9419795221843003,0.020049838695196054,295,cell bootstrap; conditional on one workflow,PDC101 sorted external holdout,2098,official hierarchy; external_holdout=True; one workflow fit
+MMoCHi,cd4_n,1,0.9358178053830227,0.022774327122153104,227,cell bootstrap; conditional on one workflow,PDC101 sorted external holdout,2098,official hierarchy; external_holdout=True; one workflow fit
+MMoCHi,cd8_cm,1,0.8850855745721272,0.034573154732854494,223,cell bootstrap; conditional on one workflow,PDC101 sorted external holdout,2098,official hierarchy; external_holdout=True; one workflow fit
+MMoCHi,cd8_em,1,0.9122340425531915,0.02242743542620318,365,cell bootstrap; conditional on one workflow,PDC101 sorted external holdout,2098,official hierarchy; external_holdout=True; one workflow fit
+MMoCHi,cd8_emra,1,0.9493087557603688,0.023052089266297315,206,cell bootstrap; conditional on one workflow,PDC101 sorted external holdout,2098,official hierarchy; external_holdout=True; one workflow fit
+MMoCHi,cd8_n,1,0.9734151329243355,0.016273081973029457,241,cell bootstrap; conditional on one workflow,PDC101 sorted external holdout,2098,official hierarchy; external_holdout=True; one workflow fit
+MMoCHi,monocyte,1,0.996996996996997,0.005102046690165674,334,cell bootstrap; conditional on one workflow,PDC101 sorted external holdout,2098,official hierarchy; external_holdout=True; one workflow fit

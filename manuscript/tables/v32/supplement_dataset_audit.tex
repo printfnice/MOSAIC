@@ -1,0 +1,11 @@
+\begin{tabular}{>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}p{1.6cm}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}p{6.4cm}}
+\toprule
+Protocol & Source & Cells & Labels & Split unit & Independence boundary \\
+\midrule
+PBMC 3P strict L3 & GSE164378 & 100,000 of 161,764 & 58 & cell & All 8 donors and all 24 samples occur in train, validation and test; fixed architecture benchmark, not donor-independent. \\
+COVID-19 full & E-MTAB-10026 & 647,366 & 51 & cell & Patients overlap across train, validation and test; used for scale, not patient-level generalization. \\
+COVID-19 patient-disjoint & E-MTAB-10026 & 647,366 & 51 train / 49 test & patient & 90/20/20 nonoverlapping patients; primary individual-level generalization experiment. \\
+GSE164378 5P exact-L3 & GSE164378 & 49,146 after singleton exclusion & 53 & cell & The same eight donors as the 3P cohort occur across splits; assay-cohort replication, not independent-donor external validation. \\
+COMBAT/COVID parent-safe & COMBAT Cell 2022 & 2,000 train / 500 validation / 10,000 test per seed & 5 parent labels & external holdout seed & PBMC reference to an independent disease cohort; target labels are evaluation-only, and base DCRG is separated from cross-method consensus. \\
+\bottomrule
+\end{tabular}

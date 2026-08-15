@@ -1,0 +1,18 @@
+\begin{tabular}{lllrrl}
+\toprule
+Dataset & Comparator & Metric & Difference & 95\% CI & Inference \\
+\midrule
+PBMC strict L3 & MLP / early fusion & ACC & $+0.0086$ & [+0.0079, +0.0093] & paired\_seed\_t \\
+PBMC strict L3 & MLP / early fusion & W-F1 & $+0.0095$ & [+0.0089, +0.0102] & paired\_seed\_t \\
+PBMC strict L3 & MLP / early fusion & M-F1 & $+0.0308$ & [+0.0257, +0.0360] & paired\_seed\_t \\
+COVID-19 full & MLP / early fusion & ACC & $+0.0059$ & [+0.0037, +0.0081] & paired\_seed\_t \\
+COVID-19 full & MLP / early fusion & W-F1 & $+0.0068$ & [+0.0030, +0.0106] & paired\_seed\_t \\
+COVID-19 full & RNA logistic & M-F1 & $-0.0033$ & [-0.0201, +0.0135] & paired\_seed\_t \\
+GSE164378 exact-L3 & MLP / early fusion & ACC & $+0.0046$ & [-0.0007, +0.0096] & paired\_cell\_bootstrap \\
+GSE164378 exact-L3 & MLP / early fusion & W-F1 & $+0.0046$ & [-0.0009, +0.0098] & paired\_cell\_bootstrap \\
+GSE164378 exact-L3 & MLP / early fusion & M-F1 & $+0.0403$ & [+0.0006, +0.0625] & paired\_cell\_bootstrap \\
+COMBAT/COVID shift & scNym & ACC & $+0.0065$ & [-0.0002, +0.0133] & paired\_seed\_t \\
+COMBAT/COVID shift & scNym & W-F1 & $+0.0072$ & [-0.0002, +0.0146] & paired\_seed\_t \\
+COMBAT/COVID shift & scNym & M-F1 & $+0.0434$ & [-0.0071, +0.0940] & paired\_seed\_t \\
+\bottomrule
+\end{tabular}
