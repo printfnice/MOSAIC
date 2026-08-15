@@ -12,7 +12,7 @@ This repository accompanies the MOSAIC manuscript. It contains lightweight sourc
 - `evidence/`: compact CSV evidence tables used by the manuscript.
 - `testdata/`: synthetic smoke-test fixture; this is not scientific evidence.
 - `manuscript/`: current manuscript PDF, supplementary PDF, LaTeX sources and selected figure/table assets.
-- `demo/`: ten preprocessed demonstration cells and a runnable audit-record generator.
+- `demo/`: ten preprocessed demonstration cells and a runnable checkpoint-free audit-record validator.
 - `release_manifest.csv`: file-level source manifest with SHA-256 hashes.
 - `CHECKSUMS.sha256`: checksums for packaged files.
 - `commands.txt`: main reproduction commands used for the evidence package.
@@ -48,7 +48,7 @@ Recent manuscript-facing additions:
 
 ## Data And Artifacts
 
-Raw datasets are available from the public accessions described in the manuscript. GitHub does not host raw participant data, large cached tensors, full prediction files or checkpoints. The repository includes a CPU demo that emits an audit record from ten preprocessed demonstration cells and compact evidence tables; the demo is a smoke test and does not reproduce the full scientific training runs. No Zenodo DOI is claimed.
+Raw datasets are available from the public accessions described in the manuscript. GitHub does not host raw participant data, large cached tensors, full prediction files or checkpoints. The repository includes a CPU demo that validates a selected audit record for ten preprocessed demonstration cells and compact evidence tables; it checks the released schema and consistency without performing model inference or reproducing the full scientific training runs. No Zenodo DOI is claimed.
 
 ## Manuscript
 
@@ -58,4 +58,4 @@ Raw datasets are available from the public accessions described in the manuscrip
 
 ## Citation
 
-For the software snapshot, cite the MOSAIC manuscript and the tagged GitHub snapshot `v8.1.2-submission`. No archival DOI is assigned to this snapshot.
+For the software snapshot, cite the MOSAIC manuscript and the tagged GitHub snapshot `v8.1.3-submission`. No archival DOI is assigned to this snapshot.
