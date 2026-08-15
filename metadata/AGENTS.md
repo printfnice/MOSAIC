@@ -22,5 +22,5 @@ Excluded by design:
 - Local conda environments, machine paths and private credentials.
 
 The GitHub repository is intended as a lightweight source and evidence package.
-The `v8.1-submission` snapshot contains the CPU audit demo and compact evidence
+The `v8.1.1-submission` snapshot contains the CPU audit demo and compact evidence
 tables; no checkpoint, Zenodo DOI or raw-data archive is claimed for this release.

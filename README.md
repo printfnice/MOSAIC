@@ -58,4 +58,4 @@ Raw datasets are available from the public accessions described in the manuscrip
 
 ## Citation
 
-For the software snapshot, cite the MOSAIC manuscript and the tagged GitHub snapshot `v8.1-submission`. No archival DOI is assigned to this snapshot.
+For the software snapshot, cite the MOSAIC manuscript and the tagged GitHub snapshot `v8.1.1-submission`. No archival DOI is assigned to this snapshot.
