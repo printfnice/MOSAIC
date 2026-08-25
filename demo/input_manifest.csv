@@ -1,11 +1,4 @@
-cell_id
-L1_AAACCCAAGACATACA
-L1_AAACCCACATCGGTTA
-L1_AAACCCAGTGGAACAC
-L1_AAACCCATCTGCGGAC
-L1_AAACGAAAGTTACTCG
-L1_AAACGAACAATGAGCG
-L1_AAACGAACACTCCTTG
-L1_AAACGAACAGCATCTA
-L1_AAACGAATCCTCACCA
-L1_AAACGAATCTCACTCG
+record_type,name,shape,dtype,preprocessing,sha256
+array,gene,"(10, 3000)",float32,"preprocessed RNA feature matrix; packaged demo fixture only",76acd55cd2f91f6768738a5d220dc178e67c2585cb738073c8184910bd40bc5b
+array,protein,"(10, 224)",float32,"preprocessed ADT feature matrix; packaged demo fixture only",4bebc7446cf82b3595dc96341ef61d38166a033f39b55fec6320c637c01b210b
+array,cell_id,"(10,)","<U21","stable cell identifiers; no biological labels included",a42a84a75acf9105a82f1eea677e0fbaf1520d78938e7031a9808fa130ee8dc0

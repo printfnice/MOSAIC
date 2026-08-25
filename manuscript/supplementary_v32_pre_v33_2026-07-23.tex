@@ -1,0 +1,209 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=0.72in]{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\setlength{\emergencystretch}{2em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+
+\title{Supplementary Material for\\
+MOSAIC-N: auditable margin-gated multimodal annotation of fine-grained CITE-seq cell types}
+\author{Hai Yang, LinHao Wu, Dan Zhou, Tianyi Zhou, Qin Zhou,\\
+Ting Xiao, Qian Zhang, Jing Zhang, and Zhe Wang}
+\date{Draft generated 23 July 2026}
+
+\begin{document}
+\maketitle
+
+\section{Scope and evidence policy}
+
+This supplement reports the numerical evidence underlying the branch-supervised classifier, training-stage objective, margin-gated branch arbitration and learned hierarchy-aware sibling refinement (HSR). The PBMC analysis uses a fixed 100,000-cell L3 cache containing 69,999 training, 15,001 validation and 15,000 test cells, 3,000 train-selected genes, 224 proteins and 58 classes. Ten model seeds (1--9 and 42) use the same data split and preprocessing artifacts. Test labels are used only after validation-based checkpoint selection.
+
+The PBMC split is cell-level: all eight donors and all 24 samples occur in training, validation and test. GSE164378 5P contains the same eight donors as the PBMC 3P cohort, and its exact-L3 experiment is also cell-level. These protocols are architecture and assay-cohort benchmarks, not independent-donor validation. The COVID-19 patient-disjoint split and COMBAT disease-shift protocol provide the individual- and cohort-level generalization evidence.
+
+\section{Dataset lineage and split units}
+
+Table~\ref{tab:dataset-audit} states the biological source, split unit and independence boundary for every protocol. The 3P and 5P cohorts share GEO accession GSE164378 and the same eight donors. Their cell identifiers do not overlap, but they are not independent donor cohorts.
+
+\begin{table}[H]
+\centering
+\caption{Dataset lineage, split unit and independence boundary.}
+\label{tab:dataset-audit}
+\scriptsize
+\setlength{\tabcolsep}{2.2pt}
+\resizebox{\textwidth}{!}{%
+\input{tables/v32/supplement_dataset_audit.tex}
+}
+\end{table}
+
+\section{Ten-seed learned-HSR experiment}
+
+The paired retraining analysis compares the final learned-HSR configuration with a matching no-HSR control for every model seed. Both methods use the same strict split and train-only preprocessing. The HSR configuration fixes the two sibling groups before training, sets the auxiliary HSR loss weight to 0.20 and bounds the learned gate to $[0.02,0.20]$. Checkpoints are selected by validation macro F1 subject to validation accuracy and weighted-F1 tolerances of 0.0015.
+
+\begin{table}[H]
+\centering
+\caption{Per-seed PBMC strict-L3 metrics for retrained no-HSR controls and learned-HSR models. The last column is the learned-HSR minus control macro-F1 difference.}
+\label{tab:seed-pairing}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\input{tables/v30/supplement_seed_pairing.tex}
+\end{table}
+
+Across ten learned-HSR models, the mean accuracy, weighted F1 and macro F1 were 0.9209, 0.9200 and 0.8437. The corresponding 95\% Student-$t$ interval margins were 0.0007, 0.0007 and 0.0051. Macro-F1 changes had mixed signs and were sensitive to rare classes; seed 3 produced the largest positive paired change, while seed 4 produced the largest negative paired change.
+
+\begin{table}[H]
+\centering
+\caption{Paired statistical tests for learned-HSR effects. ``Retrained control'' compares separately trained learned-HSR and no-HSR models. ``Same checkpoint'' disables the HSR correction inside each selected learned-HSR checkpoint. Wilcoxon $P$ values use the one-sided greater alternative; paired $t$ tests are two-sided. No row meets a 0.05 significance threshold.}
+\label{tab:statistics}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\input{tables/v30/supplement_statistics.tex}
+\end{table}
+
+The retrained comparison yields positive mean differences for all three aggregate metrics, but every 95\% paired-difference interval crosses zero. These data support the statement that the final architecture preserves high PBMC performance; they do not support a claim that HSR significantly or uniformly improves aggregate performance.
+
+\section{Same-checkpoint intervention audit}
+
+For the same-checkpoint analysis, each learned-HSR checkpoint is evaluated twice: once with its learned refinement enabled and once at its base logits before refinement. This isolates the immediate effect of HSR from differences introduced by retraining. Across 150,000 test predictions, HSR changes 141 labels (0.094\%). Of these, 63 are wrong-to-correct, 55 are correct-to-wrong and 23 remain wrong after switching to another label, giving eight net corrections.
+
+\begin{table}[H]
+\centering
+\caption{Per-seed same-checkpoint HSR transitions. ``Changed'' counts refined labels that differ from base predictions. Net is wrong-to-correct minus correct-to-wrong.}
+\label{tab:same-checkpoint}
+\scriptsize
+\setlength{\tabcolsep}{3.4pt}
+\input{tables/v30/supplement_same_checkpoint.tex}
+\end{table}
+
+The same-checkpoint mean changes are $+0.00005$ accuracy, $+0.00005$ weighted F1 and $+0.00004$ macro F1, with no statistically significant aggregate effect. The intervention is therefore quantitatively sparse and auditable, but not consistently beneficial.
+
+\section{Fixed sibling-group effects}
+
+HSR can produce nonzero local delta logits only for two prespecified groups: CD4 TCM\_3/CD4 TEM\_3/CD4 TEM\_4 and CD8 Naive/CD8 Naive\_2/CD8 TCM\_1. Table~\ref{tab:active-classes} reports same-checkpoint F1 changes for all six active labels. The intervals are seed-level Student-$t$ intervals and are wide for low-support classes.
+
+\begin{table}[H]
+\centering
+\caption{Same-checkpoint per-class HSR effects for the six fixed sibling labels. Positive and negative counts exclude exact zero changes.}
+\label{tab:active-classes}
+\small
+\input{tables/v30/supplement_active_classes.tex}
+\end{table}
+
+Mean effects are positive for CD4 TEM\_3, CD4 TEM\_4, CD8 Naive\_2 and CD8 TCM\_1, approximately zero for CD4 TCM\_3 and slightly negative for CD8 Naive. None of these mean effects has a 95\% interval that excludes zero. These results are reported as a module-behavior audit, not as evidence for stable per-class superiority.
+
+\section{Uncertainty definitions}
+
+The main performance matrix reports a point estimate followed by a 95\% confidence-interval margin. For methods with independent model seeds, the interval is a Student-$t$ interval over seed-level metrics and reflects training-run variation under the fixed split. For a single saved prediction artifact or a fixed ensemble, the interval is obtained by cell-level bootstrap resampling and reflects prediction-sample uncertainty, not between-training-run variation. These interval types answer different questions and are not interpreted as interchangeable estimates of model instability.
+
+\section{Baseline protocol matrix}
+
+Table~\ref{tab:baseline-protocols} records modality, deployment type and interval mode for every closed-set main-table method--dataset pair. It excludes COMBAT because the cross-method consensus is not a MOSAIC-N deployment. Seed and cell-bootstrap intervals answer different uncertainty questions.
+
+\input{tables/v32/supplement_closed_set_protocols.tex}
+
+\section{GSE164378 5P bounded-HSR experiment}
+
+The GSE164378 5P HSR experiment used three paired seeds and groups derived only from the training label-to-parent mapping. The bounded gate was fixed to $[0.02,0.20]$ before execution. Table~\ref{tab:external-hsr} shows mixed effects and no interval excluding zero. This is an assay-cohort experiment within the same eight-donor study, not independent-donor external validation.
+
+\begin{table}[H]
+\centering
+\caption{Paired GSE164378 base and bounded-HSR results.}
+\label{tab:external-hsr}
+\small
+\input{tables/v31/supplement_external_hsr.tex}
+\end{table}
+
+\section{Calibration and inference-time module ablations}
+
+Calibration was calculated from saved test probabilities for the ten PBMC seeds. ECE uses 15 equal-width confidence bins; the multiclass Brier score sums squared class-probability errors per cell; NLL is the mean negative log probability assigned to the true label. HSR did not significantly change any calibration metric (Table~\ref{tab:calibration}).
+
+\begin{table}[H]
+\centering
+\caption{PBMC calibration with and without learned HSR. Lower values are better.}
+\label{tab:calibration}
+\small
+\input{tables/v31/supplement_calibration.tex}
+\end{table}
+
+The checkpoint ablation evaluates branch logits, uniform fusion, margin-gated arbitration before HSR and final learned-HSR output without retraining (Table~\ref{tab:ablations}). The full output is consistently better than either modality branch alone. Its ACC and W-F1 exceed the fusion branch, while the fusion branch has slightly higher M-F1. Differences from uniform fusion and same-checkpoint HSR removal are small and nonsignificant.
+
+\begin{table}[H]
+\centering
+\caption{Full margin-gated learned-HSR output minus inference-time ablation variants over ten PBMC checkpoints.}
+\label{tab:ablations}
+\scriptsize
+\input{tables/v31/supplement_ablations.tex}
+\end{table}
+
+\section{Training-stage class-balance ablation}
+
+Table~\ref{tab:training-ablation} uses the same PBMC random-cell split and three seeds per objective. ``No class weighting'' is the distilled reference objective. Balanced CE improves rare-class macro F1 and reduces the number of classes with F1 below 0.60, whereas balanced CE+KD recovers ACC and weighted F1. These rows quantify an optimization trade-off and are not a direct HSR ablation.
+
+\begin{table}[H]
+\centering
+\caption{Three-seed PBMC training-stage ablation.}
+\label{tab:training-ablation}
+\small
+\input{tables/v32/supplement_training_ablation.tex}
+\end{table}
+
+\section{COMBAT base-method and consensus attribution}
+
+Table~\ref{tab:combat-attribution} uses the same aligned external holdout seeds 44/45/46. MOSAIC-N DCRG, scANVI and scNym are attributable methods. The final row is a frozen rule that consumes predictions from all three methods; it is not a MOSAIC-N single-model result. COMBAT labels are evaluation-only for every row. The large macro-F1 intervals reflect three heterogeneous holdout subsets.
+
+\begin{table}[H]
+\centering
+\caption{COMBAT/COVID parent-safe performance with single methods separated from the cross-method consensus. Values are mean $\pm$ 95\% Student-$t$ margin over three aligned holdout seeds.}
+\label{tab:combat-attribution}
+\small
+\input{tables/v32/supplement_combat_attribution.tex}
+\end{table}
+
+\section{Patient-disjoint COVID-19 generalization}
+
+The patient-level split assigns 90/20/20 nonoverlapping patients and 453,073/81,318/112,975 cells to training/validation/test. No validation or test label is absent from training. B\_malignant occurs in one patient and is therefore train-only; the test set contains 49 observed labels. The same split, 1,000 train-selected genes and training budgets were used for three MOSAIC-N and MLP seeds.
+
+\begin{table}[H]
+\centering
+\caption{Paired patient-disjoint COVID-19 results over three model seeds.}
+\label{tab:patient-generalization}
+\small
+\input{tables/v31/supplement_patient_generalization.tex}
+\end{table}
+
+\section{Reproducibility and artifact index}
+
+The Supplement tables are generated by
+\texttt{experiments/exp\_baseline\_matrix/build\_v30\_supplement\_tables.py} and
+\texttt{build\_v31\_supplement\_tables.py} and the attribution-safe V32 builder
+\texttt{build\_v32\_manuscript\_tables.py} from immutable CSV summaries in
+\texttt{results/tables/}. The generated LaTeX fragments, copied source CSV files and fragment-to-source manifests are stored under \texttt{tables/v30/}, \texttt{tables/v31/} and \texttt{tables/v32/}. The primary PBMC artifacts are:
+
+\begin{itemize}
+\item \texttt{mosaic\_n\_v30\_learned\_hsr\_seed\_metrics\_2026-07-23.csv};
+\item \texttt{mosaic\_n\_v30\_learned\_hsr\_paired\_statistics\_2026-07-23.csv};
+\item \texttt{mosaic\_n\_v30\_learned\_hsr\_same\_checkpoint\_effects\_2026-07-23.csv};
+\item \texttt{mosaic\_n\_v30\_learned\_hsr\_same\_checkpoint\_summary\_2026-07-23.csv};
+\item \texttt{mosaic\_n\_v30\_learned\_hsr\_same\_checkpoint\_per\_class\_2026-07-23.csv}.
+\end{itemize}
+
+Each newly executed seed directory contains a configuration, run log, selected checkpoint and prediction artifact. GSE164378 and E-MTAB-10026 accessions are now stated in the manuscript. A permanent public repository URL, archived release DOI, exact COMBAT source record, processed split manifests and software license remain mandatory submission metadata and must be supplied before submission.
+
+\section{Interpretation boundaries}
+
+The evidence package supports four narrow conclusions. First, the learned-HSR PBMC model has strong closed-set L3 performance over ten seeds on a fixed random-cell architecture benchmark. Second, the training objective exposes a measurable rare-class versus aggregate-metric trade-off. Third, HSR is an in-model learned module whose sparse actions can be assigned helpful, harmful or wrong-to-wrong outcomes. Fourth, patient-, assay- and disease-shift evidence is reported with explicit split and deployment boundaries.
+
+The package does not establish a significant aggregate HSR gain, a significant advantage of margin gating over uniform fusion, calibrated branch reliability, causal biological marker discovery, one unchanged architecture dominating all datasets, complete open-set recognition or robustness to arbitrary missing protein panels. The patient-disjoint result supports ACC and W-F1 against matched MLP seeds, but not M-F1 and not the train-only B\_malignant label. PBMC and 5P random-cell results are not donor-independent. COMBAT consensus is not attributable to MOSAIC-N alone. These boundaries remain part of the claims.
+
+\end{document}

@@ -1,0 +1,75 @@
+{
+  "round": "V8.2",
+  "date": "2026-08-16",
+  "plan": "docs/plans/2026-08-16-v8.2-missing-modality-and-pdc-audit-closure.md",
+  "status": "completed_with_caveats",
+  "manuscript_claims_changed": false,
+  "evidence_registry_updated": true,
+  "review_ledger_updated": true,
+  "experiments": [
+    {
+      "id": "pbmc_size_matched_random_adt_null",
+      "status": "complete",
+      "environment": "TOSICA",
+      "script": "experiments/exp_missing_modality/mosaic_n_v82/run_size_matched_random_adt_null.py",
+      "test": "experiments/exp_missing_modality/mosaic_n_v82/test_size_matched_random_adt_null.py",
+      "artifact_dir": "results/experiments/v8.2_missing_modality_pdc_audit/pbmc_random_adt_null",
+      "units": 24,
+      "rows": 240,
+      "new_random_rows": 48,
+      "protocol": "PBMC v33 donor-disjoint frozen checkpoints; six- and fifteen-feature random masks matched to targeted mask counts; no test-label selection",
+      "summary": {
+        "random_size_matched_6_mean_delta_weighted_f1": -0.0004903652,
+        "marker_memory_mean_delta_weighted_f1": -0.0025549366,
+        "random_size_matched_15_mean_delta_weighted_f1": -0.0018314733,
+        "marker_tcell_mean_delta_weighted_f1": -0.0086934081,
+        "random_size_matched_6_negative_units": 17,
+        "random_size_matched_15_negative_units": 22
+      },
+      "claim_boundary": "targeted-mask sensitivity is larger than same-size random null on this protocol; arbitrary missing-panel robustness is not established"
+    },
+    {
+      "id": "pdc101_paired_audit",
+      "status": "complete",
+      "environment": "MMoCHi",
+      "script": "experiments/exp_generalization/mosaic2_pdc101/run_pdc101_paired_audit.py",
+      "test": "experiments/exp_generalization/mosaic2_pdc101/test_pdc101_paired_audit.py",
+      "artifact_dir": "results/experiments/v8.2_missing_modality_pdc_audit/pdc101_paired_audit",
+      "n_pairs": 2098,
+      "summary": {
+        "mosaic_accuracy": 0.9375595806,
+        "mmochi_accuracy": 0.9346997140,
+        "mosaic_only_correct": 80,
+        "mmochi_only_correct": 74,
+        "mcnemar_exact_p_two_sided": 0.6871492188,
+        "weight_comparison_status": "not_estimable"
+      },
+      "claim_boundary": "small paired point-estimate difference is non-significant; no cross-method modality-weight claim"
+    },
+    {
+      "id": "secondary_cohort_audit_transfer",
+      "status": "complete_with_scope_caveat",
+      "environment": "TOSICA",
+      "script": "experiments/exp_generalization/mosaic2_pdc101/run_secondary_cohort_audit_transfer.py",
+      "test": "experiments/exp_generalization/mosaic2_pdc101/test_secondary_cohort_audit_transfer.py",
+      "artifact_dir": "results/experiments/v8.2_missing_modality_pdc_audit/secondary_cohort",
+      "n_cells": 49147,
+      "n_donors": 8,
+      "summary": {
+        "transfer_type": "same-study assay-cohort replication",
+        "independent_external_cohort": false,
+        "accept_rate": 1.0,
+        "l3_accuracy": 0.7289152949,
+        "parent_safe_rate": 0.8974505056
+      },
+      "claim_boundary": "protocol transfer artifact only; not independent donor or cross-study validation"
+    }
+  ],
+  "verification": {
+    "pbmc_unit_completeness": "24/24",
+    "pdc101_exact_join": "2098/2098",
+    "secondary_prediction_id_join": "49147/49147",
+    "secondary_policy_selection": "validation_only",
+    "gpu": "RTX 4090; TOSICA and MMoCHi CUDA available"
+  }
+}

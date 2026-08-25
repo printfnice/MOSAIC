@@ -1,0 +1,2 @@
+dataset_name,observed_donors,main_protocol_donors,same_donor_set,same_study_indicator,independent_external_cohort,transfer_type,scope_caveat
+GSE164378 5P,"['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8']","['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8']",True,True,False,same-study assay-cohort replication,not independent donor validation; same GSE164378 study and donor set

@@ -1,0 +1,261 @@
+%%
+%% MOSAIC-N Bioinformatics manuscript draft V32
+%% Credibility-first method, attribution and dataset-lineage repair, 2026-07-23.
+%%
+\documentclass[unnumsec,webpdf,contemporary,large,numbered]{oup-authoring-template}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\setlength{\emergencystretch}{2em}
+
+% OUP template v1.2 resets natbib to author-year mode when reading plain
+% \bibitem entries, which renders numbered citations as empty brackets.
+\makeatletter
+\renewcommand\NAT@force@numbers{\global\NAT@numberstrue}
+\makeatother
+
+\begin{document}
+
+\journaltitle{Bioinformatics}
+\DOI{DOI added during production}
+\copyrightyear{2026}
+\pubyear{2026}
+\vol{XX}
+\issue{x}
+\access{Published: Date added during production}
+\appnotes{Original Paper}
+\firstpage{1}
+
+\title[MOSAIC-N]{MOSAIC-N: auditable margin-gated multimodal annotation of fine-grained CITE-seq cell types}
+
+\author[1,2,$\dagger$]{Hai Yang}
+\author[2,$\dagger$]{LinHao Wu}
+\author[3,4]{Dan Zhou}
+\author[5]{Tianyi Zhou}
+\author[1,2]{Qin Zhou}
+\author[1,2]{Ting Xiao}
+\author[1,2]{Qian Zhang}
+\author[1,2]{Jing Zhang}
+\author[1,2,$\ast$]{Zhe Wang}
+
+\address[1]{\orgdiv{Key Laboratory of Smart Manufacturing in Energy Chemical Process, Ministry of Education}, \orgname{East China University of Science and Technology}, \orgaddress{\postcode{200237}, \state{Shanghai}, \country{China}}}
+\address[2]{\orgdiv{Department of Computer Science and Engineering}, \orgname{East China University of Science and Technology}, \orgaddress{\postcode{200237}, \state{Shanghai}, \country{China}}}
+\address[3]{\orgdiv{Department of Big Data in Health Science}, \orgname{Zhejiang University School of Medicine}, \orgaddress{\state{Hangzhou}, \country{China}}}
+\address[4]{\orgdiv{Center of Clinical Big Data and Analytics}, \orgname{The Second Affiliated Hospital, Zhejiang University School of Medicine}, \orgaddress{\state{Hangzhou}, \country{China}}}
+\address[5]{\orgdiv{Department of Electrical Engineering and Computer Science}, \orgname{University of Michigan}, \orgaddress{\postcode{48109}, \state{Michigan}, \country{USA}}}
+
+\corresp[$\ast$]{Corresponding author. \href{mailto:wangzhe@ecust.edu.cn}{wangzhe@ecust.edu.cn}}
+\corresp[$\dagger$]{These authors contributed equally to this work.}
+
+\received{Date}{0}{2026}
+\revised{Date}{0}{2026}
+\accepted{Date}{0}{2026}
+
+\abstract{
+\textbf{Motivation:} Fine-grained CITE-seq annotation requires multimodal evidence while exposing rare-class and hierarchy errors.\\
+\textbf{Results:} We present MOSAIC-N, a branch-supervised RNA--ADT classifier with train-only distillation, margin-gated arbitration and bounded hierarchy-aware sibling refinement (HSR). On a fixed 58-class PBMC random-cell benchmark, ten seeds achieved 0.9209 ACC, 0.9200 W-F1 and 0.8437 M-F1. On patient-disjoint COVID-19 data, three matched seeds exceeded an early-fusion MLP in ACC and W-F1, but not significantly in M-F1. HSR changed 141/150,000 same-checkpoint predictions and yielded eight net corrections; neither HSR nor margin gating had a significant aggregate ablation effect. We separate random-cell, patient-disjoint, assay-cohort, ensemble and disease-shift evidence.\\
+\textbf{Availability and Implementation:} Stable public source and archive URLs will be supplied before submission.\\
+\textbf{Contact:} \href{mailto:wangzhe@ecust.edu.cn}{wangzhe@ecust.edu.cn}\\
+\textbf{Supplementary information:} Supplementary data will be available online.
+}
+
+\keywords{single-cell annotation, CITE-seq, multimodal learning, hierarchy-aware classification, auditability}
+\keywords[Abbreviations]{ACC: accuracy; ADT: antibody-derived tag; CITE-seq: cellular indexing of transcriptomes and epitopes by sequencing; DCRG: domain-calibrated reliability gate; HSR: hierarchy-aware sibling refinement; KD: knowledge distillation; M-F1: macro F1; W-F1: weighted F1}
+
+\maketitle
+
+\section{Introduction}
+
+Single-cell RNA sequencing and CITE-seq jointly measure transcriptomic programs and surface-protein markers at cellular resolution \citep{satija2015,butler2018,stuart2019,hao2021,stoeckius2017cite,luecken2019}. RNA expression captures broad cell states and activation programs, whereas antibody-derived tags (ADTs) measure canonical lineage and differentiation markers. Reference maps have resolved increasingly specific immune populations \citep{villani2017,triana2021}, but supervised annotation becomes difficult when labels are refined beyond broad lineages.
+
+Fine immune labels are hierarchical. T cells separate into CD4 and CD8 populations and then into naive, central-memory, effector-memory, regulatory, proliferating and activated states. Errors therefore concentrate at local sibling boundaries that share most biological characteristics and differ through a small number of markers. Aggregate accuracy can conceal these failures, especially for rare classes.
+
+CellTypist, scmap, scPred, scClassify and scNym provide reference-based, classifier-based or semi-supervised annotation \citep{aran2019,kiselev2018scmap,alquicira2020scpred,lin2020scclassify,kimmel2021scnym,dominguezconde2022,abdelaal2019}. TOSICA incorporates prior knowledge through a transformer architecture \citep{chen2023tosica}, whereas scVI, scANVI, totalVI and transfer-learning systems provide probabilistic representation learning, multimodal integration and reference mapping \citep{lopez2018,xu2021scvi,gayoso2021totalvi,gayoso2022scvi,lotfollahi2022}. Multimodal integration benchmarks show that rankings depend on task, modality and dataset, making protocol-level attribution essential \citep{haghverdi2018,korsunsky2019,luecken2022,argelaguet2021,liu2025multitaskbenchmark}.
+
+Recent methods make hierarchy or biological programs explicit. MMoCHi uses marker-defined multimodal classification hierarchies and does not require a reference atlas \citep{caron2025mmochi}; starCAT annotates T-cell programs and states with biologically interpretable gene-expression programs \citep{kotliar2025starcat}. MOSAIC-N addresses a different setting: reference-trained, closed-set L3 classification from high-dimensional RNA and ADT measurements. It does not claim the marker interpretability of MMoCHi or starCAT. Its technical focus is instead to expose how modality-specific branches are combined and to constrain learned local corrections to declared sibling labels.
+
+We introduce MOSAIC-N, a dual-modal classifier with four linked components. RNA, ADT and fused representations receive separate supervision; a fixed early-fusion teacher supplies training-cell soft targets; branch logits are combined by a learned margin-gated arbitration layer; and a bounded HSR head can modify only declared sibling logits. Attention and sparse-expert models motivate modular prediction pathways \citep{vaswani2017,shazeer2017moe,zhou2022expert}, but MOSAIC-N deliberately uses compact multilayer perceptrons so that the contribution is not confounded by a larger backbone. The resulting interface records branch weights, HSR gates and every changed prediction.
+
+We evaluate three distinct questions. A fixed PBMC 3P random-cell split tests architecture and rare-class behavior; a 647,366-cell COVID-19 experiment tests scale, with a second patient-disjoint split testing individual-level generalization; and GSE164378 5P plus COMBAT test assay-cohort replication and disease shift. The PBMC 3P and 5P cohorts originate from the same GSE164378 study and contain the same eight donors; they are not presented as independent-donor external validation. Fixed ensembles and cross-method consensus are separated from attributable single-method results.
+
+\section{System and methods}
+
+\subsection{Problem formulation and study design}
+
+For each cell, the model receives an RNA vector $\mathbf{x}^{(r)}\in\mathbb{R}^{G}$ and an ADT vector $\mathbf{x}^{(p)}\in\mathbb{R}^{P}$ and predicts a label $y\in\mathcal{Y}_{L3}$. The PBMC, COVID-19 and GSE164378 5P tasks are closed set: every evaluated test label occurs in training. COMBAT/COVID is evaluated after mapping source predictions and target references to five parent-safe labels. These protocols answer different questions and are not pooled into one statistical ranking.
+
+PBMC 3P strict L3 is the primary architecture benchmark \citep{hao2021}. A fixed cache contains 100,000 paired cells sampled from 161,764 cells, 3,000 train-selected genes, 224 proteins and 58 classes, divided into 69,999 training, 15,001 validation and 15,000 test cells. Ten model seeds (1--9 and 42) share the same split and preprocessing artifacts. This is a random-cell split: all eight donors and all 24 samples occur in training, validation and test. It therefore measures performance within the observed cohort, not generalization to unseen donors.
+
+The full E-MTAB-10026 COVID-19 protocol contains 647,366 cells and 51 classes, with 453,156/97,105/97,105 training/validation/test cells \citep{stephenson2021}. This is also a cell-level split and patients overlap across partitions. The patient-disjoint extension assigns 453,073/81,318/112,975 cells from 90/20/20 nonoverlapping patients. All evaluation labels occur in training, but the single-patient B\_malignant label is train-only and the patient-disjoint test set contains 49 observed labels.
+
+The GSE164378 5P cohort contains 49,147 paired cells, 54 proteins and the same eight donors as the 3P cohort \citep{hao2021}. After excluding the singleton ASDC\_pDC class by a prespecified minimum-support rule, the 53-class random-cell split contains 34,402/7,372/7,372 cells and 1,500 train-selected genes. This experiment is an assay-cohort replication with a smaller ADT panel, not independent-donor validation. COMBAT/COVID uses 2,000 PBMC training cells, 500 validation cells and 10,000 external cells per aligned holdout seed, with 290 shared genes and 121 shared proteins under parent-safe labels \citep{combat2022}. COMBAT labels are used only for final evaluation.
+
+\subsection{Preprocessing, baselines and leakage controls}
+
+Cells were divided before fitting feature selection or scaling. Gene selection and RNA/ADT transformation parameters were estimated from training cells and applied unchanged to validation and test cells. Test labels were used only for final metrics and post hoc audits. The PBMC sibling groups were frozen before the final ten-seed experiment but originated in earlier exploratory boundary diagnostics; they are not presented as an independently discovered biological hierarchy. For the 5P HSR experiment, sibling groups were generated only from the training label-to-parent mapping.
+
+The closed-set matrix includes MLP early fusion, RNA logistic regression, CellTypist, scANVI, totalVI and scNym \citep{dominguezconde2022,xu2021scvi,gayoso2021totalvi,kimmel2021scnym}. Each cell is tied to a prediction artifact and deployment type. The PBMC MLP is also the fixed seed-42 teacher used to generate training-cell soft targets for MOSAIC-N. Consequently, comparison with this artifact quantifies student-versus-teacher performance under the fixed teacher but not MLP training variance. No result for scmap, scPred, scClassify, TOSICA, popV or scPoli is claimed in the present Supplement; these methods remain related-work or future matched-protocol comparators \citep{kiselev2018scmap,alquicira2020scpred,lin2020scclassify,chen2023tosica}.
+
+COMBAT uses a separately fitted parent-consistent domain-calibrated reliability gate (DCRG), not the PBMC HSR checkpoint. RNA and ADT prototype branches are fitted on PBMC training cells, and branch-distance/margin support is calibrated on PBMC validation cells. ADT can replace the RNA fine label only when it is supported, has a larger margin and maps to the same parent; otherwise the parent prediction falls back to RNA. The frozen rule does not use COMBAT labels for policy selection. A later DCRG--scANVI--scNym consensus is reported as a separate composite deployment.
+
+\subsection{Evaluation and uncertainty}
+
+We report ACC, W-F1, M-F1 and per-class F1. Multi-seed uncertainty is a 95\% Student-$t$ interval. A cell-level bootstrap interval for one saved deployment or fixed ensemble is conditional on one fit, does not capture training variance and may be anti-conservative for donor-correlated cells. The modes are marked $S$ and $B$ and are not interchangeable. HSR/no-HSR comparisons use paired $t$ tests with Wilcoxon sensitivity analyses. Three-seed patient-disjoint intervals remain imprecise. These are mechanism audits without multiplicity adjustment; no significance claim is made when a paired 95\% interval includes zero.
+
+\section{Algorithm}
+
+\subsection{Branch-supervised multimodal classifier}
+
+RNA and ADT encoders produce $\mathbf{h}_{r}=f_r(\mathbf{x}^{(r)})$ and $\mathbf{h}_{p}=f_p(\mathbf{x}^{(p)})$. A fusion encoder maps their concatenation to $\mathbf{h}_{f}=f_f([\mathbf{h}_{r};\mathbf{h}_{p}])$. Three linear heads produce L3 logits $\mathbf{z}_{r}$, $\mathbf{z}_{p}$ and $\mathbf{z}_{f}$. Separate cross-entropy terms keep each branch predictive instead of allowing the fused path to absorb all supervision.
+
+\subsection{Margin-gated branch arbitration}
+
+For branch $b$, the arbitration signal is the top-two logit margin $m_b=z_b^{(1)}-z_b^{(2)}$. With learned branch bias $\beta_b$ and temperature $\tau$, the weights and base logits are
+\begin{equation}
+w_b=\operatorname{softmax}_b((m_b+\beta_b)/\tau),\qquad
+\mathbf{z}=\sum_{b\in\{r,p,f\}} w_b\mathbf{z}_b.
+\end{equation}
+The margin is an ordering signal, not a calibrated probability of branch correctness. We therefore use ``margin-gated'' rather than treating $w_b$ as calibrated reliability. Unavailable branches can be masked before the softmax, although arbitrary missing-panel robustness is not a main claim of this paper. The PBMC configuration uses 256-dimensional embeddings, 512-unit modality hidden layers and 512/256-unit fusion layers.
+
+\subsection{Learned hierarchy-aware sibling refinement}
+
+HSR receives $\mathbf{h}_{f}$ and the detached base probabilities. A linear delta head predicts local corrections, which are scattered into a sparse $|\mathcal{Y}_{L3}|$-dimensional vector. The active labels are fixed before training as two sibling groups: CD4 TEM\_3/CD4 TEM\_4/CD4 TCM\_3 and CD8 Naive/CD8 Naive\_2/CD8 TCM\_1. A separate multilayer perceptron predicts a gate whose range is bounded:
+\begin{equation}
+\begin{aligned}
+g &= 0.02+0.18\,\sigma(\operatorname{MLP}([\mathbf{h}_{f};
+\operatorname{stopgrad}(\operatorname{softmax}(\mathbf{z}))])),\\
+\mathbf{z}^{\mathrm{final}} &= \mathbf{z}+g\,\Delta\mathbf{z}.
+\end{aligned}
+\end{equation}
+All correction entries outside the fixed sibling groups are exactly zero. This is a learned in-model head: no validation- or test-time threshold rule changes the predicted label. Its bounded gate is related to calibration and uncertainty-aware prediction, but it acts on fixed sibling logits rather than rejecting arbitrary samples \citep{guo2017calibration,lakshminarayanan2017,gal2016,hendrycks2017,geifman2017}. An auxiliary cross-entropy loss trains local delta logits on cells belonging to the active groups. HSR is therefore an auditable local intervention, not an open-set detector.
+
+\subsection{Optimization and model selection}
+
+The fixed teacher is a seed-42 early-fusion MLP trained on the same training partition. Only its stored training-cell probabilities $\mathbf{q}$ are used by the student; validation and test teacher probabilities are not training inputs. With student distribution $\mathbf{p}^{T}$ at temperature $T$, the implemented objective is
+\begin{equation}
+\begin{split}
+\mathcal{L}={}&\mathcal{L}_{\mathrm{wCE}}(\mathbf{z}^{\mathrm{final}},y)
++\lambda_b\sum_{b\in\{r,p\}}\mathcal{L}_{\mathrm{wCE}}(\mathbf{z}_b,y)
++\lambda_f\mathcal{L}_{\mathrm{wCE}}(\mathbf{z}_f,y)\\
+&+\lambda_{\mathrm{KD}}T^2D_{\mathrm{KL}}(\mathbf{q}\Vert\mathbf{p}^{T})
++\lambda_{\mathrm{HSR}}\mathcal{L}_{\mathrm{HSR}}.
+\end{split}
+\end{equation}
+Here $\mathcal{L}_{\mathrm{wCE}}$ is sqrt-balanced cross-entropy with class weights capped at 5 and label smoothing 0.03. The PBMC model is trained with AdamW for at most 35 epochs (batch size 1,024, learning rate $10^{-3}$, weight decay $10^{-4}$, dropout 0.2 and patience 14). We set $\lambda_b=0.35$, $\lambda_f=0.50$, $\lambda_{\mathrm{KD}}=0.05$, $T=2$ and $\lambda_{\mathrm{HSR}}=0.20$; KD uses the same capped sqrt-balanced class weights. Modality dropout is 0.15. Checkpoints maximize validation M-F1 subject to 0.0015 tolerances for validation ACC and W-F1. The test partition is evaluated after checkpoint selection.
+
+\subsection{Module-linked auditability}
+
+For every PBMC test cell, the implementation records branch weights, base and refined predictions, learned HSR gate, delta-logit norm and whether HSR changed the label. Changed cells are partitioned into wrong-to-correct, correct-to-wrong and wrong-to-wrong transitions. Per-class F1 is recomputed with HSR enabled and disabled within the same checkpoint. This measures both benefit and cost and does not interpret a changed prediction as beneficial by default. It is computational transparency, not feature attribution or causal biomarker discovery; those stronger goals require methods such as integrated gradients, LRP or SHAP plus biological validation \citep{ribeiro2016,sundararajan2017,montavon2019,samek2021,lundberg2017}.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{Fig/Fig1_MOSAIC_N_learned_HSR_architecture.pdf}
+\caption{\textbf{MOSAIC-N architecture.} (a) Paired RNA and ADT inputs undergo train-only preprocessing. (b) Modality-specific multilayer perceptrons produce RNA and ADT embeddings and receive branch supervision. (c) RNA, ADT and fusion heads produce L3 logits combined by top-two-margin arbitration. (d) Learned HSR predicts sparse local delta logits and a bounded gate for two fixed sibling groups. (e) The model returns an L3 prediction and cell-level audit quantities. \textbf{Alt text:} A left-to-right architecture diagram shows RNA and ADT inputs entering separate encoders, three margin-gated L3 classifier branches, a learned bounded hierarchy-aware refinement head restricted to six sibling labels, and final prediction plus audit outputs.}
+\label{fig:architecture}
+\end{figure*}
+
+\section{Implementation}
+
+The Python/PyTorch implementation uses pandas, NumPy, SciPy and scikit-learn. Configuration-driven runs save split metadata, checkpoint, predictions, per-class metrics and logs; tables are regenerated from CSV artifacts. PBMC and patient-disjoint COVID-19 jobs used one NVIDIA RTX 4090. Test data, environment files, command examples and an archived source release remain mandatory before submission.
+
+\section{Results}
+
+\subsection{Attributable closed-set performance}
+
+Table~\ref{tab:main_results} places methods on the horizontal axis and dataset--metric pairs on the vertical axis. It contains three closed-set protocols. The MOSAIC-N deployment is the ten-seed learned-HSR single-model mean on PBMC, the three-seed base model on COVID-19 and a fixed three-seed majority ensemble on the 5P cohort. These are dataset-specific deployments, not one unchanged checkpoint. COMBAT is excluded from this matrix because its cross-method consensus cannot be attributed to MOSAIC-N alone.
+
+\begin{table*}[t]
+\centering
+\caption{Attributable closed-set performance with 95\% interval margins. Methods are columns and dataset--metric pairs are rows. Bold indicates the highest point estimate in the audited matrix, not a significant difference. PBMC uses the learned-HSR single-model mean; COVID-19 uses the MOSAIC-N base-model mean; GSE164378 5P uses a fixed MOSAIC-N majority ensemble.}
+\label{tab:main_results}
+\tiny
+\setlength{\tabcolsep}{0.9pt}
+\resizebox{\textwidth}{!}{%
+\input{tables/v32/main_closed_set_performance.tex}
+}
+\end{table*}
+
+\subsection{PBMC performance and ten-seed HSR ablation}
+
+The learned-HSR PBMC model reached 0.9209 ACC, 0.9200 W-F1 and 0.8437 M-F1 over ten seeds, compared with 0.9123/0.9105/0.8129 for the fixed early-fusion teacher artifact (Table~\ref{tab:main_results}; Fig.~\ref{fig:performance}a,b). Mean differences were $+0.0086$, $+0.0095$ and $+0.0308$. Because the teacher is one fitted seed-42 model, these are descriptive student-versus-teacher differences, not matched-seed confidence intervals. MOSAIC-N's seed intervals were narrow for ACC and W-F1 but wider for M-F1, reflecting rare-class sensitivity.
+
+\subsection{Training-stage rare-class trade-offs}
+
+In a prespecified three-seed ablation, balanced CE increased M-F1 from 0.8214 to 0.8428 and reduced classes below F1 0.60 from 4.67 to 2.67, but decreased ACC/W-F1. Balanced CE+KD recovered ACC/W-F1 to 0.9191/0.9182 with M-F1 0.8394 (Supplementary training-ablation table). This is a common-versus-rare-class trade-off, not uniform loss-term superiority.
+
+\subsection{Ten-seed HSR ablation and action audit}
+
+The paired retraining ablation did not support a uniform HSR gain. Relative to the no-HSR model, mean differences were $+0.00088$ ACC (two-sided paired $P=0.127$), $+0.00097$ W-F1 ($P=0.089$) and $+0.00056$ M-F1 ($P=0.846$); every 95\% difference interval included zero (Fig.~\ref{fig:performance}c). HSR is therefore retained for constrained auditability, not claimed as the source of aggregate performance.
+
+\subsection{Same-checkpoint HSR action audit}
+
+HSR changed 141 of 150,000 same-checkpoint predictions (0.094\%): 63 wrong-to-correct, 55 correct-to-wrong and 23 wrong-to-wrong, for eight net corrections (Fig.~\ref{fig:performance}d). Aggregate changes were approximately $+0.00005$ and nonsignificant. All sibling-class intervals crossed zero (Fig.~\ref{fig:performance}e). HSR is therefore a sparse inspectable mechanism, not a broad relabeling rule.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{Fig/Fig2_performance_and_hsr_audit_v32.pdf}
+\caption{\textbf{Performance and learned-HSR audit.} (a,b) ACC and M-F1 point estimates with 95\% intervals for seven methods. The COMBAT MOSAIC-N point is the attributable, separately fitted DCRG adapter, not the PBMC HSR model or the cross-method consensus. (c) Paired PBMC M-F1 for ten retrained no-HSR and learned-HSR seeds; green and red lines denote positive and negative differences. (d) Same-checkpoint outcomes for all predictions changed by HSR. (e) Mean same-checkpoint F1 changes for the six fixed sibling labels, with seed-level 95\% intervals. \textbf{Alt text:} Two dot-and-error-bar panels compare methods across four protocols; three lower panels show paired PBMC macro F1 with mixed directions, 63 helpful versus 55 harmful and 23 wrong-to-wrong changes, and small sibling-class F1 changes whose intervals cross zero.}
+\label{fig:performance}
+\end{figure*}
+
+\subsection{Scale, patient independence and assay-cohort replication}
+
+On full cell-level COVID-19, MOSAIC-N reached 0.8656 ACC and 0.8620 W-F1; matched-seed differences from MLP were positive. RNA logistic had the highest M-F1, and the MOSAIC-N difference crossed zero. Patient overlap limits this experiment to scale and within-cohort classification.
+
+On patient-disjoint COVID-19, MOSAIC-N versus matched MLP reached 0.8590/0.8550/0.6471 versus 0.8553/0.8514/0.6411. Paired ACC and W-F1 intervals were positive; the M-F1 interval crossed zero. This supports ACC/W-F1, not stable macro-F1, generalization.
+
+On 5P, the fixed MOSAIC-N ensemble reached 0.8646/0.8617/0.6916. Differences from the fixed MLP ensemble crossed zero for ACC/W-F1, whereas M-F1 was $+0.0403$ [0.0006, 0.0625]. This is same-eight-donor ensemble evidence, not single-model or independent-donor superiority. A separate three-seed HSR experiment had mixed, nonsignificant effects.
+
+\subsection{Disease-shift attribution}
+
+On COMBAT seeds 44/45/46, DCRG, scNym and scANVI reached 0.9682/0.9746/0.7821, 0.9723/0.9718/0.7938 and 0.9710/0.9707/0.7324, respectively. No base method dominated all metrics. Their frozen consensus reached 0.9788/0.9790/0.8372, but paired intervals against scNym crossed zero. It is separate composite evidence, not MOSAIC-N single-method performance.
+
+\subsection{Computational transparency}
+
+HSR exposes its gate, delta magnitude, changed labels and outcomes. ECE was 0.0670 without and 0.0661 with HSR; ECE, Brier and NLL intervals crossed zero. The full model exceeded either modality branch, but differences from uniform fusion were about $+0.0002$ and nonsignificant. These results support traceability, not calibrated reliability or causal marker interpretation.
+
+\section{Discussion}
+
+MOSAIC-N contributes an auditable reference-trained design: branch supervision and class-balanced distillation regularize modality predictors, margin arbitration exposes their combination, and bounded HSR restricts corrections to declared support. Training ablations support rare-class-aware optimization, but margin gating and HSR are not independently established sources of aggregate gain.
+
+MMoCHi uses biologically specified marker hierarchies \citep{caron2025mmochi}; MOSAIC-N uses high-dimensional reference supervision and learned logits. HSR is not a replacement for marker-defined hierarchy. Its narrower novelty is an in-model sparse correction interface with enumerable support and outcomes. A prespecified same-cohort MMoCHi comparison remains absent.
+
+The protocols have distinct boundaries: PBMC and 5P are random-cell splits from the same eight donors; full COVID-19 has patient overlap; patient-disjoint COVID-19 has three seeds and 49 test labels; the 5P result is an ensemble; and COMBAT consensus is composite. Cell bootstrap omits donor correlation. Feature interpretation, unknown types and arbitrary missing panels remain outside current claims.
+
+The highest-priority experiment is a matched-seed donor-disjoint comparison of MOSAIC-N, direct ablations, MLP and a hierarchy-aware comparator. Cross-study transfer must avoid target-label selection, and feature attribution requires marker concordance and cross-donor stability. Hierarchical rejection and panel-aware training remain prospective.
+
+\section{Conclusion}
+
+MOSAIC-N provides a strong fine-grained multimodal classifier whose branch arbitration and hierarchy intervention are directly auditable. Ten-seed PBMC, patient-disjoint COVID-19, 5P assay-cohort and COMBAT analyses separate attributable classifier performance from ensemble effects and from nonsignificant margin-gating or HSR differences. The contribution is therefore a transparent multimodal decision architecture with quantitatively delimited evidence, not a claim of universal module-level or cross-dataset superiority.
+
+\section{Data availability}
+
+The PBMC 3P and 5P cohorts are from GEO accession GSE164378, and the COVID-19 data are from ArrayExpress accession E-MTAB-10026. COMBAT data are from the cited study. Processed split manifests, exact source URLs and a permanent artifact archive must be inserted and independently checked before submission.
+
+\section{Code availability}
+
+The source code, configuration files, test data and documentation required by the Bioinformatics software policy must be released at a stable public URL before submission. The current internal reproducibility package includes run configurations, logs, prediction files and generated tables.
+
+\section{Funding}
+
+Funding information must be supplied by the authors before submission.
+
+\section{Author contributions}
+
+CRediT roles must be confirmed by all authors before submission.
+
+\section{Conflict of interest}
+
+The authors declare no competing interests.
+
+\section{Acknowledgements and use of AI-assisted tools}
+
+OpenAI Codex was used during internal preparation for code assistance, artifact auditing, table generation and language-draft assistance. The human authors retain responsibility for the analyses, citations, figures and conclusions. Under the current Bioinformatics policy, this internal working draft must be independently reviewed and rewritten by the authors before submission, and the final permitted use of AI-assisted tools must be disclosed in both the manuscript and cover letter.
+
+\bibliographystyle{oup-plain}
+\bibliography{references}
+
+\end{document}

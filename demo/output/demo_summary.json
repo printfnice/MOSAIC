@@ -1,0 +1,19 @@
+{
+  "device": "cpu",
+  "n_cells": 10,
+  "input": "/root/autodl-tmp/MOSAIC/output/release/mosaic_n_v8.2_2026-08-16_submission_assets/demo/inputs.npz",
+  "input_shapes": {
+    "gene": [
+      10,
+      3000
+    ],
+    "protein": [
+      10,
+      224
+    ]
+  },
+  "output": "/root/autodl-tmp/MOSAIC/output/release/mosaic_n_v8.2_2026-08-16_submission_assets/demo/output/audit_record_validated.csv",
+  "mode": "precomputed_audit_record_validation",
+  "checkpoint_required": false,
+  "scientific_inference": false
+}

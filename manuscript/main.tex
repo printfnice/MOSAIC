@@ -56,9 +56,7 @@
 \corresp[$\ast$]{Corresponding author. \href{mailto:wangzhe@ecust.edu.cn}{wangzhe@ecust.edu.cn}}
 \corresp[$\dagger$]{These authors contributed equally to this work.}
 
-\received{Date}{0}{2026}
-\revised{Date}{0}{2026}
-\accepted{Date}{0}{2026}
+% Publication-history fields are intentionally blank for the initial submission.
 
 \abstract{
 \textbf{Motivation:} Fine-grained CITE-seq annotation under donor and protein-panel shift needs inspectable evidence.
@@ -234,7 +232,7 @@ A train-fold margin-standardization sensitivity did not change this interpretati
 
 \subsection{Where proteins are missing matters more than how many}
 
-At 50\% and 70\% random protein masking, W-F1 decreased to 0.8971 and 0.8921; the corresponding M-F1 losses were 0.0330 and 0.0431. RNA-only reached W-F1 0.8882, differing from the RNA branch by less than $5\times10^{-4}$, while its M-F1 was 0.7558 versus 0.7564 for the branch (Fig.~\ref{fig:evidence}e). Memory- and T-cell-marker masks gave M-F1 0.8006 and 0.7859 (Supplementary Table S8). Removing 15 T-cell ADTs cost 0.0213 M-F1 versus 0.0168 for random 30\% removal, a descriptive 5.7-fold larger loss per removed fraction; no size-matched random 6/15-ADT null or empirical $P$ value was computed. Training-only 30\% ADT dropout increased the targeted-mask point estimate from 0.7859 to 0.7884 but reduced full-input M-F1 from 0.8072 to 0.8016 (the Supplementary panel-aware training sensitivity). Temperature scaling reduced ECE 0.0713 to 0.0391, NLL 0.4255 to 0.3904 and Brier 0.1523 to 0.1462 without changing argmax predictions. These are bounded panel and calibration sensitivities, not arbitrary missing-panel coverage.
+At 50\% and 70\% random protein masking, W-F1 decreased to 0.8971 and 0.8921; the corresponding M-F1 losses were 0.0330 and 0.0431. RNA-only reached W-F1 0.8882, differing from the RNA branch by less than $5\times10^{-4}$, while its M-F1 was 0.7558 versus 0.7564 for the branch (Fig.~\ref{fig:evidence}e). Memory- and T-cell-marker masks gave M-F1 0.8006 and 0.7859 (Supplementary Table S8). The V8.2 size-matched null across 24 frozen donor--seed units showed W-F1 changes of $-0.000490$ and $-0.001831$ for random six- and 15-ADT masks, compared with $-0.002555$ and $-0.008693$ for the corresponding targeted masks; M-F1 changes were $-0.000158$ and $-0.004406$ versus $-0.006572$ and $-0.021330$ (Supplementary U4). Removing 15 T-cell ADTs therefore showed a larger descriptive loss than its same-count random null, rather than only reflecting feature count. Training-only 30\% ADT dropout increased the targeted-mask point estimate from 0.7859 to 0.7884 but reduced full-input M-F1 from 0.8072 to 0.8016 (the Supplementary panel-aware training sensitivity). Temperature scaling reduced ECE 0.0713 to 0.0391, NLL 0.4255 to 0.3904 and Brier 0.1523 to 0.1462 without changing argmax predictions. These are bounded panel and calibration sensitivities, not arbitrary missing-panel coverage.
 
 \subsection{Rejection is bounded by marker availability}
 
@@ -242,7 +240,7 @@ At known coverage 0.80, one-minus-margin rejection gave observed coverage 0.7878
 
 \subsection{Marker availability is necessary but not sufficient at CD8 memory boundaries}
 
-On PDC101, MOSAIC achieved 0.9077/0.9068/0.9007 ACC/W-F1/M-F1 versus 0.9347/0.9335/0.9298 for official MMoCHi (Supplementary Tables S14--S15). Gaps concentrated at CD8 memory boundaries, while monocyte F1 was tied. Representative ADT evidence is present in both tasks, so marker availability alone does not explain the PDC101 gap; hierarchy and label-space alignment remain protocol-specific alternative explanations. This is a boundary-localization comparison, not a causal claim.
+On PDC101, the three-seed MOSAIC row achieved 0.9077/0.9068/0.9007 ACC/W-F1/M-F1 versus 0.9347/0.9335/0.9298 for official MMoCHi (Supplementary Tables S14--S15). In a separate exact paired audit of the valid no-HTO MOSAIC-HPM-lite artifact, 2,098 identical holdout cells gave ACC 0.9376 versus 0.9347, with 80 MOSAIC-only correct cells and 74 MMoCHi-only correct cells; the exact two-sided McNemar test was non-significant ($P=0.6871$; Supplementary U4). Gaps in the seed-aggregated comparison concentrated at CD8 memory boundaries, while monocyte F1 was tied. Representative ADT evidence is present in both tasks, so marker availability alone does not explain the PDC101 gap; hierarchy and label-space alignment remain protocol-specific alternative explanations. The MOSAIC gate is not treated as directly comparable to MMoCHi certainty because the saved quantities are different. This is a boundary-localization comparison, not a causal or superiority claim.
 
 Runtime, comparator, preprocessing, attribution, panel-aware and breadth protocols are enumerated in Supplementary Tables S16--S25.
 
@@ -254,7 +252,7 @@ MOSAIC couples fine-label prediction with an evidence-emitting decision path. In
 
 The contribution is the joint availability of modality labels/margins, traceable fusion weights, bounded six-label HSR and cell-level records. Branch supervision supplies the interface rather than the aggregate macro gain; the locked path is chosen to emit this evidence even when uniform fusion has higher aggregate metrics. Panel masks, leave-class-out targets, the 58-label marker-support audit and PDC101 expose concrete failure regimes, supporting the bounded proposition that evidence availability is a deployment resource distinct from metric optimality.
 
-The scope remains protocol-defined: the near-capacity control does not establish strict single-module causality; CellTypist is package-compatible, DSB lacks matched controls, the 58-label marker audit is descriptive, and the size-matched targeted-mask null remains future experimental work. The audit score has not been transferred to a secondary cohort with a leakage-safe cell-level artifact. The tagged package contains source code, configurations, compact evidence and a CPU demo, but no checkpoint, immutable archive DOI or raw-data archive. These boundaries define, rather than negate, MOSAIC's contribution: modality evidence, local action and failure localization are inspectable alongside the predicted label.
+The scope remains protocol-defined: the near-capacity control does not establish strict single-module causality; CellTypist is package-compatible, DSB lacks matched controls, and the 58-label marker audit is descriptive. The size-matched null strengthens the targeted-panel interpretation but remains a fixed-panel frozen-checkpoint diagnostic, not arbitrary missing-panel robustness. The audit decision transfers to the 5P assay cohort as a same-study replication with a leakage-safe cell-level artifact, but the cohort shares the main study and P1--P8 donors and is not independent external validation; its full-accept policy also produced no fallback cells. The verified public snapshot contains source code, configurations, compact evidence and a CPU demo, but no checkpoint, immutable archive DOI or raw-data archive; the submission package additionally carries the V8.2 closure summaries and source paths. These boundaries define, rather than negate, MOSAIC's contribution: modality evidence, local action and failure localization are inspectable alongside the predicted label.
 
 \section{Data availability}
 
@@ -262,7 +260,7 @@ PBMC 3P/5P are from GEO GSE164378; COVID-19 is ArrayExpress E-MTAB-10026 \citep{
 
 \section{Code availability}
 
-Code, configurations, split manifests, compact evidence, tests, environment metadata, checksums and a checkpoint-free ten-cell CPU audit validator are publicly available under MIT in the tagged snapshot at \url{https://github.com/printfnice/MOSAIC/tree/v8.1.4-submission}. Raw data, caches, full predictions and checkpoints are not redistributed; an immutable archive DOI is not assigned in this snapshot.
+Code, configurations, split manifests, compact evidence, tests, environment metadata, checksums and a checkpoint-free ten-cell CPU audit validator are publicly available under MIT in the verified tagged snapshot at \url{https://github.com/printfnice/MOSAIC/tree/v8.1.4-submission}. The V8.2 closure scripts and compact summaries are included in the submission source and local release candidate; a public V8.2 tag is not asserted until remote availability is verified. Raw data, caches, full predictions and checkpoints are not redistributed; an immutable archive DOI is not assigned in the verified snapshot.
 
 \section{Funding}
 
@@ -278,7 +276,7 @@ The authors declare no competing interests.
 
 \section{Acknowledgements and use of AI-assisted tools}
 
-AI-assisted tools were used for code assistance, artifact auditing, table generation and language editing. All analyses, figures, citations and conclusions were designed, verified and are the responsibility of the human authors.
+OpenAI Codex and the ChatGPT interface were used for code navigation, experiment-script scaffolding, artifact-audit assistance, table and metadata generation, language editing and figure-prompt iteration. They were not treated as scientific evidence and did not determine splits, held-out labels, model selection, statistical tests or conclusions. Human authors executed or reviewed the analyses, verified artifacts and approved the manuscript, figures, citations and claims; detailed tool-use documentation is provided in the Supplementary Material. Figure~1 is the author-owned final asset.
 
 \clearpage
 {\footnotesize

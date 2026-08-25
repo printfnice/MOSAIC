@@ -1,0 +1,27 @@
+{
+  "paired_test": {
+    "test": "exact two-sided McNemar",
+    "b_mosaic_only_correct": 80,
+    "c_mmochi_only_correct": 74,
+    "discordant_pairs": 154,
+    "p_value": 0.6871492187686523,
+    "continuity_corrected_chi2": 0.16233766233766234
+  },
+  "boundary_definition": {
+    "status": "predeclared",
+    "classes": [
+      "cd4_cm",
+      "cd8_cm"
+    ],
+    "rule": "sort_label in {cd4_cm, cd8_cm}"
+  },
+  "gate_distribution": {
+    "status": "estimable_within_MOSAIC_only",
+    "field": "adt_gate",
+    "interpretation": "saved MOSAIC ADT gate summarized by boundary status; not a cross-method paired test"
+  },
+  "cross_method_modality_weight": {
+    "status": "not_estimable",
+    "reason": "MOSAIC adt_gate and MMoCHi certainty are different estimands; MMoCHi modality weights were not saved in the evaluated artifact"
+  }
+}

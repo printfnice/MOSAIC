@@ -1,0 +1,47 @@
+{
+  "split_unit": "PBMC donor-disjoint v33 frozen checkpoint",
+  "checkpoint_units": [
+    "test_P1/mosaic_full_seed41/model.pt",
+    "test_P1/mosaic_full_seed42/model.pt",
+    "test_P1/mosaic_full_seed43/model.pt",
+    "test_P2/mosaic_full_seed41/model.pt",
+    "test_P2/mosaic_full_seed42/model.pt",
+    "test_P2/mosaic_full_seed43/model.pt",
+    "test_P3/mosaic_full_seed41/model.pt",
+    "test_P3/mosaic_full_seed42/model.pt",
+    "test_P3/mosaic_full_seed43/model.pt",
+    "test_P4/mosaic_full_seed41/model.pt",
+    "test_P4/mosaic_full_seed42/model.pt",
+    "test_P4/mosaic_full_seed43/model.pt",
+    "test_P5/mosaic_full_seed41/model.pt",
+    "test_P5/mosaic_full_seed42/model.pt",
+    "test_P5/mosaic_full_seed43/model.pt",
+    "test_P6/mosaic_full_seed41/model.pt",
+    "test_P6/mosaic_full_seed42/model.pt",
+    "test_P6/mosaic_full_seed43/model.pt",
+    "test_P7/mosaic_full_seed41/model.pt",
+    "test_P7/mosaic_full_seed42/model.pt",
+    "test_P7/mosaic_full_seed43/model.pt",
+    "test_P8/mosaic_full_seed41/model.pt",
+    "test_P8/mosaic_full_seed42/model.pt",
+    "test_P8/mosaic_full_seed43/model.pt"
+  ],
+  "donors": [
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5",
+    "P6",
+    "P7",
+    "P8"
+  ],
+  "seeds": [
+    41,
+    42,
+    43
+  ],
+  "mask_seed_formula": "820000 + donor_number*1000 + model_seed*10 + condition_offset",
+  "source_evaluator": "/root/autodl-tmp/MOSAIC/experiments/exp_missing_modality/mosaic_n_v33/evaluate_v33_panel_robustness.py",
+  "checkpoint_source": "/root/autodl-tmp/MOSAIC/results/exp_generalization/mosaic_n_v33/donor_matrix"
+}

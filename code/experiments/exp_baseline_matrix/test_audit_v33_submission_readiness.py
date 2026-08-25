@@ -1,3 +1,5 @@
+"""Regression tests for the legacy V33 submission-readiness audit."""
+
 import hashlib
 import itertools
 from pathlib import Path
@@ -129,7 +131,7 @@ def _write_experiment_evidence(root: Path) -> None:
             [
                 {"method": method, "metric": metric}
                 for method, metric in itertools.product(
-                    ["MOSAIC-N", "MMoCHi"],
+                    ["MOSAIC", "MMoCHi"],
                     ["accuracy", "weighted_f1", "macro_f1"],
                 )
             ]
@@ -177,7 +179,7 @@ def _write_experiment_evidence(root: Path) -> None:
                     "support": 10,
                 }
                 for method, class_index in itertools.product(
-                    ["MOSAIC-N", "MMoCHi"],
+                    ["MOSAIC", "MMoCHi"],
                     range(8),
                 )
             ]
@@ -340,6 +342,24 @@ def test_resolved_metadata_and_public_release_actions_can_pass(
     assert audit.loc["author_metadata_finalized", "status"] == "pass"
     assert audit.loc["public_repository_release", "status"] == "pass"
     assert audit.loc["archival_doi_release", "status"] == "pass"
+
+
+def test_dataset_doi_is_not_treated_as_project_archive_doi(tmp_path: Path) -> None:
+    root = _machine_complete_fixture(tmp_path, placeholders=False)
+    main_path = (
+        root
+        / "manufacture/mosaic_n_bioinformatics_manuscript_v1/oup-authoring-template/main.tex"
+    )
+    text = main_path.read_text(encoding="utf-8")
+    text = text.replace(
+        r"Archive: \url{https://doi.org/10.5281/zenodo.1234567}.",
+        r"Dataset: Zenodo DOI 10.5281/zenodo.6120249.",
+    )
+    main_path.write_text(text, encoding="utf-8")
+
+    audit = audit_submission_readiness(root).set_index("check")
+
+    assert audit.loc["archival_doi_release", "status"] == "blocker"
 
 
 def test_missing_synthetic_testdata_is_a_machine_blocker(tmp_path: Path) -> None:

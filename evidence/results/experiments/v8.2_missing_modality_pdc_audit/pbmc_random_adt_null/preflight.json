@@ -1,0 +1,24 @@
+{
+  "status": "ready",
+  "gpu_available": true,
+  "torch_version": "2.0.1+cu118",
+  "checkpoint_count": 24,
+  "expected_checkpoint_count": 24,
+  "missing_checkpoints": [],
+  "base_dir": "/root/autodl-tmp/MOSAIC/results/exp_generalization/mosaic_n_v33/donor_matrix",
+  "donors": [
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5",
+    "P6",
+    "P7",
+    "P8"
+  ],
+  "seeds": [
+    41,
+    42,
+    43
+  ]
+}

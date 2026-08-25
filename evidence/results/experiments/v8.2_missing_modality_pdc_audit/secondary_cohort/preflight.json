@@ -1,0 +1,72 @@
+{
+  "status": "ready_with_scope_caveat",
+  "prediction_rows_full": 49147,
+  "prediction_ids_match_h5ad": true,
+  "dataset_metadata": {
+    "n_cells": 49147,
+    "n_features": 54,
+    "obs_columns": [
+      "nCount_ADT",
+      "nFeature_ADT",
+      "nCount_RNA",
+      "nFeature_RNA",
+      "orig.ident",
+      "lane",
+      "donor",
+      "time",
+      "celltype.l1",
+      "celltype.l2",
+      "celltype.l3",
+      "Batch"
+    ],
+    "donor_values": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5",
+      "P6",
+      "P7",
+      "P8"
+    ],
+    "label_columns_present": [
+      "celltype.l1",
+      "celltype.l2",
+      "celltype.l3"
+    ]
+  },
+  "cohort_identity": {
+    "dataset_name": "GSE164378 5P",
+    "observed_donors": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5",
+      "P6",
+      "P7",
+      "P8"
+    ],
+    "main_protocol_donors": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5",
+      "P6",
+      "P7",
+      "P8"
+    ],
+    "same_donor_set": true,
+    "same_study_indicator": true,
+    "independent_external_cohort": false,
+    "transfer_type": "same-study assay-cohort replication",
+    "scope_caveat": "not independent donor validation; same GSE164378 study and donor set"
+  },
+  "calibration_policy_path": "/root/autodl-tmp/MOSAIC/results/exp_generalization/original_mosaic_strict/v10_mosaic_n_gse164378_adt_guard_seed42/calibration_policy.csv",
+  "calibration_policy_sources": [
+    "validation_only"
+  ],
+  "external_label_used_for_policy_selection": "no",
+  "transfer_estimand": "locked full-panel audit decision and parent-safe outcome"
+}

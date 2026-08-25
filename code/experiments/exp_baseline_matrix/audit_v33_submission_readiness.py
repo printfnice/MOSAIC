@@ -1,5 +1,11 @@
 #!/usr/bin/env python
-"""Audit machine, author and external-release readiness for MOSAIC-N V33."""
+"""Legacy V33 readiness audit.
+
+This module is retained for historical V33 package checks only. It intentionally
+uses the V33 evidence schema and must not gate the current V8.2 manuscript. The
+current gate is ``audit_v8_manuscript_consistency.py`` plus the V8.2 experiment
+tests and final PDF/package checks.
+"""
 
 from __future__ import annotations
 
@@ -262,8 +268,9 @@ def validate_experiment_evidence(root: Path) -> List[str]:
             root,
             "results/tables/mosaic_n_v33_pdc101_mmochi_comparison_2026-07-23.csv",
         )
+        pdc_methods = pdc["method"].astype(str).replace({"MOSAIC-N": "MOSAIC"})
         if (
-            set(pdc["method"].astype(str)) != {"MOSAIC-N", "MMoCHi"}
+            set(pdc_methods) != {"MOSAIC", "MMoCHi"}
             or set(pdc["metric"].astype(str))
             != {"accuracy", "weighted_f1", "macro_f1"}
             or len(pdc[["method", "metric"]].drop_duplicates()) != 6
@@ -276,9 +283,11 @@ def validate_experiment_evidence(root: Path) -> List[str]:
         pdc_class_keys = pdc_per_class[
             ["method", "class_label"]
         ].drop_duplicates()
+        pdc_class_methods = pdc_class_keys["method"].astype(str).replace(
+            {"MOSAIC-N": "MOSAIC"}
+        )
         if (
-            set(pdc_class_keys["method"].astype(str))
-            != {"MOSAIC-N", "MMoCHi"}
+            set(pdc_class_methods) != {"MOSAIC", "MMoCHi"}
             or pdc_class_keys["class_label"].astype(str).nunique() != 8
             or len(pdc_class_keys) != 16
             or not pdc_per_class["support"].astype(int).gt(0).all()
@@ -466,10 +475,15 @@ def audit_submission_readiness(
         combined_text,
         flags=re.IGNORECASE,
     )
-    archive_doi = re.search(
-        r"10\.5281/zenodo\.[0-9]+",
+    archive_context = re.search(
+        r"\b(?:archive|archival)[^\n]{0,240}",
         combined_text,
         flags=re.IGNORECASE,
+    )
+    archive_doi = (
+        re.search(r"10\.5281/zenodo\.[0-9]+", archive_context.group(0))
+        if archive_context
+        else None
     )
     license_present = any(
         _nonempty(release / name) for name in ["LICENSE", "LICENSE.txt", "COPYING"]
@@ -602,7 +616,7 @@ def audit_submission_readiness(
 
 def _render_markdown(frame: pd.DataFrame) -> str:
     lines = [
-        "# MOSAIC-N V33 submission readiness audit",
+        "# MOSAIC V33 submission readiness audit",
         "",
         f"Date: {DATE}",
         "",

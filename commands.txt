@@ -1,6 +1,8 @@
 # Commands are listed relative to the public repository root.
-# The first command is a packaged smoke test and should run without raw data.
+# The first command is a packaged test-data demo and should run without raw data.
 # Scientific reruns require the public datasets and locally trained model artifacts; checkpoints are not included in this snapshot.
+
+python demo/run_demo.py --package . --output-dir demo/output
 
 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 python code/experiments/reproducibility/v33_release_smoke_test.py --release-dir .
 
@@ -16,3 +18,8 @@ python code/experiments/exp_unknown_celltype/mosaic_n_v33/evaluate_v33_unknown_r
 python code/experiments/exp_generalization/mosaic_n_v33/run_v33_pdc101_mosaic_n.py
 python code/experiments/exp_generalization/mosaic_n_v33/build_v33_pdc101_comparison.py
 python code/experiments/exp_explainability/mosaic_n_v33/analyze_v33_donor_attribution.py --require-complete
+
+# V8.2 closure audits (the compact evidence directories are under evidence/).
+python code/experiments/exp_missing_modality/mosaic_n_v82/test_size_matched_random_adt_null.py
+python code/experiments/exp_generalization/mosaic2_pdc101/test_pdc101_paired_audit.py
+python code/experiments/exp_generalization/mosaic2_pdc101/test_secondary_cohort_audit_transfer.py

@@ -1,0 +1,2 @@
+status,transfer_type,independent_external_cohort,n_eval,n_accepted,n_fallback,accept_rate,l3_accuracy_all,accepted_l3_accuracy,parent_safe_rate,unsafe_wrong_parent_rate,fallback_l1_error_rate_raw,mean_confidence
+ready_with_scope_caveat,same-study assay-cohort replication,False,49147,49147,0,1.0,0.728915294931532,0.728915294931532,0.8974505056259792,0.10254949437402083,,0.36788472854444004

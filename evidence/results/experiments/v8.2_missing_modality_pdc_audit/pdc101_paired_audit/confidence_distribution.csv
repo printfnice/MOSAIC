@@ -1,0 +1,3 @@
+method,n,mean,median,q25,q75,estimand
+MOSAIC_adt_gate,2098,0.627760960230422,0.743548365,0.49856833749999996,0.8449391500000001,method-specific confidence/gate; not a paired weight comparison
+MMoCHi_certainty,2098,0.9922683951910569,1.0,1.0,1.0,method-specific confidence/gate; not a paired weight comparison

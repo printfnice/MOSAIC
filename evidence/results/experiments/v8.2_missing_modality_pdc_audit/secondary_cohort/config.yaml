@@ -1,0 +1,17 @@
+date: '2026-08-16'
+command: experiments/exp_generalization/mosaic2_pdc101/run_secondary_cohort_audit_transfer.py
+predictions: /root/autodl-tmp/MOSAIC/results/exp_generalization/original_mosaic_strict/v10_r61_mosaic_n_gse164378_adt_guard_full_seed42/external_predictions.csv
+h5ad: /root/autodl-tmp/MOSAIC/data/GSE164378/gse164378_5p_protein.h5ad
+calibration_policy: /root/autodl-tmp/MOSAIC/results/exp_generalization/original_mosaic_strict/v10_mosaic_n_gse164378_adt_guard_seed42/calibration_policy.csv
+mask_condition: full
+policy_selection: validation_only; external labels not used
+main_protocol_donors:
+- P1
+- P2
+- P3
+- P4
+- P5
+- P6
+- P7
+- P8
+claim_boundary: same-study assay-cohort replication, not independent external validation

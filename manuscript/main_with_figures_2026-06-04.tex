@@ -1,0 +1,238 @@
+%%
+%% MOSAIC-N Bioinformatics manuscript draft v1
+%% Built from the OUP general authoring template on 2026-06-04.
+%%
+\documentclass[unnumsec,webpdf,contemporary,large,numbered]{oup-authoring-template}
+
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\graphicspath{{Fig/}}
+
+\begin{document}
+
+\journaltitle{Bioinformatics}
+\DOI{DOI added during production}
+\copyrightyear{2026}
+\pubyear{2026}
+\vol{XX}
+\issue{x}
+\access{Published: Date added during production}
+\appnotes{Original Paper}
+\firstpage{1}
+
+\title[MOSAIC-N]{MOSAIC-N: hierarchy-aware multimodal single-cell annotation under fine-grained labels and dataset shift}
+
+\author[1,2,$\dagger$]{Hai Yang}
+\author[2,$\dagger$]{LinHao Wu}
+\author[3,4]{Dan Zhou}
+\author[5]{Tianyi Zhou}
+\author[1,2]{Qin Zhou}
+\author[1,2]{Ting Xiao}
+\author[1,2]{Qian Zhang}
+\author[1,2]{Jing Zhang}
+\author[1,2,$\ast$]{Zhe Wang}
+
+\address[1]{\orgdiv{Key Laboratory of Smart Manufacturing in Energy Chemical Process, Ministry of Education}, \orgname{East China University of Science and Technology}, \orgaddress{\postcode{200237}, \state{Shanghai}, \country{China}}}
+\address[2]{\orgdiv{Department of Computer Science and Engineering}, \orgname{East China University of Science and Technology}, \orgaddress{\postcode{200237}, \state{Shanghai}, \country{China}}}
+\address[3]{\orgdiv{Department of Big Data in Health Science}, \orgname{Zhejiang University School of Medicine}, \orgaddress{\state{Hangzhou}, \country{China}}}
+\address[4]{\orgdiv{Center of Clinical Big Data and Analytics}, \orgname{The Second Affiliated Hospital, Zhejiang University School of Medicine}, \orgaddress{\state{Hangzhou}, \country{China}}}
+\address[5]{\orgdiv{Department of Electrical Engineering and Computer Science}, \orgname{University of Michigan}, \orgaddress{\postcode{48109}, \state{Michigan}, \country{USA}}}
+
+\corresp[$\ast$]{Corresponding author. \href{mailto:wangzhe@ecust.edu.cn}{wangzhe@ecust.edu.cn}}
+\corresp[$\dagger$]{These authors contributed equally to this work.}
+
+\received{Date}{0}{2026}
+\revised{Date}{0}{2026}
+\accepted{Date}{0}{2026}
+
+\abstract{
+\textbf{Motivation:} Single-cell CITE-seq atlases provide paired transcriptomic and surface-protein profiles, but fine-grained cell type annotation remains difficult under label hierarchy, class imbalance, dataset shift and modality-specific uncertainty. Existing classifiers often report strong in-distribution accuracy while providing limited evidence that their decisions are reliable, biologically interpretable and robust across datasets.\\
+\textbf{Results:} We present MOSAIC-N, a hierarchy-aware multimodal annotation framework for RNA and protein single-cell profiles. MOSAIC-N combines multimodal representation learning with a hierarchy-aware sibling refinement (HSR) head that performs sparse, auditable repair of fragile fine-level decision boundaries. Across PBMC strict L3 58-class annotation, full-scale COVID-19 CITE-seq 51-class annotation, GSE164378 exact-L3 53-class annotation and a COMBAT/COVID parent-safe disease-shift benchmark, MOSAIC-N achieved state-of-the-art or competitive performance under explicitly audited protocols. The strongest PBMC model reached 0.9210 accuracy, 0.9202 weighted F1 and 0.8497 macro F1. On the full COVID-19 protocol, MOSAIC-N led accuracy and weighted F1, with macro-F1 caveats. On GSE164378, the fixed three-seed MOSAIC-N ensemble was the strongest accuracy row, and a validation-only single-model selector provided a small single-model caveat closure. We further provide reviewer-facing evidence audits, baseline caveat taxonomy and quantitative interpretability analyses covering HSR error correction, marker-attribution concordance and modality contribution.\\
+\textbf{Availability:} Code, trained artifacts and reproducibility tables will be released upon acceptance. Current reproducibility units are organized under the project \texttt{experiments/}, \texttt{results/}, \texttt{output/} and \texttt{docs/reports/versions/} directories.\\
+\textbf{Contact:} \href{mailto:wangzhe@ecust.edu.cn}{wangzhe@ecust.edu.cn}\\
+\textbf{Supplementary information:} Supplementary data will be available online.
+}
+
+\keywords{single-cell annotation, CITE-seq, multimodal learning, hierarchy-aware classification, interpretability}
+\keywords[Abbreviations]{ADT: antibody-derived tag; CITE-seq: cellular indexing of transcriptomes and epitopes by sequencing; HSR: hierarchy-aware sibling refinement; LRP: layer-wise relevance propagation; SOTA: state of the art}
+
+\boxedtext{Key Messages}{
+\begin{itemize}
+\item MOSAIC-N is designed for trustworthy multimodal single-cell annotation under fine-grained labels, hierarchy-aware decision boundaries and dataset shift.
+\item A hierarchy-aware sibling refinement head provides sparse, auditable correction of fragile L3 cell-type boundaries rather than broad post-hoc relabeling.
+\item V24 reviewer-facing audits consolidate claim boundaries, baseline caveats and interpretability evidence so that performance claims remain task-specific and reproducible.
+\end{itemize}}
+
+\maketitle
+
+\section{Introduction}
+
+Single-cell RNA sequencing and CITE-seq have transformed immune profiling by measuring transcriptomes and surface proteins at cellular resolution \citep{stuart2019,stoeckius2017cite}. These modalities are complementary: RNA captures broad cell-state programs, whereas antibody-derived tags (ADTs) directly measure lineage and activation markers. Yet automatic cell type annotation remains a persistent bottleneck. Fine-level labels distinguish closely related immune states such as naive, central memory and effector memory T cells; these labels are class-imbalanced, hierarchically structured and often inconsistent across datasets. A model that is accurate on one benchmark can still fail under dataset shift, missing marker panels or fragile sibling boundaries.
+
+Reference-based and classifier-based tools such as CellTypist, scmap, scPred, scClassify, TOSICA, scANVI and totalVI provide strong starting points for automated annotation \citep{aran2019,kiselev2018scmap,alquicira2020scpred,lin2020scclassify,chen2023tosica,xu2021scvi,gayoso2021totalvi}. However, many of these methods are optimized for RNA-only transfer, latent representation learning or coarse reference mapping. Multimodal annotation remains harder because protein panels vary across studies and because protein evidence can be highly informative for some boundaries but misleading or unavailable for others. Moreover, single-cell annotation papers are increasingly expected to report not only aggregate accuracy, but also protocol fairness, seed stability, per-class behavior and interpretability.
+
+The original MOSAIC project explored mixture-of-experts and attribution-based explanations for multimodal annotation. In this work, we develop MOSAIC-N, a revised framework whose manuscript-facing claim is broader and more conservative: trustworthy multimodal annotation under fine-grained labels, dataset shift and explicit caveats. The central methodological addition is hierarchy-aware sibling refinement (HSR), an in-model refinement head that targets fragile sibling labels in the cell-type hierarchy. HSR is designed to repair local fine-level boundaries after the base multimodal classifier, not to replace the classifier or to make open-set claims by itself.
+
+This manuscript makes four contributions. First, we introduce MOSAIC-N and HSR for hierarchy-aware multimodal annotation. Second, we evaluate MOSAIC-N across PBMC strict L3, COVID-19 full-scale CITE-seq, GSE164378 exact-L3 and COMBAT/COVID disease-shift benchmarks. Third, we consolidate strong and caveated baselines into a reviewer-facing fairness matrix. Fourth, we provide quantitative interpretability evidence through HSR error-correction audits, marker-attribution concordance, modality contribution summaries and a conservative expert-routing disposition.
+
+\section{Materials and methods}
+
+\subsection{Problem formulation}
+
+Let each cell be represented by a gene expression vector $\mathbf{x}^{(r)} \in \mathbb{R}^{G}$ and, when available, an ADT vector $\mathbf{x}^{(p)} \in \mathbb{R}^{P}$. The task is to predict a fine-level cell type $y \in \mathcal{Y}_{L3}$ under a hierarchy $\mathcal{H}$ that links L3 labels to coarser L2 and L1 parents. The principal experiments use closed-set classification: all test labels are observed in the training label set. We separately audit disease-shift and parent-safe tasks where claims are restricted to the evaluated protocol.
+
+\subsection{MOSAIC-N architecture}
+
+MOSAIC-N is a multimodal classifier that encodes RNA and protein features, fuses their representations and predicts fine-level labels. The model family includes the RDV2 base classifier and the V16 HSR variant used in the PBMC strict L3 experiments. The base classifier provides the primary fine-level logits, while auxiliary reliability and hierarchy-aware components are used only when supported by the task protocol.
+
+The design follows three principles. First, multimodal evidence should be used only under train-only preprocessing and explicit split control. Second, hierarchy-aware decisions should be local and auditable. Third, every dataset-level claim should have a corresponding caveat table that specifies whether the result is a main comparable result, supplement result, engineering diagnostic or blocked baseline.
+
+\subsection{Hierarchy-aware sibling refinement}
+
+HSR is a hierarchy-aware sibling refinement head for targeted boundary repair. Given base logits $\mathbf{z}$, HSR learns a bounded correction $\Delta\mathbf{z}$ for predeclared sibling candidates under $\mathcal{H}$:
+\begin{equation}
+\mathbf{z}^{\mathrm{final}} = \mathbf{z} + g(\mathbf{x}^{(r)}, \mathbf{x}^{(p)}, \mathbf{z}) \Delta\mathbf{z},
+\end{equation}
+where $g$ is a learned or calibrated gate that controls whether a local sibling correction is applied. The correction is constrained to related L3 labels such as adjacent CD4 memory or CD8 naive states. The purpose is sparse boundary refinement, not global relabeling. V17 and V24 audits therefore report activation counts, changed-prediction transitions, per-class gain/loss and biological interpretation caveats.
+
+\subsection{Datasets and protocols}
+
+We evaluated MOSAIC-N on four evidence lines.
+
+\paragraph{PBMC strict L3.} The main PBMC benchmark is a strict 58-class L3 closed-set annotation task with train-only preprocessing and seed-level reporting. It is the primary task for the V16 HSR architecture.
+
+\paragraph{COVID-19 CITE-seq full protocol.} The COVID-19 benchmark uses a full 647,366-cell 51-class closed-set protocol with train/validation/test sizes of 453,156/97,105/97,105 cells. MOSAIC-N, MLP early fusion, RNA logistic regression and CellTypist were evaluated under the full split. We report accuracy, weighted F1, macro F1, per-class F1 and resource caveats.
+
+\paragraph{GSE164378 exact-L3.} The GSE164378 5P benchmark is an internal exact-L3 53-class closed-set task. The original L3 labels contain a singleton ASDC\_pDC class; because a singleton cannot support a strict train/validation/test split, the main protocol uses a min-class-support threshold of three and explicitly reports the 53-class caveat.
+
+\paragraph{COMBAT/COVID disease shift.} The COMBAT/COVID benchmark evaluates parent-safe disease-shift annotation. This task supports external generalization evidence, but it is not a fine-level 51-class SOTA claim.
+
+\subsection{Baselines and fairness audit}
+
+Baselines include MLP early fusion, RNA logistic regression, ADT logistic regression, CellTypist, scANVI, TOSICA, totalVI, popV, scClassify, scmap, scPred and scPoli where supported by the protocol. V18 and V24 separate baselines into main comparable baselines, published or strong supplement baselines, engineering diagnostics and caveated supplement rows. This prevents weak or incompatible baselines from being over-interpreted as full main-text competitors.
+
+\subsection{Evaluation metrics}
+
+We report accuracy (ACC), weighted F1 (W-F1), macro F1 (M-F1), seed-level stability and per-class F1. Accuracy determines the primary SOTA row when protocols are otherwise matched, but macro F1 is reported to expose rare-class behavior. We explicitly avoid all-metric SOTA wording when one metric is not the strongest row.
+
+\subsection{Interpretability analysis}
+
+Interpretability is evaluated through four computational evidence lines. First, HSR error-correction audits identify which cells change from wrong to correct, correct to wrong or wrong to wrong. Second, marker-attribution concordance compares attribution-supported protein markers with expression-enriched markers in PBMC L3 boundaries. Third, modality contribution tables summarize RNA and protein contributions by boundary family. Fourth, expert-routing evidence from historical MOSAIC analyses is retained only as supplementary context because it was not rerun for every current MOSAIC-N checkpoint. We do not claim wet-lab validation or causal marker discovery.
+
+\section{Results}
+
+\subsection{MOSAIC-N achieves strong fine-level performance across audited benchmarks}
+
+Table~\ref{tab:main_results} summarizes the claim-boundary audit. On PBMC strict L3, MOSAIC-N V16 HSR reached 0.9210 ACC, 0.9202 W-F1 and 0.8497 M-F1 across four seeds. On the full COVID-19 51-class protocol, MOSAIC-N RDV2 base reached 0.8656 ACC and 0.8620 W-F1, exceeding the strongest non-MOSAIC baseline in accuracy. The COVID macro-F1 claim is caveated because RNA logistic regression had the highest macro F1. On GSE164378, the fixed three-seed MOSAIC-N RDV2 majority ensemble reached 0.8644 ACC, 0.8618 W-F1 and 0.6946 M-F1, exceeding the best non-MOSAIC ensemble in accuracy. The validation-only single-model selector reached 0.8569 ACC, a small improvement over the MLP early-fusion single-model mean. On COMBAT/COVID, MOSAIC-N DCRG achieved a parent-safe accuracy of 0.9651, exceeding CellTypist by 0.0337 under the parent-safe disease-shift protocol.
+
+\begin{table*}[t]
+\centering
+\caption{Reviewer-facing claim boundary audit for the current MOSAIC-N evidence package. ACC, W-F1 and M-F1 denote accuracy, weighted F1 and macro F1, respectively.}
+\label{tab:main_results}
+\small
+\begin{tabular}{p{3.8cm}p{3.5cm}p{2.5cm}p{4.5cm}}
+\toprule
+Task & Primary method & Key result & Claim boundary \\
+\midrule
+PBMC strict L3 58-class closed-set & MOSAIC-N V16 HSR & 0.9210 / 0.9202 / 0.8497 & Main closed-set fine-level SOTA evidence. \\
+COVID-19 CITE-seq 51-class full closed-set & MOSAIC-N RDV2 base & 0.8656 / 0.8620 / 0.6655 & Full-scale ACC/W-F1 lead; macro F1 caveated. \\
+GSE164378 exact-L3 53-class ensemble & MOSAIC-N RDV2 base 3-seed ensemble & 0.8644 / 0.8618 / 0.6946 & Fixed ensemble ACC SOTA; singleton class excluded. \\
+GSE164378 exact-L3 53-class single model & Validation-selected MOSAIC-N seed42 & 0.8569 / 0.8540 / 0.6741 & Small validation-only single-model caveat closure. \\
+COMBAT/COVID parent-safe disease shift & MOSAIC-N DCRG & 0.9651 parent-safe ACC & Generalization evidence; not fine-level SOTA. \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{HSR provides sparse and auditable boundary repair}
+
+HSR improved the PBMC strict L3 model while changing only a small set of sibling-boundary predictions. Figure~\ref{fig:hsr} shows changed predictions aggregated by sibling pair and mean per-class F1 deltas. The audit includes both beneficial and harmful transitions, which prevents the mechanism from being interpreted as a black-box post-hoc correction. The strongest interpretation is that HSR repairs fragile local boundaries, particularly among adjacent memory or naive T-cell states, while preserving the base classifier for most cells.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.95\textwidth]{Fig1_hsr_activation_and_delta.png}
+\caption{HSR is a sparse sibling-boundary refinement mechanism. Left: wrong-to-correct and correct-to-wrong transitions aggregated across activated sibling pairs. Right: mean per-class F1 deltas after HSR. The figure is intended as an audit of targeted boundary repair, not as evidence that HSR globally replaces the base classifier.}
+\label{fig:hsr}
+\end{figure*}
+
+\subsection{Baseline caveats prevent over-claiming}
+
+The V24 baseline taxonomy consolidates 35 method rows across PBMC, COVID, GSE164378 and COMBAT. Published baselines and engineering baselines are separated by protocol comparability. For example, totalVI and popV provide useful PBMC evidence but carry modality, latent-readout or reference-query caveats; scClassify and scPred are more appropriate for supplement rows because of subset or class-eligibility constraints. This matrix is used to decide which rows enter the main table and which belong in supplementary material.
+
+\begin{table*}[t]
+\centering
+\caption{Allowed and forbidden wording for major MOSAIC-N claims.}
+\label{tab:wording}
+\small
+\begin{tabular}{p{3.0cm}p{7.0cm}p{5.0cm}}
+\toprule
+Topic & Recommended wording & Required guard \\
+\midrule
+Overall performance & State-of-the-art or competitive fine-level closed-set performance across audited benchmarks. & Use task-specific qualifiers. \\
+HSR & Hierarchy-aware sibling refinement for targeted boundary repair. & Not an open-set or missing-modality solution by itself. \\
+COVID full & ACC/W-F1 lead under full 647k-cell protocol. & Macro F1 is caveated. \\
+GSE164378 & Fixed ensemble is strongest ACC row; validation-only single-model closure is small. & Not 54-class full-label SOTA. \\
+Interpretability & Computational evidence from error correction, marker concordance and modality contribution. & Not causal marker discovery or wet-lab validation. \\
+Expert routing & Historical MoE context in supplement. & Not current V16/V21/V22 routing proof. \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Computational interpretability is strongest for PBMC and HSR}
+
+V24 consolidated interpretability into an evidence map (Figure~\ref{fig:interp}). HSR boundary repair is main-text ready because it directly links the method module to changed predictions and per-class effects. Marker-attribution concordance, expression-attribution concordance and modality contribution are supplement-ready and support biological plausibility for PBMC L3 boundaries. Historical expert-routing artifacts are retained only as supplementary context. External-dataset attribution is not used for a broad mechanistic claim.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.95\textwidth]{Fig2_interpretability_evidence_map.png}
+\caption{V24 interpretability evidence map. HSR boundary repair is the strongest main-text interpretability evidence. Marker concordance, expression-attribution concordance and modality contribution support supplementary computational interpretability. Expert routing is historical/supplement-only, and external-dataset attribution is not claimed as a broad mechanistic result.}
+\label{fig:interp}
+\end{figure*}
+
+\section{Discussion}
+
+MOSAIC-N shifts the MOSAIC narrative from a single accuracy-oriented multimodal classifier to a reviewer-audited framework for trustworthy single-cell annotation. The strongest evidence is the combination of PBMC strict L3 SOTA, full-scale COVID-19 ACC/W-F1 leadership, GSE164378 ensemble SOTA and COMBAT/COVID parent-safe disease-shift generalization. Importantly, these claims are not collapsed into one universal statement; each is bound to its dataset, split and metric protocol.
+
+The HSR module is the most defensible methodological innovation in the current manuscript. Its value lies not only in aggregate performance but in its auditability: the model exposes which sibling boundaries it changes and whether those changes help or harm. This is useful for single-cell annotation because many fine-level labels differ by subtle activation or memory states rather than by broad lineage.
+
+Interpretability remains computational. We provide attribution-marker concordance and modality contribution analyses, but we do not claim independent wet-lab validation, causal marker discovery or broad external-dataset mechanistic explanation. This conservative framing is deliberate. It allows MOSAIC-N to make a strong computational-biology contribution without overstating biological discovery.
+
+\section{Conclusion}
+
+We introduced MOSAIC-N, a hierarchy-aware multimodal framework for fine-level single-cell annotation. Across multiple audited CITE-seq and disease-shift benchmarks, MOSAIC-N achieved state-of-the-art or competitive performance while providing explicit claim boundaries and computational interpretability evidence. The resulting evidence package supports a Bioinformatics-style manuscript focused on trustworthy multimodal annotation rather than unconstrained performance claims.
+
+\section{Data availability}
+
+The datasets used in this study are public single-cell CITE-seq or derived benchmark datasets. Processed splits, result tables, figure scripts and reproducibility artifacts are organized in the project directories \texttt{configs/}, \texttt{experiments/}, \texttt{results/}, \texttt{output/} and \texttt{docs/reports/versions/}. Public release links will be added before submission.
+
+\section{Code availability}
+
+The implementation and experiment scripts will be released upon acceptance. The current internal reproducibility package includes date-stamped plans, run scripts, metrics CSV files, per-class F1 tables, claim audits and manuscript-facing figures.
+
+\section{Funding}
+
+Funding information will be added before submission.
+
+\section{Acknowledgements}
+
+The authors thank collaborators and data generators whose public single-cell resources made this benchmark study possible.
+
+\section{Author contributions}
+
+H.Y., L.W. and Z.W. conceived the study. L.W. developed and audited the MOSAIC-N experiments. H.Y., D.Z. and Z.W. supervised the project. All authors contributed to manuscript review. Author contribution details should be confirmed before submission.
+
+\section{Competing interests}
+
+The authors declare no competing interests.
+
+\section{Generative AI statement}
+
+During preparation of this draft, the authors used AI-assisted writing tools to organize internal experimental reports and improve manuscript readability. All scientific claims, numerical results and caveats were checked against project artifacts by the authors, who take full responsibility for the manuscript.
+
+\bibliographystyle{oup-plain}
+\bibliography{references}
+
+\end{document}

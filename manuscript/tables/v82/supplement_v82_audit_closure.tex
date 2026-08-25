@@ -1,0 +1,10 @@
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{2.7cm} >{\raggedright\arraybackslash}p{2.1cm} >{\raggedright\arraybackslash}p{4.2cm} X}
+\toprule
+Audit & Size & Result & Interpretation and scope \\
+\midrule
+PBMC size-matched null & 24 donor--seed units & Random six-ADT mask: $\Delta$W-F1 $=-0.000490$ [$-0.000800,-0.000181$], $\Delta$M-F1 $=-0.000158$ [$-0.002022,0.001707$]; targeted memory mask: $\Delta$W-F1 $=-0.002555$, $\Delta$M-F1 $=-0.006572$ & Targeted six-feature damage is larger on average than its same-count random null in the frozen PBMC protocol. The comparison is descriptive and protocol-specific. \\
+PBMC size-matched null & 24 donor--seed units & Random 15-ADT mask: $\Delta$W-F1 $=-0.001831$ [$-0.002517,-0.001146$], $\Delta$M-F1 $=-0.004406$ [$-0.007480,-0.001333$]; targeted T-cell mask: $\Delta$W-F1 $=-0.008693$, $\Delta$M-F1 $=-0.021330$ & Targeted 15-feature damage is larger than the same-count random null. This does not establish arbitrary missing-panel robustness or a universal marker mechanism. \\
+PDC101 paired audit & 2,098 exact pairs & MOSAIC-HPM-lite ACC 0.937560 versus MMoCHi ACC 0.934700; MOSAIC-only correct 80, MMoCHi-only correct 74; exact two-sided McNemar $P=0.687149$ & Both prediction files exclude HTO input and have identical truth labels after exact cell-ID joining. The point-estimate difference is not significant; cross-method modality-weight comparison is not estimable because the saved quantities differ. \\
+GSE164378 5P transfer & 49,147 cells; P1--P8 & L3 ACC 0.728915; parent-safe rate 0.897451; accept rate 1.000000 & Same-study assay-cohort replication under a validation-only policy. The cohort shares the main study and donors, so it is not independent external or donor validation; no fallback cells were observed. \\
+\bottomrule
+\end{tabularx}

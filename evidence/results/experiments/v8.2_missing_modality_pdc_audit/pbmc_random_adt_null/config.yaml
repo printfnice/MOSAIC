@@ -1,0 +1,35 @@
+date: '2026-08-16'
+command: experiments/exp_missing_modality/mosaic_n_v82/run_size_matched_random_adt_null.py
+  --batch-size 4096 --require-complete
+base_dir: /root/autodl-tmp/MOSAIC/results/exp_generalization/mosaic_n_v33/donor_matrix
+donors:
+- P1
+- P2
+- P3
+- P4
+- P5
+- P6
+- P7
+- P8
+seeds:
+- 41
+- 42
+- 43
+batch_size: 4096
+device: cuda
+legacy_scenarios:
+- full
+- random_10
+- random_30
+- random_50
+- random_70
+- marker_memory
+- marker_tcell
+- rna_only
+new_scenarios:
+- random_size_matched_6
+- random_size_matched_15
+random_size_seed_base: 820000
+mask_policy: feature-name-only fixed masks; size matched to the existing targeted
+  six-feature and fifteen-feature masks; no test-label selection
+known_label_policy: metrics use only labels observed in training donors

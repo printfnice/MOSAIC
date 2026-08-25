@@ -1,0 +1,39 @@
+{
+  "status": "ready",
+  "n_mmochi_external_holdout": 2098,
+  "n_mosaic_rows": 2098,
+  "n_joined_pairs": 2098,
+  "truth_labels_match": true,
+  "mmochi_source": "/root/autodl-tmp/MOSAIC/results/exp_generalization/mmochi_pdc101_sorted_ext_holdout_thresholds/holdout_predictions.csv",
+  "mosaic_source": "/root/autodl-tmp/MOSAIC/results/exp_generalization/mosaic2_pdc101_hpm_lite_best_no_hto/predictions.csv",
+  "mmochi_metadata": {
+    "dataset": "data/gse229791_mmochi/pdc101_sorted_tnk.h5ad",
+    "hierarchy": "MMoCHi docs/Example_Hierarchies.md Human T cell subsets (v1)",
+    "holdout_fraction": 0.2,
+    "seed": 42,
+    "metric_reference": "FACS/HTO-derived sort_label parsed from GSE229791 PDC101 column names",
+    "n_cells": 10487,
+    "n_genes": 60725,
+    "n_proteins": 291
+  },
+  "mosaic_metadata": {
+    "method": "MOSAIC-HPM-lite gated multimodal prototype network",
+    "input": "data/gse229791_mmochi/pdc101_sorted_tnk.h5ad",
+    "seed": 42,
+    "holdout_fraction": 0.2,
+    "val_fraction": 0.15,
+    "n_gex_features": 500,
+    "hidden_dim": 128,
+    "dropout": 0.2,
+    "batch_size": 256,
+    "lr": 0.002,
+    "weight_decay": 0.0001,
+    "prototype_weight": 0.05,
+    "include_hto": false,
+    "include_isotype": false,
+    "n_adt_features": 268,
+    "device": "cuda",
+    "torch_version": "2.12.0+cu126",
+    "runtime_seconds": 22.635489486157894
+  }
+}

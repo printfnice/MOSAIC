@@ -1,0 +1,36 @@
+{
+  "dataset": "GSE164378 5P",
+  "split_unit": "existing full-panel external prediction artifact",
+  "prediction_source": "/root/autodl-tmp/MOSAIC/results/exp_generalization/original_mosaic_strict/v10_r61_mosaic_n_gse164378_adt_guard_full_seed42/external_predictions.csv",
+  "h5ad_source": "/root/autodl-tmp/MOSAIC/data/GSE164378/gse164378_5p_protein.h5ad",
+  "calibration_policy_source": "/root/autodl-tmp/MOSAIC/results/exp_generalization/original_mosaic_strict/v10_mosaic_n_gse164378_adt_guard_seed42/calibration_policy.csv",
+  "policy_selection": "validation_only; external labels not used",
+  "cohort_identity": {
+    "dataset_name": "GSE164378 5P",
+    "observed_donors": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5",
+      "P6",
+      "P7",
+      "P8"
+    ],
+    "main_protocol_donors": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5",
+      "P6",
+      "P7",
+      "P8"
+    ],
+    "same_donor_set": true,
+    "same_study_indicator": true,
+    "independent_external_cohort": false,
+    "transfer_type": "same-study assay-cohort replication",
+    "scope_caveat": "not independent donor validation; same GSE164378 study and donor set"
+  }
+}

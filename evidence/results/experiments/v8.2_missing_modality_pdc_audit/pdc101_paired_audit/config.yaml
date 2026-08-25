@@ -1,0 +1,11 @@
+date: '2026-08-16'
+command: experiments/exp_generalization/mosaic2_pdc101/run_pdc101_paired_audit.py
+mmochi_predictions: /root/autodl-tmp/MOSAIC/results/exp_generalization/mmochi_pdc101_sorted_ext_holdout_thresholds/holdout_predictions.csv
+mosaic_predictions: /root/autodl-tmp/MOSAIC/results/exp_generalization/mosaic2_pdc101_hpm_lite_best_no_hto/predictions.csv
+join_key: MMoCHi_obs_names == cell_id
+holdout_policy: MMoCHi external_holdout=True; exact one-to-one join
+paired_test: exact two-sided McNemar
+boundary_classes:
+- cd4_cm
+- cd8_cm
+cross_method_modality_weight_status: not_estimable
